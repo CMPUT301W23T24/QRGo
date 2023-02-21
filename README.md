@@ -1,1 +1,1 @@
-# QRHunt
+# QRGo
