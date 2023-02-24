@@ -1,5 +1,9 @@
 package com.example.qrgo;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class QR {
@@ -9,7 +13,6 @@ public class QR {
     private String face;
     private Integer scannedAmnt;
     private FirebaseFirestore db;
-
     public QR(String id, String scannedBy, Integer score, String face) {
         this.id = id;
         this.scannedBy = scannedBy;
@@ -56,5 +59,15 @@ public class QR {
 
     public void setScannedAmnt(Integer scannedAmnt) {
         this.scannedAmnt = scannedAmnt;
+    }
+
+    //TODO figure out the collections to add and remove
+    public void addToDB(){
+        //get collection and add the necessary hash, score, face etc
+
+    }
+    public void removeFromDB(){
+        //
+
     }
 }

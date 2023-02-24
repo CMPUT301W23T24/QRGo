@@ -1,10 +1,13 @@
 package com.example.qrgo;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
@@ -35,15 +38,22 @@ public class QRReader {
     public Integer score;
     public String name = "";
     public String face = "";
+    FirebaseFirestore db;
+    // TODO get the collection and verify if that which is scanned exists or not
 
     public void readQR(){
-
-        FirebaseFirestore db;
+        boolean qrExists = false;
+        db = FirebaseFirestore.getInstance();
         createHash();
-        calcScore();
-        createFaceAndName();
-
-        
+        //check if it exists
+        CollectionReference collectionReference = db.collection("user");
+        if (qrExists){
+            //TODO if it does exist, get the right QR and update the num counted
+        } else {
+            //TODO add it to the user DB and the QRDB
+            calcScore();
+            createFaceAndName();
+        }
 
     }
     private void createHash(){
