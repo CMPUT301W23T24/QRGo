@@ -28,8 +28,8 @@ public class QRReader {
             {"\n| 0    0 |",  "\n| ^    ^ |"},
             {"\n|   (--)  |", "\n|   ||   |\n|   LL   |"},
             {"\n|  ====  |",  "\n|          |"},
-            {"\n| '      ' |\n|  ```    |", "\n|   ---  |\n| '    ' |"},
-            {"\n|   <<   |\n", "\n|         |\n"}
+            {"\n|  '      ' |\n|   ```   |", "\n|   ---  |\n| '    ' |"},
+            {"\n|   <<   |\n", "\n|    ||    |\n"}
     };
     private byte[] bytes;
     FusedLocationProviderClient fusedLocationProviderClient;
