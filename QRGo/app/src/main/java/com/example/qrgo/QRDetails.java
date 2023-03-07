@@ -42,11 +42,13 @@ public class QRDetails extends AppCompatActivity {
         commentsB = (Button) findViewById(R.id.CommentsButton);
         deleteB = (Button) findViewById(R.id.DeleteButton);
 
-        QRReader code = new QRReader();
-        hash = code.createHash(content);
-        score = code.calcScore(hash);
-        face = code.createFace(hash);
-        name = code.createName(hash);
+        QRReader qrContent = new QRReader();
+        hash = qrContent.createHash(content);
+        score = qrContent.calcScore(hash);
+        face = qrContent.createFace(hash);
+        name = qrContent.createName(hash);
+
+        QR qr = new QR(name, "user", score, face);
 
         QRFaceTV.setText(face);
         nameTV.setText(name);

@@ -28,7 +28,7 @@ public class QRReader {
             {"\n| 0    0 |",  "\n| ^    ^ |"},
             {"\n|   (--)  |", "\n|   ||   |\n|   LL   |"},
             {"\n|  ====  |",  "\n|          |"},
-            {"\n|  '      ' |\n|   ```   |", "\n|   ---  |\n| '    ' |"},
+            {"\n| ,      , |\n|   ```   |", "\n|   ---  |\n| '    ' |"},
             {"\n|   <<   |\n", "\n|    ||    |\n"}
     };
     private byte[] bytes;
@@ -101,7 +101,7 @@ public class QRReader {
 
 
     public String createFace(String hash){
-        face = " ----------";
+        face = "_______";
         Character bit;
         String evenChars = "02468ace";
         for (int i = 0; i < 6; i++){
@@ -112,7 +112,7 @@ public class QRReader {
                 face += imageChoice[i][1];
             }
         }
-        face += "--------";
+        face += "-----------";
         return face;
     }
 
