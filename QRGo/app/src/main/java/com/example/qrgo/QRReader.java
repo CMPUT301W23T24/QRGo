@@ -24,18 +24,17 @@ public class QRReader {
             {"Bildalf","Gando"}
     };
     private String[][] imageChoice = {
-            {"\n| ~    ~ |", "\n| ==  == |" },
-            {"\n| 0    0 |", "\n| ^    ^ |"},
-            {"\n|  (--)  |", "\n|   ||   |\n|   LL   |"},
-            {"\n|  ====  |", "\n|        |"},
-            {"\n| '    ' |\n|  ```   |", "\n|   ---  |\n| '    ' |"},
-            {"\n|   <<   |\n", "\n|        |\n"}
+            {"\n| ~   ~ |",   "\n| ==  == |" },
+            {"\n| 0    0 |",  "\n| ^    ^ |"},
+            {"\n|   (--)  |", "\n|   ||   |\n|   LL   |"},
+            {"\n|  ====  |",  "\n|          |"},
+            {"\n| '      ' |\n|  ```    |", "\n|   ---  |\n| '    ' |"},
+            {"\n|   <<   |\n", "\n|         |\n"}
     };
-    private String content;
     private byte[] bytes;
     FusedLocationProviderClient fusedLocationProviderClient;
     public String hashedContent;
-    public Integer score;
+    public Integer score = 0;
     public String name = "";
     public String face = "";
     FirebaseFirestore db;
@@ -43,20 +42,17 @@ public class QRReader {
 
     public void readQR(){
         boolean qrExists = false;
-        db = FirebaseFirestore.getInstance();
-        createHash();
+        //db = FirebaseFirestore.getInstance();
+
         //check if it exists
-        CollectionReference collectionReference = db.collection("user");
-        if (qrExists){
-            //TODO if it does exist, get the right QR and update the num counted
-        } else {
-            //TODO add it to the user DB and the QRDB
-            calcScore();
-            createFaceAndName();
-        }
+        //if (qrExists){} else {}
+        //TODO if it does exist, get the right QR and update the num counted
+        //TODO add it to the user DB and the QRDB
+
+
 
     }
-    private void createHash(){
+    public String createHash(String content){
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
@@ -70,24 +66,23 @@ public class QRReader {
             sb.append(String.format("%02x", bytes[i]));
         }
         hashedContent = sb.toString();
+        return hashedContent;
     }
 
-    private void calcScore(){
+    public Integer calcScore(String hash){
         String repeatedChars;
         Double scoreD;
         Character character;
         Pattern p = Pattern.compile("(\\w)\\1+");
-        Matcher m = p.matcher(hashedContent);
+        Matcher m = p.matcher(hash);
         fillDictionary();
-
         while (m.find()) {
             repeatedChars = m.group();
             character = repeatedChars.charAt(0);
-
             scoreD = Math.pow( Double.valueOf(dict.get(character.toString())), Double.valueOf(repeatedChars.length() - 1));
             score += scoreD.intValue();
         }
-
+        return score;
 
     }
 
@@ -105,22 +100,34 @@ public class QRReader {
     }
 
 
-    private void createFaceAndName(){
-        face = " --------";
+    public String createFace(String hash){
+        face = " ----------";
         Character bit;
         String evenChars = "02468ace";
         for (int i = 0; i < 6; i++){
-            bit = hashedContent.charAt(i);
+            bit = hash.charAt(i);
             if (evenChars.contains(bit.toString()) ){
                 face += imageChoice[i][0];
-                name += nameChoices[i][0];
             } else {
                 face += imageChoice[i][1];
+            }
+        }
+        face += "--------";
+        return face;
+    }
+
+    public String createName(String hash){
+        Character bit;
+        String evenChars = "02468ace";
+        for (int i = 0; i < 6; i++){
+            bit = hash.charAt(i);
+            if (evenChars.contains(bit.toString()) ){
+                name += nameChoices[i][0];
+            } else {
                 name += nameChoices[i][1];
             }
-            face += " --------";
         }
-
+        return name;
     }
 }
 

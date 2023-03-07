@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
     <TextView
         android:id="@+id/TVQRFace"
         android:layout_width="385dp"
-        android:layout_height="237dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:background="@color/cardview_dark_background"
         android:gravity="center"
@@ -39,23 +40,23 @@
         android:id="@+id/TVScore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Score"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVName"
-        android:textColor="@color/black"/>
+        app:layout_constraintTop_toBottomOf="@+id/TVName" />
 
     <Button
         android:id="@+id/LocationButton"
         android:layout_width="134dp"
         android:layout_height="46dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/blue"
         android:text="Location"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,10 +107,10 @@
         android:text="Delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CommentsButton"
-        />
+        app:layout_constraintVertical_bias="0.105" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

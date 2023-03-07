@@ -27,7 +27,11 @@ public class QRDetails extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_details);
-
+        String content = "BFG5DGW54";
+        String hash;
+        Integer score;
+        String face;
+        String name;
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
         scoreTV = (TextView) findViewById(R.id.TVScore);
@@ -37,6 +41,16 @@ public class QRDetails extends AppCompatActivity {
         scannersB = (Button) findViewById(R.id.ScannersButton);
         commentsB = (Button) findViewById(R.id.CommentsButton);
         deleteB = (Button) findViewById(R.id.DeleteButton);
+
+        QRReader code = new QRReader();
+        hash = code.createHash(content);
+        score = code.calcScore(hash);
+        face = code.createFace(hash);
+        name = code.createName(hash);
+
+        QRFaceTV.setText(face);
+        nameTV.setText(name);
+        scoreTV.setText(score.toString());
 
 
 
