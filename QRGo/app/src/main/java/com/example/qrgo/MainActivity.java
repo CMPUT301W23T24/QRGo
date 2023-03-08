@@ -17,16 +17,14 @@ import com.journeyapps.barcodescanner.ScanOptions;
 public class MainActivity extends AppCompatActivity {
 
     Button scanQRButton;
-    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, QRDetails.class);
-        startActivity(intent);
 
+        // set up scanQR button functionality
          scanQRButton = findViewById(R.id.scanQRButton);
-         textView = findViewById(R.id.textView);
          scanQRButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
@@ -35,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
          });
     }
 
+    /**
+     * sets up the options and launches the cameraActivity
+     */
     private void scanQRCode() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("Scan a QR Code");
@@ -43,18 +44,14 @@ public class MainActivity extends AppCompatActivity {
         barLauncher.launch(options);
     }
 
+
     ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        // scan the code and pass its result to the qr details activity
        if (result.getContents() != null) {
-           AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-           builder.setTitle("Result");
-           builder.setMessage(result.getContents());
-           textView.setText(result.getContents());
-           builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-               @Override
-               public void onClick(DialogInterface dialogInterface, int i) {
-                   dialogInterface.dismiss();
-               }
-           }).show();
+           String qrContent = result.getContents();
+           Intent intent = new Intent(this, QRDetails.class);
+           intent.putExtra("qrContent", qrContent);
+           startActivity(intent);
        }
     });
 }
