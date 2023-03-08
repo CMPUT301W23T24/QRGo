@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void scanQRCode() {
         ScanOptions options = new ScanOptions();
-        options.setPrompt("prompt test");
+        options.setPrompt("Scan a QR Code");
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureActivity.class);
         barLauncher.launch(options);
