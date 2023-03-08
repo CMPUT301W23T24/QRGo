@@ -29,7 +29,7 @@ public class QRDetails extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_details);
-        String content = "BFG5DGW54";
+        String content = getIntent().getStringExtra("qrContent");
         String hash;
         Integer score;
         String face;
