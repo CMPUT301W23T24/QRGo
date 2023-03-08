@@ -1,8 +1,17 @@
 package com.example.qrgo;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
@@ -25,9 +34,9 @@ public class QRReader {
     };
     private String[][] imageChoice = {
             {"\n| ~   ~ |",   "\n| ==  == |" },
-            {"\n| 0    0 |",  "\n| ^    ^ |"},
-            {"\n|   (--)  |", "\n|   ||   |\n|   LL   |"},
-            {"\n|  ====  |",  "\n|          |"},
+            {"\n|0    0|",  "\n|^    ^|"},
+            {"\n|(--)|", "\n|   ||   |\n|   LL   |"},
+            {"\n|====|",  "\n|          |"},
             {"\n| ,      , |\n|   ```   |", "\n|   ---  |\n| '    ' |"},
             {"\n|   <<   |\n", "\n|    ||    |\n"}
     };
@@ -40,10 +49,29 @@ public class QRReader {
     FirebaseFirestore db;
     // TODO get the collection and verify if that which is scanned exists or not
 
-    public void readQR(){
-        boolean qrExists = false;
-        //db = FirebaseFirestore.getInstance();
+    public boolean readQR(){
+        final boolean qrExists = false;
+        db = FirebaseFirestore.getInstance();
 
+        DocumentReference ref = db.collection("qr").document(hashedContent);
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()){
+                        Log.d(TAG, "exists!");
+
+                    } else {
+                        Log.d(TAG, "no!");
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
+
+        return qrExists;
         //check if it exists
         //if (qrExists){} else {}
         //TODO if it does exist, get the right QR and update the num counted

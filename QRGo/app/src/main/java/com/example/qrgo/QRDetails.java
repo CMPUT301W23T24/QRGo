@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 
 public class QRDetails extends AppCompatActivity {
     private TextView QRFaceTV;
@@ -44,11 +46,16 @@ public class QRDetails extends AppCompatActivity {
 
         QRReader qrContent = new QRReader();
         hash = qrContent.createHash(content);
+        qrContent.readQR();
+
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
         name = qrContent.createName(hash);
-
-        QR qr = new QR(name, "user", score, face);
+        ArrayList<String> users = new ArrayList<>();
+        ArrayList<String> comments = new ArrayList<>();
+        users.add("user1");
+        comments.add("mfin uuuuuuuuuuuuuuuh");
+        QR qr = new QR(name, users, comments, score, face);
 
         QRFaceTV.setText(face);
         nameTV.setText(name);

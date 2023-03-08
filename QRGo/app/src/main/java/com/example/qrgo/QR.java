@@ -6,16 +6,20 @@ import android.location.LocationManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 public class QR {
     private String id;
-    private String scannedBy;
+    private ArrayList<String> scannedBy;
+    private ArrayList<String> comments;
     private Integer score;
     private String face;
     private Integer scannedAmnt;
     private FirebaseFirestore db;
-    public QR(String id, String scannedBy, Integer score, String face) {
+    public QR(String id, ArrayList<String> scannedBy, ArrayList<String> comments, Integer score, String face) {
         this.id = id;
         this.scannedBy = scannedBy;
+        this.comments = comments;
         this.score = score;
         this.face = face;
         this.scannedAmnt = 1;
@@ -29,11 +33,12 @@ public class QR {
         this.id = id;
     }
 
-    public String getScannedBy() {
+    public ArrayList<String> getScannedBy() {
         return scannedBy;
     }
 
-    public void setScannedBy(String scannedBy) {
+
+    public void setScannedBy(ArrayList<String> scannedBy) {
         this.scannedBy = scannedBy;
     }
 
@@ -61,6 +66,10 @@ public class QR {
         this.scannedAmnt = scannedAmnt;
     }
 
+
+    public ArrayList<String> getComments() {return comments;}
+
+    public void setComments(ArrayList<String> comments){ this.comments = comments;}
     //TODO figure out the collections to add and remove
     public void addToDB(){
         //get collection and add the necessary hash, score, face etc
