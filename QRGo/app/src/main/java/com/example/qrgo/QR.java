@@ -19,6 +19,8 @@ public class QR {
     private String face;
     private Integer scannedAmnt;
     private FirebaseFirestore db;
+
+    //TODO should comments be something that we add into the DB and not into the QR itself?
     public QR(String id, String scannedBy, String comments, Integer score, String face) {
         this.id = id;
         this.scannedBy = scannedBy;

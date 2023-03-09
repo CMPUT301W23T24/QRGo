@@ -171,6 +171,7 @@ public class QRReader {
                         Log.d(TAG, "exists!");
                         ref.update("scannedAmnt", FieldValue.increment(1));
                         ref.update("scannedBy", FieldValue.arrayUnion(qr.getScannedBy()));
+                        ref.update("comments", FieldValue.arrayUnion(qr.getComments()));
 
                     } else {
                         Log.d(TAG, "DNE");
@@ -184,7 +185,7 @@ public class QRReader {
         });
 
     }
-    public void removeFromDB(String hash, String user){
+    public void removeFromDB(String hash, QR qr){
         //
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("qr").document(hash);
@@ -196,7 +197,8 @@ public class QRReader {
                     if (doc.exists()){
                         Log.d(TAG, "exists!");
                         ref.update("scannedAmnt", FieldValue.increment(-1));
-                        ref.update("scannedBy", FieldValue.arrayRemove(user));
+                        ref.update("scannedBy", FieldValue.arrayRemove(qr.getScannedBy()));
+                        ref.update("comments", FieldValue.arrayRemove(qr.getComments()));
 
                     } else {
                         Log.d(TAG, "DNE");

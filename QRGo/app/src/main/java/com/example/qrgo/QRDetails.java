@@ -61,8 +61,8 @@ public class QRDetails extends AppCompatActivity {
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
         name = qrContent.createName(hash);
-        String users = "user1";
-        String comments = "mfin uuuuuuuuuuuhh";
+        String users = "user2";
+        String comments = "mfin uuuuuuuuuuuhhm";
 
         QR qr = new QR(name, users, comments, score, face);
 
