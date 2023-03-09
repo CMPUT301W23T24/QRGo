@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
@@ -37,7 +38,7 @@ public class QRReader {
             {"\n|0    0|",  "\n|^    ^|"},
             {"\n|(--)|", "\n|   ||   |\n|   LL   |"},
             {"\n|====|",  "\n|          |"},
-            {"\n| ,      , |\n|   ```   |", "\n|   ---  |\n| '    ' |"},
+            {"\n| ,      , |\n|   ```   |", "\n|  ___  |\n| '     ' |"},
             {"\n|   <<   |\n", "\n|    ||    |\n"}
     };
     private byte[] bytes;
@@ -156,6 +157,55 @@ public class QRReader {
             }
         }
         return name;
+    }
+
+    public void addToDB(String hash, QR qr, String user){
+        db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("qr").document(hash);
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()){
+                        Log.d(TAG, "exists!");
+                        ref.update("scannedAmount", FieldValue.increment(1));
+                        ref.update("users", FieldValue.arrayUnion(user));
+
+                    } else {
+                        Log.d(TAG, "DNE");
+                        db.collection("qr").document(hash).set(qr);
+
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
+
+    }
+    public void removeFromDB(String hash, String user){
+        //
+        db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("qr").document(hash);
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()){
+                        Log.d(TAG, "exists!");
+                        ref.update("scannedAmount", FieldValue.increment(-1));
+                        ref.update("users", FieldValue.arrayRemove(user));
+
+                    } else {
+                        Log.d(TAG, "DNE");
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
     }
 }
 

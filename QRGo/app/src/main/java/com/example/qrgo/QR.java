@@ -5,8 +5,11 @@ import android.location.Location;
 import android.location.LocationManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.FirestoreGrpc;
 
 import java.util.ArrayList;
+
+
 
 public class QR {
     private String id;
@@ -71,12 +74,5 @@ public class QR {
 
     public void setComments(ArrayList<String> comments){ this.comments = comments;}
     //TODO figure out the collections to add and remove
-    public void addToDB(){
-        //get collection and add the necessary hash, score, face etc
 
-    }
-    public void removeFromDB(){
-        //
-
-    }
 }
