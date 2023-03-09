@@ -159,7 +159,7 @@ public class QRReader {
         return name;
     }
 
-    public void addToDB(String hash, QR qr, String user){
+    public void addToDB(String hash, QR qr){
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("qr").document(hash);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -169,8 +169,8 @@ public class QRReader {
                     DocumentSnapshot doc = task.getResult();
                     if (doc.exists()){
                         Log.d(TAG, "exists!");
-                        ref.update("scannedAmount", FieldValue.increment(1));
-                        ref.update("users", FieldValue.arrayUnion(user));
+                        ref.update("scannedAmnt", FieldValue.increment(1));
+                        ref.update("scannedBy", FieldValue.arrayUnion(qr.getScannedBy()));
 
                     } else {
                         Log.d(TAG, "DNE");
@@ -195,8 +195,8 @@ public class QRReader {
                     DocumentSnapshot doc = task.getResult();
                     if (doc.exists()){
                         Log.d(TAG, "exists!");
-                        ref.update("scannedAmount", FieldValue.increment(-1));
-                        ref.update("users", FieldValue.arrayRemove(user));
+                        ref.update("scannedAmnt", FieldValue.increment(-1));
+                        ref.update("scannedBy", FieldValue.arrayRemove(user));
 
                     } else {
                         Log.d(TAG, "DNE");

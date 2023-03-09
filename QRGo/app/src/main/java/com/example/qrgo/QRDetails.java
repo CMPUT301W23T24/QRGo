@@ -61,16 +61,15 @@ public class QRDetails extends AppCompatActivity {
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
         name = qrContent.createName(hash);
-        ArrayList<String> users = new ArrayList<>();
-        ArrayList<String> comments = new ArrayList<>();
-        users.add("user1");
-        comments.add("mfin uuuuuuuuuuuuuuuh");
+        String users = "user1";
+        String comments = "mfin uuuuuuuuuuuhh";
+
         QR qr = new QR(name, users, comments, score, face);
 
         QRFaceTV.setText(face);
         nameTV.setText(name);
         scoreTV.setText(score.toString());
-
+        qrContent.addToDB(hash, qr);
 
 
         locationB.setOnClickListener(new View.OnClickListener() {

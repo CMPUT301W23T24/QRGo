@@ -13,13 +13,13 @@ import java.util.ArrayList;
 
 public class QR {
     private String id;
-    private ArrayList<String> scannedBy;
-    private ArrayList<String> comments;
+    private String scannedBy;
+    private String comments;
     private Integer score;
     private String face;
     private Integer scannedAmnt;
     private FirebaseFirestore db;
-    public QR(String id, ArrayList<String> scannedBy, ArrayList<String> comments, Integer score, String face) {
+    public QR(String id, String scannedBy, String comments, Integer score, String face) {
         this.id = id;
         this.scannedBy = scannedBy;
         this.comments = comments;
@@ -36,12 +36,12 @@ public class QR {
         this.id = id;
     }
 
-    public ArrayList<String> getScannedBy() {
+    public String getScannedBy() {
         return scannedBy;
     }
 
 
-    public void setScannedBy(ArrayList<String> scannedBy) {
+    public void setScannedBy(String scannedBy) {
         this.scannedBy = scannedBy;
     }
 
@@ -70,9 +70,9 @@ public class QR {
     }
 
 
-    public ArrayList<String> getComments() {return comments;}
+    public String getComments() {return comments;}
 
-    public void setComments(ArrayList<String> comments){ this.comments = comments;}
+    public void setComments(String comments){ this.comments = comments;}
     //TODO figure out the collections to add and remove
 
 }
