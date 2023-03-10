@@ -5,6 +5,11 @@ import android.location.Location;
 import android.location.LocationManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.FirestoreGrpc;
+
+import java.util.ArrayList;
+
+
 
 public class QR {
     private String id;
@@ -13,6 +18,8 @@ public class QR {
     private String face;
     private Integer scannedAmnt;
     private FirebaseFirestore db;
+
+    //TODO should comments be something that we add into the DB and not into the QR itself?
     public QR(String id, String scannedBy, Integer score, String face) {
         this.id = id;
         this.scannedBy = scannedBy;
@@ -20,6 +27,11 @@ public class QR {
         this.face = face;
         this.scannedAmnt = 1;
     }
+    public QR(String id, String face){
+        this.id = id;
+        this.face = face;
+    }
+
 
     public String getId() {
         return id;
@@ -32,6 +44,7 @@ public class QR {
     public String getScannedBy() {
         return scannedBy;
     }
+
 
     public void setScannedBy(String scannedBy) {
         this.scannedBy = scannedBy;
@@ -61,13 +74,8 @@ public class QR {
         this.scannedAmnt = scannedAmnt;
     }
 
+
+
     //TODO figure out the collections to add and remove
-    public void addToDB(){
-        //get collection and add the necessary hash, score, face etc
 
-    }
-    public void removeFromDB(){
-        //
-
-    }
 }

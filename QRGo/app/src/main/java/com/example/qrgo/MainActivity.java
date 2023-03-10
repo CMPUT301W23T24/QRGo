@@ -17,7 +17,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 public class MainActivity extends AppCompatActivity {
 
     Button scanQRButton;
-
+    Button searchQR;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +25,22 @@ public class MainActivity extends AppCompatActivity {
 
         // set up scanQR button functionality
          scanQRButton = findViewById(R.id.scanQRButton);
+         searchQR = findViewById(R.id.goToSearchB);
          scanQRButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  scanQRCode();
              }
          });
+
+        searchQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SearchQR.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     /**
