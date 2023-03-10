@@ -1,14 +1,26 @@
 package com.example.qrgo;
 
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 
 public class QRDetails extends AppCompatActivity {
@@ -21,6 +33,10 @@ public class QRDetails extends AppCompatActivity {
     private Button commentsB;
     private Button deleteB;
 
+
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private final static int LOCATION_PERMISSION_CODE = 100;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,14 +70,15 @@ public class QRDetails extends AppCompatActivity {
         nameTV.setText(name);
         scoreTV.setText(score.toString());
 
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO Not sure if anyone else set up a location class so I left it out
+                getLocation();
             }
         });
+
 
         photoB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,4 +111,56 @@ public class QRDetails extends AppCompatActivity {
         });
 
     }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Handle permission not granted
+            askPermission();
+        } else {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+
+                                // DB Stuff
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(QRDetails.this);
+                                builder.setTitle("Result");
+                                builder.setMessage("Latitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude());
+                                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        }
+                    });
+        }
+
+
+    }
+
+    private void askPermission() {
+        ActivityCompat.requestPermissions(QRDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+        Log.d("2.", "1");
+
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantRequest) {
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantRequest.length > 0 && grantRequest[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation();
+            } else {
+                Toast.makeText(QRDetails.this, "Location permission required", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantRequest);
+    }
+
+
 }
