@@ -14,21 +14,24 @@ import java.util.ArrayList;
 public class QR {
     private String id;
     private String scannedBy;
-    private String comments;
     private Integer score;
     private String face;
     private Integer scannedAmnt;
     private FirebaseFirestore db;
 
     //TODO should comments be something that we add into the DB and not into the QR itself?
-    public QR(String id, String scannedBy, String comments, Integer score, String face) {
+    public QR(String id, String scannedBy, Integer score, String face) {
         this.id = id;
         this.scannedBy = scannedBy;
-        this.comments = comments;
         this.score = score;
         this.face = face;
         this.scannedAmnt = 1;
     }
+    public QR(String id, String face){
+        this.id = id;
+        this.face = face;
+    }
+
 
     public String getId() {
         return id;
@@ -72,9 +75,7 @@ public class QR {
     }
 
 
-    public String getComments() {return comments;}
 
-    public void setComments(String comments){ this.comments = comments;}
     //TODO figure out the collections to add and remove
 
 }

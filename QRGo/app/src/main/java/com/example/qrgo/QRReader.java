@@ -171,7 +171,7 @@ public class QRReader {
                         Log.d(TAG, "exists!");
                         ref.update("scannedAmnt", FieldValue.increment(1));
                         ref.update("scannedBy", FieldValue.arrayUnion(qr.getScannedBy()));
-                        ref.update("comments", FieldValue.arrayUnion(qr.getComments()));
+                        ref.update("comments", FieldValue.arrayUnion());
 
                     } else {
                         Log.d(TAG, "DNE");
@@ -198,7 +198,7 @@ public class QRReader {
                         Log.d(TAG, "exists!");
                         ref.update("scannedAmnt", FieldValue.increment(-1));
                         ref.update("scannedBy", FieldValue.arrayRemove(qr.getScannedBy()));
-                        ref.update("comments", FieldValue.arrayRemove(qr.getComments()));
+                        ref.update("comments", FieldValue.arrayRemove());
 
                     } else {
                         Log.d(TAG, "DNE");

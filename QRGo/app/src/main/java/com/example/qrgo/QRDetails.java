@@ -64,7 +64,7 @@ public class QRDetails extends AppCompatActivity {
         String users = "user2";
         String comments = "mfin uuuuuuuuuuuhhm";
 
-        QR qr = new QR(name, users, comments, score, face);
+        QR qr = new QR(name, users, score, face);
 
         QRFaceTV.setText(face);
         nameTV.setText(name);
@@ -72,6 +72,9 @@ public class QRDetails extends AppCompatActivity {
         qrContent.addToDB(hash, qr);
 
 
+        /*
+        **
+         */
         locationB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
