@@ -33,6 +33,10 @@ public class SearchQR extends AppCompatActivity {
     Button qrSearchB;
     FirebaseFirestore db;
     ArrayList<QR> qrs;
+
+    /*
+    **
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +45,22 @@ public class SearchQR extends AppCompatActivity {
         searchQRET = findViewById(R.id.searchQRET);
         qrSearchB = findViewById(R.id.searchQRB);
 
-        qrs = new ArrayList<QR>();
-        qrAdapter = new QRListAdapter(this, qrs);
+
         db = FirebaseFirestore.getInstance();
         CollectionReference cr = db.collection("qr");
-        qrList.setAdapter(qrAdapter);
         qrSearchB.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                qrs = new ArrayList<QR>();
+                qrAdapter = new QRListAdapter(SearchQR.this, qrs);
+                qrList.setAdapter(qrAdapter);
+
                 final String name = searchQRET.getText().toString();
                 if (name.length() > 0){
-                    cr.whereGreaterThanOrEqualTo("id", name).get()
+                    cr.whereGreaterThanOrEqualTo("id", name)
+                            .whereLessThanOrEqualTo("id",name + '\uf8ff' )
+                            .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -59,10 +68,9 @@ public class SearchQR extends AppCompatActivity {
                                         //callback function
                                         //
                                         //TODO find a way to paste what is
-                                        Log.d(TAG, "found!!!");
                                         for (DocumentSnapshot snapshot: task.getResult()){
                                             Log.d(TAG, snapshot.get("face").toString());
-                                            Log.d(TAG, "hi");
+                                            Log.d(TAG, snapshot.get("id").toString());
                                             QR qr = new QR(snapshot.get("id").toString(), snapshot.get("face").toString());
                                             qrAdapter.add(qr);
                                             qrAdapter.notifyDataSetChanged();
