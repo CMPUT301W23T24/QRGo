@@ -101,6 +101,10 @@ public class QRDetails extends AppCompatActivity {
         comments = "mfin uuuuuuuuuuuhhm";
 
 
+
+        users = "user1";
+        comments = "mfin uuuuuuuuuuuhhm";
+
         QR qr = new QR(name, users, score, face);
 
         QRFaceTV.setText(face);
