@@ -96,8 +96,8 @@ public class QRDetails extends AppCompatActivity {
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
         name = qrContent.createName(hash);
-        String users = "user2";
 
+        // mock user for testing
         users = "user1";
         comments = "mfin uuuuuuuuuuuhhm";
 
@@ -240,6 +240,4 @@ public class QRDetails extends AppCompatActivity {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantRequest);
     }
-
-
 }
