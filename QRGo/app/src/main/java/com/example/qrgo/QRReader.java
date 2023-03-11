@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Reads what the user scanned and provides the necessary details
+ */
 public class QRReader {
     private Dictionary<String, Integer> dict = new Hashtable<>();
     private String[][] nameChoices = {
@@ -86,6 +89,7 @@ public class QRReader {
 
 
     }
+    //https://www.geeksforgeeks.org/sha-256-hash-in-java/
     public String createHash(String content){
         MessageDigest messageDigest;
         try {
@@ -102,7 +106,7 @@ public class QRReader {
         hashedContent = sb.toString();
         return hashedContent;
     }
-
+    //https://www.geeksforgeeks.org/matcher-group-method-in-java-with-examples/?ref=rp
     public Integer calcScore(String hash){
         String repeatedChars;
         Double scoreD;
