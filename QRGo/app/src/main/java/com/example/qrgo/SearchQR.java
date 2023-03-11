@@ -25,17 +25,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * This is the activity used to search for QR's
+ */
 public class SearchQR extends AppCompatActivity {
     private ArrayList<QR> findQuery;
 
-    ArrayAdapter<QR> qrAdapter;
-    EditText searchQRET;
-    Button qrSearchB;
-    FirebaseFirestore db;
-    ArrayList<QR> qrs;
+    private ArrayAdapter<QR> qrAdapter;
+    private EditText searchQRET;
+    private Button qrSearchB;
+    private FirebaseFirestore db;
+    private ArrayList<QR> qrs;
 
-    /*
-    **
+    /**
+    * Creates the Activity for the search function
+    ** @param savedInstanceState remember where a user left off
      */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,10 +52,15 @@ public class SearchQR extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         CollectionReference cr = db.collection("qr");
-        qrSearchB.setOnClickListener(new View.OnClickListener() {
 
+        qrSearchB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Uses the firestore DB to present any matching QR that the user searched for
+             * @param view
+             */
             @Override
             public void onClick(View view) {
+                //upon every button click restart the adapter
                 qrs = new ArrayList<QR>();
                 qrAdapter = new QRListAdapter(SearchQR.this, qrs);
                 qrList.setAdapter(qrAdapter);
@@ -62,15 +71,17 @@ public class SearchQR extends AppCompatActivity {
                             .whereLessThanOrEqualTo("id",name + '\uf8ff' )
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                /**
+                                 * if the Query actually completes the task present the ID and face of the QR in a ListView format
+                                 * @param task holds all query information
+                                 */
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()){
-                                        //callback function
-                                        //
-                                        //TODO find a way to paste what is
+
+                                        //for every result in the query paste it into the adapter
                                         for (DocumentSnapshot snapshot: task.getResult()){
-                                            Log.d(TAG, snapshot.get("face").toString());
-                                            Log.d(TAG, snapshot.get("id").toString());
+
                                             QR qr = new QR(snapshot.get("id").toString(), snapshot.get("face").toString());
                                             qrAdapter.add(qr);
                                             qrAdapter.notifyDataSetChanged();

@@ -38,6 +38,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 
+/**
+ * Creates the Details needed to bring the QR class into a more profile based scan
+ */
 public class QRDetails extends AppCompatActivity {
     private TextView QRFaceTV;
     private TextView nameTV;
@@ -53,16 +56,22 @@ public class QRDetails extends AppCompatActivity {
 
     private final static int LOCATION_PERMISSION_CODE = 100;
 
+    /**
+     * creates the activity needed to display the QR face, photos, locations and etc.
+     * @param savedInstanceState remembers the profil of the QR
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_details);
+
         String content = getIntent().getStringExtra("qrContent");
         String hash;
         Integer score;
         String face;
         String name;
+
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
         scoreTV = (TextView) findViewById(R.id.TVScore);
@@ -76,7 +85,6 @@ public class QRDetails extends AppCompatActivity {
         QRReader qrContent = new QRReader();
         hash = qrContent.createHash(content);
 
-//        TODO after we hash we should check if it actually exists in the db, if it does we get the info as is else create it
 
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
@@ -95,11 +103,12 @@ public class QRDetails extends AppCompatActivity {
 
 
 
-        /*
-        **
-         */
 
         locationB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Upon clickiing a the button provide the location of where the user is
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 getLocation();
@@ -139,6 +148,9 @@ public class QRDetails extends AppCompatActivity {
 
     }
 
+    /**
+     * gets the location of the user provided they offer it
+     */
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Handle permission not granted
@@ -172,12 +184,25 @@ public class QRDetails extends AppCompatActivity {
 
     }
 
+    /**
+     * asks the location of the user
+     */
     private void askPermission() {
         ActivityCompat.requestPermissions(QRDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
         Log.d("2.", "1");
 
     }
 
+    /**
+     *  if the user accepts their location being requested they will get their location provided
+     * @param requestCode The request code passed in {@link #askPermission()(
+     * android.app.Activity, String[], int)}
+     * @param permissions The requested permissions. Never null.
+     * @param grantRequest The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantRequest) {
         if (requestCode == LOCATION_PERMISSION_CODE) {
             if (grantRequest.length > 0 && grantRequest[0] == PackageManager.PERMISSION_GRANTED) {
