@@ -17,9 +17,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -208,6 +213,16 @@ public class QRReader {
                 }
             }
         });
+    }
+
+    public void addLocationToDB (String hash, String user, double latitude, double longitude) {
+        db = FirebaseFirestore.getInstance();
+        DocumentReference ref = db.collection("qr").document(hash);
+        List<Double> location = Arrays.asList(latitude, longitude);
+        Map<String, List<Double>> locations = new HashMap<>();
+        locations.put(user, location);
+        ref.update("location", FieldValue.arrayUnion(locations));
+
     }
 }
 
