@@ -9,6 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="115c2bf4-47a7-4dbb-87f5-44719eafe967" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/CameraActivity.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/CaptureActivity.java" afterDir="false" />
@@ -40,6 +41,9 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/qrgo/ExampleUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/example/qrgo/ExampleUnitTest.java" afterDir="false" />
     </list>
+=======
+    <list default="true" id="115c2bf4-47a7-4dbb-87f5-44719eafe967" name="Changes" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
