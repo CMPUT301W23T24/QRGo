@@ -47,11 +47,20 @@ public class QRDetails extends AppCompatActivity {
     private Button scannersB;
     private Button commentsB;
     private Button deleteB;
+    private Button showPhotoBtn;
 
+    QRReader qrContent;
+    String hash;
+    Integer score;
+    String face;
+    String name;
+    String users;
+    String comments;
 
     private FusedLocationProviderClient fusedLocationClient;
 
     private final static int LOCATION_PERMISSION_CODE = 100;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,10 +68,7 @@ public class QRDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_details);
         String content = getIntent().getStringExtra("qrContent");
-        String hash;
-        Integer score;
-        String face;
-        String name;
+
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
         scoreTV = (TextView) findViewById(R.id.TVScore);
@@ -72,8 +78,9 @@ public class QRDetails extends AppCompatActivity {
         scannersB = (Button) findViewById(R.id.ScannersButton);
         commentsB = (Button) findViewById(R.id.CommentsButton);
         deleteB = (Button) findViewById(R.id.DeleteButton);
+        showPhotoBtn = findViewById(R.id.showPhotoButton);
 
-        QRReader qrContent = new QRReader();
+        qrContent = new QRReader();
         hash = qrContent.createHash(content);
 
 //        TODO after we hash we should check if it actually exists in the db, if it does we get the info as is else create it
@@ -81,8 +88,8 @@ public class QRDetails extends AppCompatActivity {
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
         name = qrContent.createName(hash);
-        String users = "user2";
-        String comments = "mfin uuuuuuuuuuuhhm";
+        users = "user1";
+        comments = "mfin uuuuuuuuuuuhhm";
 
         QR qr = new QR(name, users, score, face);
 
@@ -113,8 +120,23 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO As before a class might exist for this (maybe Faiyad)?
                 //TODO Also might be easier to make a fragment over instead of creating a whole new activity
+                Intent intent = new Intent(QRDetails.this, CameraActivity.class);
+                intent.putExtra("hash", hash);
+                startActivity(intent);
             }
         });
+
+        showPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent showPhotoIntent = new Intent(QRDetails.this, ShowPhotoActivity.class);
+                showPhotoIntent.putExtra("hash", hash);
+                Log.d("Bitch", "fuckkkk1111111");
+
+                startActivity(showPhotoIntent);
+            }
+        });
+
 
         scannersB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,12 +174,14 @@ public class QRDetails extends AppCompatActivity {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 // Logic to handle location object
-
+                                double latitude = location.getLatitude();
+                                double longitude = location.getLongitude();
                                 // DB Stuff
+                                qrContent.addLocationToDB(hash, users, latitude, longitude);
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(QRDetails.this);
                                 builder.setTitle("Result");
-                                builder.setMessage("Latitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude());
+                                builder.setMessage("Latitude: " + latitude + "\nLongitude: " + longitude);
                                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
