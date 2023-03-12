@@ -40,6 +40,7 @@ public class User {
         this.userName = "";
         this.name = "";
         this.email = "";
+        this.phoneNum = 0;
 
     }
     public String getDeviceID() {

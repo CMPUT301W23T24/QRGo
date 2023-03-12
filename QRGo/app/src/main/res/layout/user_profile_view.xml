@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,94 +10,107 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ID:"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="214dp" />
+        app:layout_constraintBottom_toTopOf="@+id/userNameView"
+        app:layout_constraintEnd_toStartOf="@+id/IDInput"
+        app:layout_constraintHorizontal_bias="0.332"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.525" />
 
     <TextView
         android:id="@+id/userNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username:"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="257dp" />
+        app:layout_constraintBottom_toTopOf="@+id/nameView"
+        app:layout_constraintEnd_toStartOf="@+id/userNameInput"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/nameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name:"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="303dp" />
+        app:layout_constraintBottom_toTopOf="@+id/emailView"
+        app:layout_constraintEnd_toStartOf="@+id/nameViewInput"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/emailView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="E-mail:"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="345dp" />
+        app:layout_constraintBottom_toTopOf="@+id/phoneNumberView"
+        app:layout_constraintEnd_toStartOf="@+id/emailViewInput"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/phoneNumberView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Phone:"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="398dp" />
+        app:layout_constraintBottom_toTopOf="@+id/editProfileButton"
+        app:layout_constraintEnd_toStartOf="@+id/phoneViewInput"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/IDInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
         android:text="Device ID"
-        tools:layout_editor_absoluteX="208dp"
-        tools:layout_editor_absoluteY="214dp" />
+        app:layout_constraintBottom_toTopOf="@+id/userNameInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.525" />
 
     <TextView
         android:id="@+id/userNameInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Inputted Username"
-        tools:layout_editor_absoluteX="206dp"
-        tools:layout_editor_absoluteY="257dp" />
+        app:layout_constraintBottom_toTopOf="@+id/nameViewInput"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/nameViewInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Inputted Name"
-        tools:layout_editor_absoluteX="208dp"
-        tools:layout_editor_absoluteY="303dp" />
+        app:layout_constraintBottom_toTopOf="@+id/emailViewInput"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/emailViewInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Inputted Email"
-        tools:layout_editor_absoluteX="206dp"
-        tools:layout_editor_absoluteY="347dp" />
+        app:layout_constraintBottom_toTopOf="@+id/phoneViewInput"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/phoneViewInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Inputted Phone Number"
-        tools:layout_editor_absoluteX="208dp"
-        tools:layout_editor_absoluteY="398dp" />
+        app:layout_constraintBottom_toTopOf="@+id/editProfileButton"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Contact Information"
-        tools:layout_editor_absoluteX="78dp"
-        tools:layout_editor_absoluteY="581dp" />
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="back"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="641dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,8 @@
 
         </activity>
         <activity android:name=".ShowPhotoActivity"></activity>
+        <activity android:name=".ViewProfile"></activity>
+
         <provider
             android:authorities="com.example.camerapermission.fileProvider"
             android:name="androidx.core.content.FileProvider"
