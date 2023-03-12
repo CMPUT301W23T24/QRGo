@@ -146,6 +146,8 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO activity? Fragment?
                 //Listview fragment probably
+                Intent intent = new Intent(QRDetails.this, ScannedDoop.class);
+                startActivity(intent);
             }
         });
 
@@ -153,6 +155,8 @@ public class QRDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO activity? Fragment?
+                Intent intent = new Intent(QRDetails.this, MainDoop.class);
+                startActivity(intent);
             }
         });
 
