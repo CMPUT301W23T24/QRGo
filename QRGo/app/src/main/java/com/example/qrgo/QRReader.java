@@ -231,6 +231,7 @@ public class QRReader {
         List<Double> location = Arrays.asList(latitude, longitude);
         Map<String, List<Double>> locations = new HashMap<>();
         locations.put(user, location);
+        Log.d("Locations", locations.toString());
         ref.update("location", FieldValue.arrayUnion(locations));
 
     }
