@@ -17,7 +17,7 @@ public class QRList {
 
     public List getQRs(){
         List list = qrs;
-        Collections.sort(list);
+
         return list;
     }
 
