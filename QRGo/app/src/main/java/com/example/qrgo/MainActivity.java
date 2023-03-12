@@ -30,22 +30,21 @@ public class MainActivity extends AppCompatActivity {
     Button searchQR;
     Button viewProfile;
     Button findFriends;
-    String mId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+    String mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         db= FirebaseFirestore.getInstance();
         CollectionReference collectionReference1= db.collection("user");
         CollectionReference collectionReference2= db.collection("qr");
 
-        User user1= new User(mId, this);
-        if(user1.getDeviceID().matches(collectionReference1.document(user1.getDeviceID()).getId()))
-            user1.getValuesFromDb(mId);
-        else
-            user1.saveUser();
+        User user1= new User(mId);
+        user1.getValuesFromDb(mId);
+
 
         viewProfile = findViewById(R.id.viewProfile);
         findFriends = findViewById(R.id.findFriends);

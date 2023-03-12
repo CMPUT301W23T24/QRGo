@@ -1,13 +1,18 @@
 package com.example.qrgo;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -30,12 +35,12 @@ public class User {
     private Integer phoneNum;
     private FirebaseFirestore db= FirebaseFirestore.getInstance();
     CollectionReference collectionReference= db.collection("user");
-    public User(String deviceID, Context context) {
+    public User(String deviceID) {
         this.deviceID = deviceID;
         this.userName = "";
         this.name = "";
         this.email = "";
-        this.phoneNum = 0;
+
     }
     public String getDeviceID() {
         return deviceID;
@@ -90,12 +95,26 @@ public class User {
     }
 
     public void getValuesFromDb(String playerId){
-        collectionReference.document(playerId).get().addOnCompleteListener(docTask ->{
-            DocumentSnapshot doc= docTask.getResult();
-            this.userName= (String) doc.getData().get("username");
-            this.name= (String) doc.getData().get("name");
-            this.email= (String) doc.getData().get("email");
-            this.phoneNum= (Integer) doc.getData().get("phoneNum");
+        DocumentReference ref = collectionReference.document(playerId);
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()){
+                        userName= (String) doc.getData().get("username");
+                        name= (String) doc.getData().get("name");
+                        email= (String) doc.getData().get("email");
+
+                        phoneNum= ((Long) doc.getData().get("phoneNum")).intValue();
+
+                    } else {
+                        saveUser();
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
         });
     }
 }
