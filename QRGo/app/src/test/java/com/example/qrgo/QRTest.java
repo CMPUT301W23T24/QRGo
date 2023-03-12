@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 public class QRTest {
 
     private QR mockQR() {
-        return new QR("testID", "testUserScanned", 13, "0^0");
+        return new QR("testID", "testUserScanned", 13, "0^0"); // also added hash here
     }
 
     private String mockHash() {return new QRReader().createHash("ABC") ;}
@@ -31,7 +31,7 @@ public class QRTest {
     void testAddQR(){
         QRList qrL = mockQRList();
         assertEquals(1, qrL.getQRs().size());
-        QR qr = new QR("a", "b", 1, "3");
+        QR qr = new QR("a", "b", 1, "3"); // added the hash here
         qrL.add(qr);
         assertEquals(2, qrL.getQRs().size());
     }
@@ -39,7 +39,7 @@ public class QRTest {
     @Test
     void testAddException(){
         QRList qrL = mockQRList();
-        QR qr = new QR("a", "b");
+        QR qr = new QR("a","a", "b"); // also added hash here
         qrL.add(qr);
         assertThrows( IllegalArgumentException.class, () -> {
             qrL.add(qr); });

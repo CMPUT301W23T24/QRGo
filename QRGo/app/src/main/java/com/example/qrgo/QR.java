@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
  */
 public class QR {
     private String id;
+    private String hash;
     private String scannedBy;
     private Integer score;
     private String face;
@@ -43,10 +44,12 @@ public class QR {
      * @param id
      * @param face
      */
-    public QR(String id, String face){
+    public QR(String hash, String id, String face){
         this.id = id;
+        this.hash = hash;
         this.face = face;
     }
+
 
     /**
      * returns the id of the QR

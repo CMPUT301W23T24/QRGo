@@ -83,7 +83,7 @@ public class SearchQR extends AppCompatActivity {
                                         //for every result in the query paste it into the adapter
                                         for (DocumentSnapshot snapshot: task.getResult()){
 
-                                            QR qr = new QR(snapshot.get("id").toString(), snapshot.get("face").toString());
+                                            QR qr = new QR(snapshot.getId(), snapshot.get("id").toString(), snapshot.get("face").toString());
                                             qrAdapter.add(qr);
                                             qrAdapter.notifyDataSetChanged();
 

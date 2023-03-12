@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ import java.util.List;
 
 public class User extends AppCompatActivity {
     private final String TAG = "Hello";
-    private String deviceID;
+    private final String deviceID;
     private String userName;
     private String name;
     private String email;
@@ -163,6 +164,7 @@ public class User extends AppCompatActivity {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
     }
+
     public void deleteQR(String playerId, String hash) {
         if (scannedQRs != null && scannedQRs.contains(hash)) {
             this.scannedQRs.remove(hash);
@@ -171,6 +173,10 @@ public class User extends AppCompatActivity {
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public List<String> getScannedQRs() {
+        return this.scannedQRs;
     }
 
 }

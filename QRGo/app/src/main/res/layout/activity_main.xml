@@ -51,7 +51,7 @@
         android:text="Search QR" />
 
     <Button
-        android:id="@+id/ScannedCodes"
+        android:id="@+id/scannedCodes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/viewProfile"

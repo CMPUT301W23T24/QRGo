@@ -108,7 +108,7 @@ public class QRDetails extends AppCompatActivity {
         // mock user for testing
         comments = "mfin uuuuuuuuuuuhhm";
 
-        QR qr = new QR(name, userId, score, face);
+        QR qr = new QR( name, userId, score, face);
 
         QRFaceTV.setText(face);
         nameTV.setText(name);
