@@ -156,6 +156,7 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO activity? Fragment?
                 Intent intent = new Intent(QRDetails.this, MainDoop.class);
+                intent.putExtra("hash", hash);
                 startActivity(intent);
             }
         });
@@ -164,6 +165,11 @@ public class QRDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO remove the QR from DB
+                qrContent.removeFromDB(hash, qr);
+                Intent intent = new Intent(QRDetails.this, MainActivity.class);
+
+                startActivity(intent);
+                finish();
             }
         });
 

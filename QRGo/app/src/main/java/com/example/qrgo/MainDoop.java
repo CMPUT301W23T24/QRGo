@@ -32,8 +32,7 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
     private ListView commentList;
     private CommentArrayAdapter commentAdapter;
 
-    private String hash = "8227ad036b504e39fe29393ce170908be2b1ea636554488fa86de5d9d6cd2c32";
-
+    private String hash;
     final String TAG = "Sample";
     FirebaseFirestore db;
 
@@ -64,10 +63,10 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_comments);
-
+        hash = getIntent().getStringExtra("hash");
         // example comments
-        String[] user_names = {"The Rizzler", "The Rizzed"};
-        String[] comments = {"I got Mother Mary on my side", "Holy Mother of God"};
+        String[] user_names = {"User"};
+        String[] comments = {"This is a test comment"};
 
         dataList = new ArrayList<Comment>();
 
@@ -80,15 +79,7 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
         commentAdapter = new CommentArrayAdapter(this,dataList);
         commentList.setAdapter(commentAdapter);
 
-
-        Button add_button = findViewById(R.id.add_button_comment);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AddCommentFragment().show(getSupportFragmentManager(), "Add Comment");
-            }
-        });
-
+        //TODO initialize the comment field first
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("qr");
         collectionReference.document(hash)
@@ -101,8 +92,16 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
                             if(document.exists()){
                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                 Log.d(TAG, "DATA TYPE " + document.get("comments").getClass());
+                                System.out.println("DATA TYPE " + document.get("comments").getClass());
                                 ArrayList<HashMap<String, String>> comm = (ArrayList<HashMap<String, String>>) document.get("comments");
-                                //Log.d(TAG, comm.get(0).);
+
+                                for (int i = 0; i < comm.size(); i++){
+                                    Map<String, String> val = comm.get(i);
+                                    val.forEach((k, v) -> {
+                                        dataList.add(new Comment(k, v));
+                                        commentAdapter.notifyDataSetChanged();
+                                    });
+                                }
                             } else {
                                 Log.d(TAG, "No such document");
                             }
@@ -111,6 +110,16 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
                         }
                     }
                 });
+
+
+
+        Button add_button = findViewById(R.id.add_button_comment);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AddCommentFragment().show(getSupportFragmentManager(), "Add Comment");
+            }
+        });
 
 
 
