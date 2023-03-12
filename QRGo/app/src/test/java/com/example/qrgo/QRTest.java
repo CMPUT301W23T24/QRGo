@@ -56,7 +56,7 @@ public class QRTest {
 
     @Test
     void testAddToDB(){
-
+        //technically cannot due to blocking so I made a QRList that should check the same things
 
     }
 
