@@ -47,6 +47,10 @@ public class QRTest {
 
     @Test
     void testCreateHash(){
+
+    }
+    @Test
+    void testAssertCreateHash(){
         String contentTest = "";
         QRReader qrR = new QRReader();
         String test = qrR.createHash(contentTest);

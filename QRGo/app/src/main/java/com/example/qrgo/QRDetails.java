@@ -52,13 +52,13 @@ public class QRDetails extends AppCompatActivity {
     private Button deleteB;
     private Button showPhotoBtn;
 
-    QRReader qrContent;
-    String hash;
-    Integer score;
-    String face;
-    String name;
-    String users;
-    String comments;
+    private QRReader qrContent;
+    private String hash;
+    private Integer score;
+    private String face;
+    private String name;
+    private String users;
+    private String comments;
 
     private FusedLocationProviderClient fusedLocationClient;
 

@@ -14,15 +14,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="115c2bf4-47a7-4dbb-87f5-44719eafe967" name="Changes" comment="A lot of prep for testing">
-      <change afterPath="$PROJECT_DIR$/.idea/deploymentTargetDropDown.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QR.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/com/example/qrgo/QRTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/com/example/qrgo/QRTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R5CTA37MHAY]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -60,7 +62,7 @@
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
     "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "C:/Users/faiya/AndroidStudioProjects/faiyad_MyCarFootprint",
+    "last_opened_file_path": "C:/Users/Ayaan/Documents/GitHub/QRGo/QRGo",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "show.migrate.to.gradle.popup": "false"
   }
@@ -70,7 +72,7 @@
       <recent name="com.example.qrgo" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.QRTest">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="QRGo.app.main" />
       <option name="DEPLOY" value="true" />
