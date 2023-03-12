@@ -87,7 +87,7 @@ public class QRDetails extends AppCompatActivity {
         scannersB = (Button) findViewById(R.id.ScannersButton);
         commentsB = (Button) findViewById(R.id.CommentsButton);
         deleteB = (Button) findViewById(R.id.DeleteButton);
-        showPhotoBtn = findViewById(R.id.showPhotoButton);
+
 
         qrContent = new QRReader();
         hash = qrContent.createHash(content);
@@ -137,16 +137,7 @@ public class QRDetails extends AppCompatActivity {
             }
         });
 
-        showPhotoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent showPhotoIntent = new Intent(QRDetails.this, ShowPhotoActivity.class);
-                showPhotoIntent.putExtra("hash", hash);
-                Log.d("Bitch", "fuckkkk1111111");
 
-                startActivity(showPhotoIntent);
-            }
-        });
 
 
         scannersB.setOnClickListener(new View.OnClickListener() {
