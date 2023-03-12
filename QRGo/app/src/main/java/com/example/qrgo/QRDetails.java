@@ -66,7 +66,7 @@ public class QRDetails extends AppCompatActivity {
 
     /**
      * creates the activity needed to display the QR face, photos, locations and etc.
-     * @param savedInstanceState remembers the profil of the QR
+     * @param savedInstanceState remembers the profile of the QR
      */
 
     @Override
@@ -146,7 +146,6 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Intent showPhotoIntent = new Intent(QRDetails.this, ShowPhotoActivity.class);
                 showPhotoIntent.putExtra("hash", hash);
-                Log.d("Bitch", "fuckkkk1111111");
 
                 startActivity(showPhotoIntent);
             }

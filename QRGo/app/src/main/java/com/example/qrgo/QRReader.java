@@ -91,20 +91,23 @@ public class QRReader {
     }
     //https://www.geeksforgeeks.org/sha-256-hash-in-java/
     public String createHash(String content){
-        MessageDigest messageDigest;
-        try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        bytes = messageDigest.digest(content.getBytes());
+        if (content.length() > 0) {
+            MessageDigest messageDigest;
+            try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+            bytes = messageDigest.digest(content.getBytes());
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
-            sb.append(String.format("%02x", bytes[i]));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(String.format("%02x", bytes[i]));
+            }
+            hashedContent = sb.toString();
+            return hashedContent;
         }
-        hashedContent = sb.toString();
-        return hashedContent;
+        return "";
     }
     //https://www.geeksforgeeks.org/matcher-group-method-in-java-with-examples/?ref=rp
     public Integer calcScore(String hash){
@@ -169,6 +172,7 @@ public class QRReader {
     }
 
     public void addToDB(String hash, QR qr){
+
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("qr").document(hash);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -178,6 +182,7 @@ public class QRReader {
                     DocumentSnapshot doc = task.getResult();
                     if (doc.exists()){
                         Log.d(TAG, "exists!");
+
                         ref.update("scannedAmnt", FieldValue.increment(1));
                         ref.update("scannedBy", FieldValue.arrayUnion(qr.getScannedBy()));
                         ref.update("comments", FieldValue.arrayUnion());
@@ -211,6 +216,7 @@ public class QRReader {
 
                     } else {
                         Log.d(TAG, "DNE");
+                        throw new IllegalArgumentException();
                     }
                 } else {
                     Log.d(TAG, "Failed with: ", task.getException());

@@ -21,7 +21,6 @@ public class ShowPhotoActivity extends AppCompatActivity {
         setContentView(R.layout.show_photo);
         image = findViewById(R.id.showImage);
         hash = getIntent().getStringExtra("hash");
-        Log.d("Bitch", "fuckkkk1");
 
         showImage();
 
@@ -30,7 +29,6 @@ public class ShowPhotoActivity extends AppCompatActivity {
     private void showImage() {
 
         String filename = Environment.getExternalStorageDirectory() +"/SaveImage/"+ hash + ".jpg";
-        Log.d("Bitch", "fuckkkk");
         Bitmap bitmap = BitmapFactory.decodeFile(filename);
         image.setImageBitmap(bitmap);
     }
