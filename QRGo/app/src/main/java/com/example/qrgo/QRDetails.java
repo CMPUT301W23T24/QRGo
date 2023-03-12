@@ -52,13 +52,13 @@ public class QRDetails extends AppCompatActivity {
     private Button deleteB;
     private Button showPhotoBtn;
 
-    QRReader qrContent;
-    String hash;
-    Integer score;
-    String face;
-    String name;
-    String users;
-    String comments;
+    private QRReader qrContent;
+    private String hash;
+    private Integer score;
+    private String face;
+    private String name;
+    private String users;
+    private String comments;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -66,7 +66,7 @@ public class QRDetails extends AppCompatActivity {
 
     /**
      * creates the activity needed to display the QR face, photos, locations and etc.
-     * @param savedInstanceState remembers the profil of the QR
+     * @param savedInstanceState remembers the profile of the QR
      */
 
     @Override
@@ -87,7 +87,7 @@ public class QRDetails extends AppCompatActivity {
         scannersB = (Button) findViewById(R.id.ScannersButton);
         commentsB = (Button) findViewById(R.id.CommentsButton);
         deleteB = (Button) findViewById(R.id.DeleteButton);
-        showPhotoBtn = findViewById(R.id.showPhotoButton);
+
 
         qrContent = new QRReader();
         hash = qrContent.createHash(content);
@@ -96,8 +96,8 @@ public class QRDetails extends AppCompatActivity {
         score = qrContent.calcScore(hash);
         face = qrContent.createFace(hash);
         name = qrContent.createName(hash);
-        String users = "user2";
 
+        // mock user for testing
         users = "user1";
         comments = "mfin uuuuuuuuuuuhhm";
 
@@ -137,16 +137,8 @@ public class QRDetails extends AppCompatActivity {
             }
         });
 
-        showPhotoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent showPhotoIntent = new Intent(QRDetails.this, ShowPhotoActivity.class);
-                showPhotoIntent.putExtra("hash", hash);
-                Log.d("Bitch", "fuckkkk1111111");
 
-                startActivity(showPhotoIntent);
-            }
-        });
+
 
 
         scannersB.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +146,8 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO activity? Fragment?
                 //Listview fragment probably
+                Intent intent = new Intent(QRDetails.this, ScannedDoop.class);
+                startActivity(intent);
             }
         });
 
@@ -161,6 +155,9 @@ public class QRDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO activity? Fragment?
+                Intent intent = new Intent(QRDetails.this, MainDoop.class);
+                intent.putExtra("hash", hash);
+                startActivity(intent);
             }
         });
 
@@ -168,6 +165,11 @@ public class QRDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO remove the QR from DB
+                qrContent.removeFromDB(hash, qr);
+                Intent intent = new Intent(QRDetails.this, MainActivity.class);
+
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -240,6 +242,4 @@ public class QRDetails extends AppCompatActivity {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantRequest);
     }
-
-
 }

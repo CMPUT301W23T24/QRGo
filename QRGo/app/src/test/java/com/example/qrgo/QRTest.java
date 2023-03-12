@@ -4,6 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.junit.jupiter.api.Test;
 
 public class QRTest {
@@ -12,6 +20,7 @@ public class QRTest {
         return new QR("testID", "testUserScanned", 13, "0^0");
     }
 
+    private String mockHash() {return new QRReader().createHash("ABC") ;}
     private QRList mockQRList(){
         QRList qrList = new QRList();
         qrList.add(mockQR());
@@ -19,17 +28,12 @@ public class QRTest {
     }
 
     @Test
-    void testAdd(){
+    void testAddQR(){
         QRList qrL = mockQRList();
         assertEquals(1, qrL.getQRs().size());
-        QR qr = new QR("test", "test2", 2, "test3");
+        QR qr = new QR("a", "b", 1, "3");
         qrL.add(qr);
-
-//        assertTrue(qrL.getQRs().contains(qr));
-//        QR qr2 = new QR("test1", "test2", 3, "test4");
-//        qrL.add(qr2);
-//        assertEquals(3, qrL.getQRs().size());
-
+        assertEquals(2, qrL.getQRs().size());
     }
 
     @Test
@@ -39,6 +43,25 @@ public class QRTest {
         qrL.add(qr);
         assertThrows( IllegalArgumentException.class, () -> {
             qrL.add(qr); });
+    }
+
+    @Test
+    void testCreateHash(){
+
+    }
+    @Test
+    void testAssertCreateHash(){
+        String contentTest = "";
+        QRReader qrR = new QRReader();
+        String test = qrR.createHash(contentTest);
+        assertEquals("",test);
+
+    }
+
+    @Test
+    void testAddToDB(){
+        //technically cannot due to blocking so I made a QRList that should check the same things
+
     }
 
 

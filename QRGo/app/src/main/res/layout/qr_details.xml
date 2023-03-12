@@ -122,15 +122,6 @@
             app:layout_constraintTop_toBottomOf="@+id/CommentsButton"
             app:layout_constraintVertical_bias="0.105" />
 
-        <Button
-            android:id="@+id/showPhotoButton"
-            android:layout_width="134dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/blue"
-            android:text="Show Photo"
-            app:layout_constraintStart_toStartOf="@+id/DeleteButton"
-            app:layout_constraintTop_toBottomOf="@+id/DeleteButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

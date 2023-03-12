@@ -52,16 +52,18 @@ public class QR {
      * returns the id of the QR
      * @return id set by class
      */
-    public String getId() {
-        return id;
-    }
+    public String getId() {return id;}
 
     /**
      * sets the name of the QR
      * @param id name set by user
      */
     public void setId(String id) {
-        this.id = id;
+        if (id.length() > 0){
+            this.id = id;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -77,7 +79,10 @@ public class QR {
      * @param scannedBy a username
      */
     public void setScannedBy(String scannedBy) {
-        this.scannedBy = scannedBy;
+        if (scannedBy.length() > 0 ) {
+            this.scannedBy = scannedBy;
+        }
+        throw new IllegalArgumentException();
     }
 
     /**
