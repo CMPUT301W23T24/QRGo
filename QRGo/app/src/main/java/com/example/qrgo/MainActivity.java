@@ -45,8 +45,13 @@ public class MainActivity extends AppCompatActivity {
         CollectionReference collectionReference1= db.collection("user");
         CollectionReference collectionReference2= db.collection("qr");
 
-        User user1= new User(mId);
-        user1.getValuesFromDb(mId);
+        User user= new User(mId);
+        user.getValuesFromDb(mId, new User.OnUserLoadedListener() {
+            @Override
+            public void onUserLoaded(User user) {
+                //
+            }
+        });
 
 
         viewProfile = findViewById(R.id.viewProfile);
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
            String qrContent = result.getContents();
            Intent intent = new Intent(this, QRDetails.class);
            intent.putExtra("qrContent", qrContent);
+           intent.putExtra("userId", mId);
            startActivity(intent);
        }
     });

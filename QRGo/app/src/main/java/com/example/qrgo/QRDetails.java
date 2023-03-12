@@ -57,8 +57,9 @@ public class QRDetails extends AppCompatActivity {
     private Integer score;
     private String face;
     private String name;
-    private String users;
+    private String userId;
     private String comments;
+    private User user;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -76,7 +77,14 @@ public class QRDetails extends AppCompatActivity {
         setContentView(R.layout.qr_details);
 
         String content = getIntent().getStringExtra("qrContent");
+        userId = getIntent().getStringExtra("userId");
+        user = new User(userId);
+        user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+            @Override
+            public void onUserLoaded(User user) {
 
+            }
+        });
 
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
@@ -98,10 +106,9 @@ public class QRDetails extends AppCompatActivity {
         name = qrContent.createName(hash);
 
         // mock user for testing
-        users = "user1";
         comments = "mfin uuuuuuuuuuuhhm";
 
-        QR qr = new QR(name, users, score, face);
+        QR qr = new QR(name, userId, score, face);
 
         QRFaceTV.setText(face);
         nameTV.setText(name);
@@ -111,12 +118,12 @@ public class QRDetails extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
+        user.addQR(userId, hash);
 
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
-             * Upon clickiing a the button provide the location of where the user is
+             * Upon clicking a the button provide the location of where the user is
              * @param view
              */
             @Override
@@ -129,17 +136,11 @@ public class QRDetails extends AppCompatActivity {
         photoB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO As before a class might exist for this (maybe Faiyad)?
-                //TODO Also might be easier to make a fragment over instead of creating a whole new activity
                 Intent intent = new Intent(QRDetails.this, CameraActivity.class);
                 intent.putExtra("hash", hash);
                 startActivity(intent);
             }
         });
-
-
-
-
 
         scannersB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +148,8 @@ public class QRDetails extends AppCompatActivity {
                 //TODO activity? Fragment?
                 //Listview fragment probably
                 Intent intent = new Intent(QRDetails.this, ScannedDoop.class);
+                intent.putExtra("hash", hash);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -157,6 +160,8 @@ public class QRDetails extends AppCompatActivity {
                 //TODO activity? Fragment?
                 Intent intent = new Intent(QRDetails.this, MainDoop.class);
                 intent.putExtra("hash", hash);
+                intent.putExtra("userId", userId);
+                intent.putExtra("username", user.getUserName());
                 startActivity(intent);
             }
         });
@@ -166,10 +171,12 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO remove the QR from DB
                 qrContent.removeFromDB(hash, qr);
-                Intent intent = new Intent(QRDetails.this, MainActivity.class);
-
-                startActivity(intent);
-                finish();
+                user.deleteQR(userId, hash);
+//                Intent intent = new Intent(QRDetails.this, MainActivity.class);
+//
+//                startActivity(intent);
+//                finish(); // need to ask ayaan if this is needed?
+                Toast.makeText(QRDetails.this, "Deleted this QR from user", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -193,7 +200,7 @@ public class QRDetails extends AppCompatActivity {
                                 double latitude = location.getLatitude();
                                 double longitude = location.getLongitude();
                                 // DB Stuff
-                                qrContent.addLocationToDB(hash, users, latitude, longitude);
+                                qrContent.addLocationToDB(hash, userId, latitude, longitude);
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(QRDetails.this);
                                 builder.setTitle("Result");
@@ -218,8 +225,6 @@ public class QRDetails extends AppCompatActivity {
      */
     private void askPermission() {
         ActivityCompat.requestPermissions(QRDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
-        Log.d("2.", "1");
-
     }
 
     /**

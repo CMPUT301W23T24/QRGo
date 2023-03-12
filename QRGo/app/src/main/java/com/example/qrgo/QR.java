@@ -131,8 +131,4 @@ public class QR {
     public void setScannedAmnt(Integer scannedAmnt) {
         this.scannedAmnt = scannedAmnt;
     }
-
-
-
-
 }
