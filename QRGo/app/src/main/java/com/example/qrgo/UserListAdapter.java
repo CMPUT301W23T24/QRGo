@@ -13,12 +13,20 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * Creates the textview for the list view of user
+ */
 public class UserListAdapter extends ArrayAdapter<User> {
 
     private ArrayList<User> users;
 
     private Context context;
 
+    /**
+     * Sets up the context and users for the list view
+     * @param context
+     * @param users
+     */
     public UserListAdapter(Context context, ArrayList<User> users){
         super(context,0,users);
         this.users = users;
@@ -40,6 +48,14 @@ public class UserListAdapter extends ArrayAdapter<User> {
             }
         });
         return view;*/
+
+    /**
+     * gets the listview
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return returns the view of the ListView
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup

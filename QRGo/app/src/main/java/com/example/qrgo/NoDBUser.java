@@ -3,6 +3,8 @@ package com.example.qrgo;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//THIS IS USED FOR TEST CASES ONLY DO NOT USE IT FOR ANYTHING ELSE UNLESS SPECIFIED
 public class NoDBUser {
 
     private final String TAG = "Hello";

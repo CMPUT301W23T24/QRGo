@@ -25,6 +25,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+
+/**
+ * Find Friends
+ */
 public class FindFriends extends AppCompatActivity {
         private Button back;
         private Button search;
@@ -32,7 +36,12 @@ public class FindFriends extends AppCompatActivity {
         private ArrayList<User> users;
         private ArrayAdapter<User> userAdapter;
         private FirebaseFirestore db;
-        @Override
+
+    /**
+     * onCreate
+     * @param savedInstanceState
+     */
+    @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.find_friends);
@@ -45,7 +54,10 @@ public class FindFriends extends AppCompatActivity {
             db = FirebaseFirestore.getInstance();
             CollectionReference cr = db.collection("user");
 
-            search.setOnClickListener(new View.OnClickListener() {
+        /**
+         * Searches for the users  in DB
+         */
+        search.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     users= new ArrayList<User>();
@@ -78,6 +90,11 @@ public class FindFriends extends AppCompatActivity {
                 }
             });
             back.setOnClickListener(new View.OnClickListener() {
+
+                /**
+                 * Sends the user back
+                 * @param view
+                 */
                 @Override
                 public void onClick(View view) {
                     finish();
