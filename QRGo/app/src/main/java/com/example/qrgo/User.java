@@ -28,12 +28,12 @@ import java.util.List;
  */
 public class User {
     private final String TAG = "Hello";
-    private String deviceID;
+    private final String deviceID;
     private String userName;
     private String name;
     private String email;
     private Integer phoneNum;
-    private FirebaseFirestore db= FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference collectionReference= db.collection("user");
     public User(String deviceID) {
         this.deviceID = deviceID;
