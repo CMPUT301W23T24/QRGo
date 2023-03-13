@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * Allows user to edit their profile
+ */
 public class EditProfileFragment extends DialogFragment {
     private EditText userName;
     private EditText name;
@@ -20,6 +23,10 @@ public class EditProfileFragment extends DialogFragment {
     private EditText phoneNum;
     private User user;
 
+    /**
+     * Creates the constructor of the fragment
+     * @param user
+     */
     public EditProfileFragment(User user){
         this.user = user;
     }
@@ -32,6 +39,10 @@ public class EditProfileFragment extends DialogFragment {
         void onOkkPressed(User newUser,String userName, String name, String email, Integer phoneNum);
     }
 
+    /**
+     * Attaches the fragment to the View
+     * @param context Fragment Context
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -44,6 +55,13 @@ public class EditProfileFragment extends DialogFragment {
         }
     }
 
+    /**
+     * Creates the Dialog
+     * @param savedInstanceState The last saved instance state of the Fragment,
+     * or null if this is a freshly created Fragment.
+     *
+     * @return the builder
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

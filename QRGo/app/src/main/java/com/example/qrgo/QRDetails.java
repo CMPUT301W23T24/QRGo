@@ -135,7 +135,8 @@ public class QRDetails extends AppCompatActivity {
             }
         });
 
-
+        //https://www.youtube.com/watch?v=9XSlbZN1yFg&ab_channel=CodingZest
+        //https://www.topcoder.com/thrive/articles/save-data-using-file-in-android
         photoB.setOnClickListener(new View.OnClickListener() {
             /**
              * @author Faiyad
@@ -209,6 +210,7 @@ public class QRDetails extends AppCompatActivity {
      * @author Faiyad
      * gets the location of the user provided they offer it
      */
+    //https://www.youtube.com/watch?v=XfCbE4CyGVQ&t=53s&ab_channel=CodingwithAiman
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Handle permission not granted

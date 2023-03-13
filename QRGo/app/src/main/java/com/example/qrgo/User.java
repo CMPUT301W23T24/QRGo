@@ -33,8 +33,6 @@ import java.util.List;
  * This class is responsible for the information of the user
  * as well as the lookup of other users
  */
-
-
 public class User extends AppCompatActivity {
     private final String TAG = "Hello";
     private final String deviceID;

@@ -12,12 +12,18 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * Places the comments into the ListView
+ */
 public class CommentArrayAdapter extends ArrayAdapter<Comment> {
 
-    public CommentArrayAdapter(Context context, ArrayList<Comment> comments) {
-        super(context, 0 , comments);
-    }
-
+    /**
+     * get the TextView aand palce it into the ListView
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup
@@ -40,6 +46,15 @@ public class CommentArrayAdapter extends ArrayAdapter<Comment> {
 
 
         return view;
+    }
+
+    /**
+     * Constructor for the adapter
+     * @param context
+     * @param comments
+     */
+    public CommentArrayAdapter(Context context, ArrayList<Comment> comments) {
+        super(context, 0 , comments);
     }
 
 }
