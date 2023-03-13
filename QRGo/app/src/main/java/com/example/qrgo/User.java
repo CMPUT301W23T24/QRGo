@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.List;
+
 /**
  * This class is responsible for the information of the user
  * as well as the lookup of other users
  */
-import java.util.List;
-
 public class User {
     private final String TAG = "Hello";
     private String deviceID;
@@ -43,36 +43,78 @@ public class User {
         this.phoneNum = 0;
 
     }
+
+    /**
+     *
+     * @return: returns the user's device id
+     */
     public String getDeviceID() {
         return deviceID;
     }
+
+    /**
+     *
+     * @return: returns the user's saved username
+     */
     public String getUserName() {
         return userName;
     }
+    /**
+     * Recieves an input for the requested user name and sets the device id's usename to the given parameter
+     * @param userName
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
+    /**
+     *
+     * @return
+     * Returns the user's saved name
+     */
     public String getName() {
         return name;
     }
+    /**
+     * Takes in a parameter called name and set's the user's name to the given parameter
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
+    /**
+     *
+     * @return
+     * Returns the user's saved email
+     */
     public String getEmail() {
         return email;
     }
+    /**
+     * Takes in a parameter called email and set's the user's email to the given parameter
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
-
+    /**
+     *
+     * @return
+     * Returns the user's saved phone number
+     */
     public Integer getPhoneNum() {
         return phoneNum;
     }
 
+    /**
+     * Takes in a parameter called phoneNum and sets the user's phone number to the given parameter
+     * @param phoneNum
+     */
     public void setPhoneNum(Integer phoneNum) {
         this.phoneNum = phoneNum;
     }
-
+    /**
+     * Takes the user's attributes and inputs them into the database
+     */
     public void saveUser(){
         HashMap<String, Object> playerData = new HashMap<>();
         playerData.put("name", this.name);
@@ -94,7 +136,10 @@ public class User {
                     }
                 });
     }
-
+    /**
+     * Takes in a parameter called playerId and uses it to get the data of that user from the database
+     * @param playerId
+     */
     public void getValuesFromDb(String playerId){
         DocumentReference ref = collectionReference.document(playerId);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

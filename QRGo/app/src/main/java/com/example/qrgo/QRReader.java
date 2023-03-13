@@ -58,6 +58,11 @@ public class QRReader {
     FirebaseFirestore db;
     // TODO get the collection and verify if that which is scanned exists or not
 
+    /**
+     * This method is responsible for the scanning of QR's
+     * @return
+     * Returns a boolean, true if the QR already exits, false if not
+     */
     public boolean readQR(){
         final boolean qrExists = false;
         db = FirebaseFirestore.getInstance();
@@ -90,6 +95,13 @@ public class QRReader {
 
     }
     //https://www.geeksforgeeks.org/sha-256-hash-in-java/
+
+    /**
+     * This method creates a hash for the QRs scanned
+     * @param content
+     * @return
+     * Returns the content of the hash for the QR
+     */
     public String createHash(String content){
         if (content.length() > 0) {
             MessageDigest messageDigest;
@@ -100,7 +112,7 @@ public class QRReader {
             }
             bytes = messageDigest.digest(content.getBytes());
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(); // Creating the hash for the QR
             for (int i = 0; i < bytes.length; i++) {
                 sb.append(String.format("%02x", bytes[i]));
             }
@@ -110,6 +122,12 @@ public class QRReader {
         return "";
     }
     //https://www.geeksforgeeks.org/matcher-group-method-in-java-with-examples/?ref=rp
+    /**
+     * This method calculates the score for each QR code
+     * @param hash
+     * @return
+     * Returns the score of the QR code by using it's hashed value
+     */
     public Integer calcScore(String hash){
         String repeatedChars;
         Double scoreD;
@@ -127,6 +145,9 @@ public class QRReader {
 
     }
 
+    /**
+     *
+     */
     private void fillDictionary(){
         dict.put("0", 20);
         Integer i;
@@ -140,7 +161,12 @@ public class QRReader {
         }
     }
 
-
+    /**
+     * This method creates the face of the QR based off the hash
+     * @param hash
+     * @return
+     * Returns the face of the QR
+     */
     public String createFace(String hash){
         face = "_______";
         Character bit;
@@ -157,6 +183,12 @@ public class QRReader {
         return face;
     }
 
+    /**
+     * This method creates the name for the QR
+     * @param hash
+     * @return
+     * Returns the given name of the QR
+     */
     public String createName(String hash){
         Character bit;
         String evenChars = "02468ace";
@@ -171,6 +203,11 @@ public class QRReader {
         return name;
     }
 
+    /**
+     * This method adds the hash and QR to the database
+     * @param hash
+     * @param qr
+     */
     public void addToDB(String hash, QR qr){
 
         db = FirebaseFirestore.getInstance();
@@ -199,6 +236,12 @@ public class QRReader {
         });
 
     }
+
+    /**
+     * This method removes the hash and QR from the database
+     * @param hash
+     * @param qr
+     */
     public void removeFromDB(String hash, QR qr){
         //
         db = FirebaseFirestore.getInstance();
@@ -225,6 +268,13 @@ public class QRReader {
         });
     }
 
+    /**
+     * This method adds the location to the database
+     * @param hash
+     * @param user
+     * @param latitude
+     * @param longitude
+     */
     public void addLocationToDB (String hash, String user, double latitude, double longitude) {
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("qr").document(hash);

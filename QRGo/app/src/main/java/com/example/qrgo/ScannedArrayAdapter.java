@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class ScannedArrayAdapter extends ArrayAdapter<String> {
     public ScannedArrayAdapter(Context context, ArrayList<String> users){
         super(context, 0, users);

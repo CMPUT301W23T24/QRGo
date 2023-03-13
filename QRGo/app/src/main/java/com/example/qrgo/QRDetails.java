@@ -116,7 +116,7 @@ public class QRDetails extends AppCompatActivity {
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
-             * Upon clickiing a the button provide the location of where the user is
+             * Upon clicking the button to provide the location of where the user is
              * @param view
              */
             @Override
@@ -127,6 +127,10 @@ public class QRDetails extends AppCompatActivity {
 
 
         photoB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Upon clicking the button to provide the photo of the QR
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 //TODO As before a class might exist for this (maybe Faiyad)?
