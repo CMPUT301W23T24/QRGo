@@ -2,15 +2,7 @@ package com.example.qrgo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.jupiter.api.Test;
 
@@ -58,11 +50,6 @@ public class QRTest {
 
     }
 
-    @Test
-    void testAddToDB(){
-        //technically cannot due to blocking so I made a QRList that should check the same things
-
-    }
 
 
 

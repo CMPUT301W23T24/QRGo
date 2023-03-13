@@ -65,6 +65,7 @@ public class QRDetails extends AppCompatActivity {
     private final static int LOCATION_PERMISSION_CODE = 100;
 
     /**
+     * @author Ayaan
      * creates the activity needed to display the QR face, photos, locations and etc.
      * @param savedInstanceState remembers the profile of the QR
      */
@@ -116,7 +117,8 @@ public class QRDetails extends AppCompatActivity {
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
-             * Upon clickiing a the button provide the location of where the user is
+             * @author Faiyad
+             * Upon clicking a the button provide the location of where the user is
              * @param view
              */
             @Override
@@ -127,6 +129,11 @@ public class QRDetails extends AppCompatActivity {
 
 
         photoB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @author Faiyad
+             * Upon clicking a the button provide the location of where the user is
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 //TODO As before a class might exist for this (maybe Faiyad)?
@@ -142,6 +149,11 @@ public class QRDetails extends AppCompatActivity {
 
 
         scannersB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @author Amaan
+             * Upon clicking a the button provide the location of where the user is
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 //TODO activity? Fragment?
@@ -152,6 +164,11 @@ public class QRDetails extends AppCompatActivity {
         });
 
         commentsB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @author Amaan
+             * Upon clicking a the button provide the location of where the user is
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 //TODO activity? Fragment?
@@ -162,6 +179,11 @@ public class QRDetails extends AppCompatActivity {
         });
 
         deleteB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * @author Ayaan
+             * Upon clicking a the button provide the location of where the user is
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 //TODO remove the QR from DB
@@ -176,6 +198,7 @@ public class QRDetails extends AppCompatActivity {
     }
 
     /**
+     * @author Faiyad
      * gets the location of the user provided they offer it
      */
     private void getLocation() {
@@ -214,6 +237,7 @@ public class QRDetails extends AppCompatActivity {
     }
 
     /**
+     * @author Faiyad
      * asks the location of the user
      */
     private void askPermission() {
@@ -223,8 +247,9 @@ public class QRDetails extends AppCompatActivity {
     }
 
     /**
+     * @author Faiyad
      *  if the user accepts their location being requested they will get their location provided
-     * @param requestCode The request code passed in {@link #askPermission()(
+     * @param requestCode The request code passed in askPermission()(
      * android.app.Activity, String[], int)}
      * @param permissions The requested permissions. Never null.
      * @param grantRequest The grant results for the corresponding permissions
