@@ -66,6 +66,8 @@ public class CameraActivity extends AppCompatActivity {
         finishButton = findViewById(R.id.finish_btn);
 
         hash = getIntent().getStringExtra("hash");
+
+
         image = findViewById(R.id.image);
 
         imageName = hash + ".jpg";
@@ -75,9 +77,12 @@ public class CameraActivity extends AppCompatActivity {
         directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
         imagePath = new File(directory, imageName);
+        Log.d("directory", directory.toString());
+        Log.d("image path", imagePath.toString());
 
         imageUri = createUri();
         registerPictureLauncher();
+
         captureButton.setOnClickListener(view -> {
             takePictureLauncher.launch(imageUri);
         });
@@ -90,7 +95,7 @@ public class CameraActivity extends AppCompatActivity {
             } else {
                 saveFile();
             }
-            finish();
+
 
         });
 
@@ -147,6 +152,7 @@ public class CameraActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        finish();
     }
 
     private void loadImageFromStorage()
@@ -164,6 +170,8 @@ public class CameraActivity extends AppCompatActivity {
     private void askPermission() {
         ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_CODE);
     }
+
+
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantRequest) {
         if (requestCode == WRITE_CODE) {

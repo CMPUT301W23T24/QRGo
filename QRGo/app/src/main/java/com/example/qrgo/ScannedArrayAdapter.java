@@ -1,6 +1,7 @@
 package com.example.qrgo;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +33,19 @@ public class ScannedArrayAdapter extends ArrayAdapter<String> {
             view = convertView;
         }
 
-        String user = getItem(position);
-        TextView scanned_user = view.findViewById(R.id.scanned_user_name);
-        scanned_user.setText(user);
+        String userId = getItem(position);
+        User user = new User(userId);
+        user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+            @Override
+            public void onUserLoaded(User user) {
+                TextView scanned_user = view.findViewById(R.id.scanned_user_name);
+                scanned_user.setText(user.getUserName());
+            }
+        });
+
+        Log.d("userId", userId);
+        Log.d("userName", user.getUserName());
+
         return view;
     }
 

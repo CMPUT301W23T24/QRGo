@@ -1,5 +1,6 @@
 package com.example.qrgo;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +32,8 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
     private ArrayList<Comment> dataList;
     private ListView commentList;
     private CommentArrayAdapter commentAdapter;
-
+    private String commenterUserId;
+    private String commenterUsername;
     private String hash;
     final String TAG = "Sample";
     FirebaseFirestore db;
@@ -43,6 +45,7 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
 
         final String user_name = comment.getUserName();
         final String comment_text = comment.getComment();
+
         Map<String, String> data = new HashMap<>();
 
         if (user_name.length() > 0 && comment_text.length() > 0) {
@@ -64,15 +67,18 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_comments);
         hash = getIntent().getStringExtra("hash");
+        commenterUserId = getIntent().getStringExtra("userId");
+        commenterUsername = getIntent().getStringExtra("username");
+
         // example comments
-        String[] user_names = {"User"};
-        String[] comments = {"This is a test comment"};
-
+//        String[] user_names = {"User"};
+//        String[] comments = {"This is a test comment"};
+//
         dataList = new ArrayList<Comment>();
-
-        for (int i = 0; i < user_names.length; i++) {
-            dataList.add(new Comment(user_names[i], comments[i]));
-        }
+//
+//        for (int i = 0; i < user_names.length; i++) {
+//            dataList.add(new Comment(user_names[i], comments[i]));
+//        }
          //dataList.addAll(Arrays.asList(user_names));
 
         commentList = findViewById(R.id.comment_list);
@@ -85,22 +91,25 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
         collectionReference.document(hash)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("NewApi")
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             DocumentSnapshot document = task.getResult();
                             if(document.exists()){
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Log.d(TAG, "DATA TYPE " + document.get("comments").getClass());
-                                System.out.println("DATA TYPE " + document.get("comments").getClass());
+//                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                                Log.d(TAG, "DATA TYPE " + document.get("comments").getClass());
+//                                System.out.println("DATA TYPE " + document.get("comments").getClass());
                                 ArrayList<HashMap<String, String>> comm = (ArrayList<HashMap<String, String>>) document.get("comments");
 
-                                for (int i = 0; i < comm.size(); i++){
-                                    Map<String, String> val = comm.get(i);
-                                    val.forEach((k, v) -> {
-                                        dataList.add(new Comment(k, v));
-                                        commentAdapter.notifyDataSetChanged();
-                                    });
+                                if (comm != null) {
+                                    for (int i = 0; i < comm.size(); i++) {
+                                        Map<String, String> val = comm.get(i);
+                                        val.forEach((k, v) -> {
+                                            dataList.add(new Comment(k, v));
+                                            commentAdapter.notifyDataSetChanged();
+                                        });
+                                    }
                                 }
                             } else {
                                 Log.d(TAG, "No such document");
@@ -120,10 +129,9 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
                 new AddCommentFragment().show(getSupportFragmentManager(), "Add Comment");
             }
         });
-
-
-
-
+    }
+    public String getCommenterUsername () {
+        return commenterUsername;
     }
 
 }

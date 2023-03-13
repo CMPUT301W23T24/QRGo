@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button searchQR;
     Button viewProfile;
     Button findFriends;
+    Button scannedCodes;
     String mId;
 
     @Override
@@ -45,12 +46,27 @@ public class MainActivity extends AppCompatActivity {
         CollectionReference collectionReference1= db.collection("user");
         CollectionReference collectionReference2= db.collection("qr");
 
-        User user1= new User(mId);
-        user1.getValuesFromDb(mId);
+        User user= new User(mId);
+        user.getValuesFromDb(mId, new User.OnUserLoadedListener() {
+            @Override
+            public void onUserLoaded(User user) {
+                //
+            }
+        });
 
 
         viewProfile = findViewById(R.id.viewProfile);
         findFriends = findViewById(R.id.findFriends);
+        scannedCodes = findViewById(R.id.scannedCodes);
+
+        scannedCodes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ScannedCodesActivity.class);
+                intent.putExtra("userId", mId);
+                startActivity(intent);
+            }
+        });
 
         viewProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
            String qrContent = result.getContents();
            Intent intent = new Intent(this, QRDetails.class);
            intent.putExtra("qrContent", qrContent);
+           intent.putExtra("userId", mId);
            startActivity(intent);
        }
     });
