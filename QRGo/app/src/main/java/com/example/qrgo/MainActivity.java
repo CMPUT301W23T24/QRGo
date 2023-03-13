@@ -26,6 +26,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
+/**
+ * Starting page of the App
+ */
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
@@ -36,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     Button scannedCodes;
     String mId;
 
+    /**
+     * Creates the display for the app
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         scannedCodes = findViewById(R.id.scannedCodes);
 
         scannedCodes.setOnClickListener(new View.OnClickListener() {
+            /**
+             * open up the users scanned codes
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ScannedCodesActivity.class);
@@ -69,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewProfile.setOnClickListener(new View.OnClickListener() {
+            /**
+             * open up the profile of a user
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ViewProfile.class);
@@ -77,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findFriends.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Find the friends of a user
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, FindFriends.class);
@@ -88,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
          scanQRButton = findViewById(R.id.scanQRButton);
          searchQR = findViewById(R.id.goToSearchB);
          scanQRButton.setOnClickListener(new View.OnClickListener() {
+             /**
+              * open up the camera and scan a qrCode
+              * @param view
+              */
              @Override
              public void onClick(View view) {
                  scanQRCode();
@@ -95,6 +118,10 @@ public class MainActivity extends AppCompatActivity {
          });
 
         searchQR.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Search for qr codes
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SearchQR.class);
@@ -112,6 +139,10 @@ public class MainActivity extends AppCompatActivity {
         options.setCaptureActivity(CaptureActivity.class);
         barLauncher.launch(options);
     }
+
+    /**
+     * If we find something we add the content into the QR content
+     */
     ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
         // scan the code and pass its result to the qr details activity
        if (result.getContents() != null) {

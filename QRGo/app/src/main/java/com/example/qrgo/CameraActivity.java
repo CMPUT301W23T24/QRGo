@@ -40,6 +40,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * This class is responsible for the camera functionality
+ */
 public class CameraActivity extends AppCompatActivity {
 
     private Button captureButton;

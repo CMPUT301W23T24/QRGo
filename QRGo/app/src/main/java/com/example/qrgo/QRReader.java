@@ -89,6 +89,12 @@ public class QRReader {
 
 
     }
+
+    /**
+     * creates a hash for the QR
+     * @param content
+     * @return string which is a hash
+     */
     //https://www.geeksforgeeks.org/sha-256-hash-in-java/
     public String createHash(String content){
         if (content.length() > 0) {
@@ -109,6 +115,12 @@ public class QRReader {
         }
         return "";
     }
+
+    /**
+     * calculates the score of the hash
+     * @param hash
+     * @return Integer of the score
+     */
     //https://www.geeksforgeeks.org/matcher-group-method-in-java-with-examples/?ref=rp
     public Integer calcScore(String hash){
         String repeatedChars;
@@ -127,6 +139,9 @@ public class QRReader {
 
     }
 
+    /**
+     * creates a dictionary of Key value based on hexadecimals
+     */
     private void fillDictionary(){
         dict.put("0", 20);
         Integer i;
@@ -141,6 +156,11 @@ public class QRReader {
     }
 
 
+    /**
+     * if the hash is an even bit we create choice 2 of the face, else choice 1 of the face
+     * @param hash
+     * @return face of the qr
+     */
     public String createFace(String hash){
         face = "_______";
         Character bit;
@@ -157,6 +177,11 @@ public class QRReader {
         return face;
     }
 
+    /**
+     * if the hash is an even bit we create choice 2 of the name, else choice 1 of the face
+     * @param hash
+     * @return name of the qr
+     */
     public String createName(String hash){
         Character bit;
         String evenChars = "02468ace";
@@ -171,6 +196,12 @@ public class QRReader {
         return name;
     }
 
+
+    /**
+     * adds to the db in the collection of the qr
+     * @param hash
+     * @param qr
+     */
     public void addToDB(String hash, QR qr){
 
         db = FirebaseFirestore.getInstance();
@@ -199,6 +230,12 @@ public class QRReader {
         });
 
     }
+
+    /**
+     * remove the QR from db
+     * @param hash
+     * @param qr
+     */
     public void removeFromDB(String hash, QR qr){
         //
         db = FirebaseFirestore.getInstance();

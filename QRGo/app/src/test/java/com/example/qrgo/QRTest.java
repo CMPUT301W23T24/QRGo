@@ -2,6 +2,7 @@ package com.example.qrgo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import org.junit.jupiter.api.Test;

@@ -27,6 +27,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Creates the view for the comments of the QR secion
+ */
 public class MainDoop extends AppCompatActivity implements AddCommentFragment.AddCommentDialogListener {
 
     private ArrayList<Comment> dataList;
@@ -38,7 +41,10 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
     final String TAG = "Sample";
     FirebaseFirestore db;
 
-
+    /**
+     * proivdes the user the option to comment
+     * @param comment provides the Class comment to add
+     */
     public void addComment(Comment comment) {
         commentAdapter.add(comment);
         db = FirebaseFirestore.getInstance();
@@ -70,16 +76,8 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
         commenterUserId = getIntent().getStringExtra("userId");
         commenterUsername = getIntent().getStringExtra("username");
 
-        // example comments
-//        String[] user_names = {"User"};
-//        String[] comments = {"This is a test comment"};
-//
+
         dataList = new ArrayList<Comment>();
-//
-//        for (int i = 0; i < user_names.length; i++) {
-//            dataList.add(new Comment(user_names[i], comments[i]));
-//        }
-         //dataList.addAll(Arrays.asList(user_names));
 
         commentList = findViewById(R.id.comment_list);
         commentAdapter = new CommentArrayAdapter(this,dataList);
@@ -124,12 +122,21 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
 
         Button add_button = findViewById(R.id.add_button_comment);
         add_button.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Create the fragment to add comments
+             */
             @Override
             public void onClick(View view) {
+
                 new AddCommentFragment().show(getSupportFragmentManager(), "Add Comment");
             }
         });
     }
+
+    /**
+     * get the username of the commenter
+     * @return Username that created the comment
+     */
     public String getCommenterUsername () {
         return commenterUsername;
     }

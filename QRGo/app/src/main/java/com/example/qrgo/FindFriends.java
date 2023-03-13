@@ -7,6 +7,10 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+/**
+ * Finds Friends within a search method
+ */
 public class FindFriends extends AppCompatActivity {
         Button back;
         @Override

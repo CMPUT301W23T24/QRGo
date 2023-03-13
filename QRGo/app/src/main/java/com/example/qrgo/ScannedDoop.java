@@ -16,6 +16,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Provides the list of scanned users by the QR
+ */
 public class ScannedDoop extends AppCompatActivity {
     private ArrayList<String> dataList;
     private ScannedArrayAdapter scannedAdapter;
@@ -24,6 +27,10 @@ public class ScannedDoop extends AppCompatActivity {
     final String TAG = "Sample";
     FirebaseFirestore db;
 
+    /**
+     * Creates te view for the users who scanned the QR
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -43,6 +50,10 @@ public class ScannedDoop extends AppCompatActivity {
         CollectionReference collectionReference = db.collection("qr");
         collectionReference.document(hash)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    /**
+                     * deals with who scanned the query
+                     * @param task provides the result from the query
+                     */
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {

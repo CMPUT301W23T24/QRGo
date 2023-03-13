@@ -13,11 +13,27 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+
+/**
+ * creates the adapter for who scanned the QR code
+ */
 public class ScannedArrayAdapter extends ArrayAdapter<String> {
+    /**
+     * Displays the content into the List view
+     * @param context
+     * @param users
+     */
     public ScannedArrayAdapter(Context context, ArrayList<String> users){
         super(context, 0, users);
     }
 
+    /**
+     *  gets the view of the branch
+      * @param position
+     * @param convertView
+     * @param parent
+     * @return the view of the current page
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup

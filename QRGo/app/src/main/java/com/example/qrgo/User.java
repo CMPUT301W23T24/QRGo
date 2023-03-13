@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,9 @@ import java.util.Map;
  */
 import java.util.List;
 
+/**
+ * Deals with the any user who opens up QRGo
+ */
 public class User extends AppCompatActivity {
     private final String TAG = "Hello";
     private final String deviceID;
@@ -41,14 +45,20 @@ public class User extends AppCompatActivity {
     private Integer phoneNum;
     private List<String> scannedQRs;
     OnUserLoadedListener listener;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference collectionReference = db.collection("user");
 
+
+    /**
+     * interface that when the user is loaded in will check the DB
+     */
     // Define a callback interface for when the user data is loaded
     public interface OnUserLoadedListener {
         void onUserLoaded(User user);
     }
 
+    /**
+     * constructs the user class
+     * @param deviceID provides the ID of the device
+     */
     public User(String deviceID) {
         this.deviceID = deviceID;
         this.userName = "username";
@@ -60,49 +70,104 @@ public class User extends AppCompatActivity {
 //        getValuesFromDb(deviceID);
     }
 
+    /**
+     * Creates a saved instance state
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getValuesFromDb(deviceID);
     }
 
+    /**
+     * gets the Id of the device
+     * @return
+     */
     public String getDeviceID() {
         return deviceID;
     }
 
+    /**
+     * gets the userName
+     * @return username
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * sets the username
+     * @param userName
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    /**
+     *
+     * @return gets the name of the user
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name sets the name of the suer
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return email of the user
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     *
+     * @return the phone number of the user
+     */
     public Integer getPhoneNum() {
         return phoneNum;
     }
 
+    /**
+     *
+     * @param phoneNum
+     */
     public void setPhoneNum(Integer phoneNum) {
         this.phoneNum = phoneNum;
     }
 
+    /**
+     * connects to the DB of the user
+     * @return CollectionReference
+     */
+    public CollectionReference connectToDB(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("user");
+        return collectionReference;
+
+    }
+
+    /**
+     * saves the user into the DB
+     */
     public void saveUser() {
+        CollectionReference collectionReference = connectToDB();
         HashMap<String, Object> playerData = new HashMap<>();
         playerData.put("name", this.name);
         playerData.put("username", this.userName);
@@ -125,9 +190,15 @@ public class User extends AppCompatActivity {
                 });
     }
 
+    /**
+     * gets values from the Database
+     * @param playerId
+     * @param listener taken from the Interface
+     */
     public void getValuesFromDb(String playerId, OnUserLoadedListener listener) {
         this.listener = listener;
 
+        CollectionReference collectionReference = connectToDB();
         DocumentReference ref = collectionReference.document(playerId);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -155,7 +226,13 @@ public class User extends AppCompatActivity {
         });
     }
 
+    /**
+     * Adds the qr into the user database
+     * @param playerId ID of the plater/phonId
+     * @param hash hash of the QR
+     */
     public void addQR(String playerId, String hash) {
+        CollectionReference collectionReference = connectToDB();
         if (!scannedQRs.contains(hash)) {
             this.scannedQRs.add(hash);
             DocumentReference ref = collectionReference.document(playerId);
@@ -165,7 +242,13 @@ public class User extends AppCompatActivity {
         }
     }
 
+    /**
+     * deletes the QR from the User DB
+     * @param playerId ID of the player
+     * @param hash hash content of the user
+     */
     public void deleteQR(String playerId, String hash) {
+        CollectionReference collectionReference = connectToDB();
         if (scannedQRs != null && scannedQRs.contains(hash)) {
             this.scannedQRs.remove(hash);
             DocumentReference ref = collectionReference.document(playerId);
@@ -175,6 +258,10 @@ public class User extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @return the scanned QRs of the user
+     */
     public List<String> getScannedQRs() {
         return this.scannedQRs;
     }

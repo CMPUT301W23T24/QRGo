@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gets the amount of scanned codes from the user
+ */
 public class ScannedCodesActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ArrayList<QR> qrs;
@@ -31,6 +34,10 @@ public class ScannedCodesActivity extends AppCompatActivity {
     private List<String> scannedCodes;
     ListView qrList;
 
+    /**
+     * creates the page for the QR scanned by the user
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,10 @@ public class ScannedCodesActivity extends AppCompatActivity {
 
         DocumentReference userRef = userCollectionReference.document(userId);
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            /**
+             * gets the scanned codes of the specific user
+             * @param task provides the result from the DB
+             */
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {

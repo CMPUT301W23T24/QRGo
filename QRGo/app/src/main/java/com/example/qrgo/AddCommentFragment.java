@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * This class is responsible for the add comment fragment
+ */
 public class AddCommentFragment extends DialogFragment {
 
     private String username;
