@@ -212,7 +212,9 @@ public class QRReader {
                         Log.d(TAG, "exists!");
                         ref.update("scannedAmnt", FieldValue.increment(-1));
                         ref.update("scannedBy", FieldValue.arrayRemove(qr.getScannedBy()));
-                        ref.update("comments", FieldValue.arrayRemove());
+                        ref.update("location", FieldValue.arrayRemove(qr.getScannedBy()));
+
+//                        ref.update("comments", FieldValue.arrayRemove()); // for now do not delete comments
 
                     } else {
                         Log.d(TAG, "DNE");
@@ -233,7 +235,6 @@ public class QRReader {
         locations.put(user, location);
         Log.d("Locations", locations.toString());
         ref.update("location", FieldValue.arrayUnion(locations));
-
     }
 }
 

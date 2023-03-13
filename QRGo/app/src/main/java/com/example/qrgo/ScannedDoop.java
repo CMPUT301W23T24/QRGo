@@ -20,7 +20,7 @@ public class ScannedDoop extends AppCompatActivity {
     private ArrayList<String> dataList;
     private ScannedArrayAdapter scannedAdapter;
     private ListView userList;
-    private String hash = "8227ad036b504e39fe29393ce170908be2b1ea636554488fa86de5d9d6cd2c32";
+    private String hash;
     final String TAG = "Sample";
     FirebaseFirestore db;
 
@@ -28,6 +28,9 @@ public class ScannedDoop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanned_list);
+
+        hash = getIntent().getStringExtra("hash");
+
 
         dataList = new ArrayList<String>();
         scannedAdapter = new ScannedArrayAdapter(this, dataList);

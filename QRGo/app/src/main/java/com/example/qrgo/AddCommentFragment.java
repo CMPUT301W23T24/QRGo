@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 public class AddCommentFragment extends DialogFragment {
 
+    private String username;
     interface AddCommentDialogListener {
         void addComment(Comment comment);
     }
@@ -36,6 +38,10 @@ public class AddCommentFragment extends DialogFragment {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.add_comment, null);
         EditText editComment = view.findViewById(R.id.add_comment_here);
 
+        MainDoop activity = (MainDoop) getActivity();
+        String username= activity.getCommenterUsername();
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         return builder
@@ -44,7 +50,7 @@ public class AddCommentFragment extends DialogFragment {
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", (dialog, which) -> {
                     String comment = editComment.getText().toString();
-                    listener.addComment(new Comment("The RIZZ", comment));
+                    listener.addComment(new Comment(username, comment));
                 })
                 .create();
 

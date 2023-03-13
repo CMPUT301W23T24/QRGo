@@ -35,6 +35,9 @@
             android:theme="@style/zxing_CaptureTheme">
 
         </activity>
+        
+        <activity android:name=".ViewProfile"></activity>
+        <activity android:name=".ScannedCodesActivity"></activity>
 
         <provider
             android:authorities="com.example.camerapermission.fileProvider"
