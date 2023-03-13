@@ -66,8 +66,6 @@ public class User extends AppCompatActivity {
         this.email = "";
         this.phoneNum = 0;
         this.scannedQRs = new ArrayList<>();
-
-//        getValuesFromDb(deviceID);
     }
 
     /**
@@ -259,8 +257,27 @@ public class User extends AppCompatActivity {
     }
 
     /**
+     * updates the collection reference using the device ID
+     */
+    public void updateDb(){
+        CollectionReference collectionReference = connectToDB();
+        collectionReference
+                .document(this.deviceID)
+                .update("username", this.userName);
+        collectionReference
+                .document(this.deviceID)
+                .update("name", this.name);
+        collectionReference
+                .document(this.deviceID)
+                .update("email", this.email);
+        collectionReference
+                .document(this.deviceID)
+                .update("phoneNum", this.phoneNum);
+    }
+
+    /**
      *
-     * @return the scanned QRs of the user
+     * the scanned QRs of the user
      */
     public List<String> getScannedQRs() {
         return this.scannedQRs;

@@ -20,6 +20,7 @@
         <activity android:name=".SearchQR"></activity>
         <activity android:name=".QRDetails"></activity>
         <activity android:name=".CameraActivity"></activity>
+        <activity android:name=".FindFriends"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
