@@ -1,1 +1,9 @@
+FireStore documentation
+CMPUT 301 Labs 
+Java Documentation 
 
+Hashing:
+https://www.geeksforgeeks.org/sha-256-hash-in-java/
+
+Matching and Pattern for QR:
+https://www.w3schools.com/java/java_regex.asp
