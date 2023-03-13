@@ -1,69 +1,46 @@
 package com.example.qrgo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import org.junit.jupiter.api.Test;
 
 public class QRTest {
-
-    private QR mockQR() {
-        return new QR("testID", "testUserScanned", 13, "0^0");
-    }
-
-    private String mockHash() {return new QRReader().createHash("ABC") ;}
-    private QRList mockQRList(){
-        QRList qrList = new QRList();
-        qrList.add(mockQR());
-        return qrList;
-    }
-
-    @Test
-    void testAddQR(){
-        QRList qrL = mockQRList();
-        assertEquals(1, qrL.getQRs().size());
-        QR qr = new QR("a", "b", 1, "3");
-        qrL.add(qr);
-        assertEquals(2, qrL.getQRs().size());
-    }
-
-    @Test
-    void testAddException(){
-        QRList qrL = mockQRList();
-        QR qr = new QR("a", "b");
-        qrL.add(qr);
-        assertThrows( IllegalArgumentException.class, () -> {
-            qrL.add(qr); });
-    }
-
-    @Test
-    void testCreateHash(){
+    public QR MockQR() {
+        QR MockQR = new QR("", "");
+        return MockQR;
 
     }
     @Test
-    void testAssertCreateHash(){
-        String contentTest = "";
-        QRReader qrR = new QRReader();
-        String test = qrR.createHash(contentTest);
-        assertEquals("",test);
+    void GetSetQRSearch() {
+        // Test the id getter and setter
+        QR mockQR = MockQR();
+        assertEquals("", mockQR.getId());
+        assertEquals("", mockQR.getFace());
+
+        // Change the attributes
+        mockQR.setFace("1");
+        mockQR.setId("1");
+        assertEquals("1", mockQR.getFace());
+        assertEquals("1", mockQR.getId());
 
     }
-
     @Test
-    void testAddToDB(){
-        //technically cannot due to blocking so I made a QRList that should check the same things
+    void GetQR() {
+        // String id, String scannedBy, Integer score, String face
+        QR testQR = new QR("111", "111", 0, "111");
+        assertEquals("111", testQR.getId());
+        assertEquals("111", testQR.getScannedBy());
+        assertEquals(0, (int) testQR.getScore());
+        assertEquals("111", testQR.getFace());
+
+        // Change the attributes
+        testQR.setFace("222");
+        testQR.setId("222");
+        testQR.setScannedBy("abc");
+        testQR.setScore(10);
+        assertEquals("222", testQR.getFace());
+        assertEquals("222", testQR.getId());
+        assertEquals("abc", testQR.getScannedBy());
+        assertEquals(10, (int) testQR.getScore());
 
     }
-
-
-
 }

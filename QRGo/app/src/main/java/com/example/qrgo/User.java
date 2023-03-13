@@ -46,7 +46,8 @@ public class User {
 
     /**
      *
-     * @return: returns the user's device id
+     * @return
+     * Returns the user's device id
      */
     public String getDeviceID() {
         return deviceID;
@@ -54,7 +55,8 @@ public class User {
 
     /**
      *
-     * @return: returns the user's saved username
+     * @return
+     * Returns the user's saved username
      */
     public String getUserName() {
         return userName;

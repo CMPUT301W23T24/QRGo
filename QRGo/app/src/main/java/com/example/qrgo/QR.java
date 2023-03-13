@@ -82,7 +82,7 @@ public class QR {
         if (scannedBy.length() > 0 ) {
             this.scannedBy = scannedBy;
         }
-        throw new IllegalArgumentException();
+        // throw new IllegalArgumentException();
     }
 
     /**
