@@ -163,7 +163,9 @@ public class User extends AppCompatActivity {
      * Takes in a parameter called playerId and uses it to get the data of that user from the database
      * @param playerId
      */
-    public void getValuesFromDb(String playerId){
+    public void getValuesFromDb(String playerId, OnUserLoadedListener listener) {
+        this.listener = listener;
+
         DocumentReference ref = collectionReference.document(playerId);
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

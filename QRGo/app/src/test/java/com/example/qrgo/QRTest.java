@@ -4,15 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 public class QRTest {
-    public QR MockQR() {
-        QR MockQR = new QR("", "");
-        return MockQR;
 
-    }
     @Test
     void GetSetQRSearch() {
+        QR mockQR = new QR("", "", "");
         // Test the id getter and setter
-        QR mockQR = MockQR();
         assertEquals("", mockQR.getId());
         assertEquals("", mockQR.getFace());
 
