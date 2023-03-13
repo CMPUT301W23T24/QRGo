@@ -5,14 +5,15 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Creats a list of QRs
+
+ * This class holds a list of objects of type QR
  */
 public class QRList {
 
     private List<QR> qrs = new ArrayList<>();
 
     /**
-     * adds a qr to a list if it does not exist
+     * Takes in a parameter qr and adds it the the list of type QRs
      * @param qr
      */
     public void add(QR qr){
@@ -23,8 +24,8 @@ public class QRList {
     }
 
     /**
-     * gets all qrs from the list
-     * @return list of qrs
+     * This method returns the list of type QRs
+     * @return
      */
     public List getQRs(){
         List list = qrs;
@@ -33,9 +34,10 @@ public class QRList {
     }
 
     /**
-     * checks if a qr is in a class
-     * @param qr qr to be checked
-     * @return True or False depending the qr is presnet
+
+     * This method checks whether the parameter 'qr' is in the list of type QRs
+     * @param qr
+     * @return True or False depending the qr is present
      */
     public Boolean hasQR(QR qr){
         if(qrs.contains(qr)){
@@ -45,7 +47,8 @@ public class QRList {
     }
 
     /**
-     * delets a qr from the list
+     * This method deletes the parameter 'qr' from the list of type QRs
+
      * @param qr
      */
     public void delete(QR qr){
@@ -56,8 +59,10 @@ public class QRList {
     }
 
     /**
-     * Coutns the qr in the list
-     * @return integer amount of qrs
+
+     * This method counts the size of the list of type QRs
+     * @return
+     * Returns an integer representing the size of the list of type QRs
      */
     public Integer countQRs(){return qrs.size();}
 }

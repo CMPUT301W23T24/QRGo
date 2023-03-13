@@ -27,15 +27,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.List;
+
 /**
  * This class is responsible for the information of the user
  * as well as the lookup of other users
  */
-import java.util.List;
 
-/**
- * Deals with the any user who opens up QRGo
- */
+
 public class User extends AppCompatActivity {
     private final String TAG = "Hello";
     private final String deviceID;
@@ -71,11 +70,11 @@ public class User extends AppCompatActivity {
     /**
      * Creates a saved instance state
      * @param savedInstanceState
+     *
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getValuesFromDb(deviceID);
     }
 
     /**
@@ -88,14 +87,15 @@ public class User extends AppCompatActivity {
 
     /**
      * gets the userName
-     * @return username
+     * @return
+     * Returns the user's saved username
      */
     public String getUserName() {
         return userName;
     }
 
     /**
-     * sets the username
+     * Recieves an input for the requested user name and sets the device id's usename to the given parameter
      * @param userName
      */
     public void setUserName(String userName) {
@@ -104,15 +104,16 @@ public class User extends AppCompatActivity {
 
     /**
      *
-     * @return gets the name of the user
+     * @return
+     * Returns the user's saved name
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @param name sets the name of the suer
+     * Takes in a parameter called name and set's the user's name to the given parameter
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
@@ -120,14 +121,14 @@ public class User extends AppCompatActivity {
 
     /**
      *
-     * @return email of the user
+     * @return
+     * Returns the user's saved email
      */
     public String getEmail() {
         return email;
     }
-
     /**
-     *
+     * Takes in a parameter called email and set's the user's email to the given parameter
      * @param email
      */
     public void setEmail(String email) {
@@ -136,14 +137,15 @@ public class User extends AppCompatActivity {
 
     /**
      *
-     * @return the phone number of the user
+     * @return
+     * Returns the user's saved phone number
      */
     public Integer getPhoneNum() {
         return phoneNum;
     }
 
     /**
-     *
+     * Takes in a parameter called phoneNum and sets the user's phone number to the given parameter
      * @param phoneNum
      */
     public void setPhoneNum(Integer phoneNum) {
@@ -187,12 +189,11 @@ public class User extends AppCompatActivity {
                     }
                 });
     }
-
-    /**
-     * gets values from the Database
-     * @param playerId
-     * @param listener taken from the Interface
-     */
+        /**
+         * Takes in a parameter called playerId and uses it to get the data of that user from the database
+         * @param playerId
+         * @param listener taken from the Interface
+         */
     public void getValuesFromDb(String playerId, OnUserLoadedListener listener) {
         this.listener = listener;
 

@@ -139,7 +139,7 @@ public class QRDetails extends AppCompatActivity {
         photoB.setOnClickListener(new View.OnClickListener() {
             /**
              * @author Faiyad
-             * Upon clicking a the button provide the location of where the user is
+             * Upon clicking the button to provide the photo of the QR
              * @param view
              */
             @Override

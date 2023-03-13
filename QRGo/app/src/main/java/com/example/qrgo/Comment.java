@@ -44,6 +44,7 @@ public class Comment implements Serializable {
     public String getComment() {
         return comment;
     }
+
     /**
      * This method sets the comment attribute
      * @param comment
