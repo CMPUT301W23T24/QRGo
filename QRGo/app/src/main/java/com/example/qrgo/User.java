@@ -56,8 +56,6 @@ public class User extends AppCompatActivity {
         this.email = "";
         this.phoneNum = 0;
         this.scannedQRs = new ArrayList<>();
-
-//        getValuesFromDb(deviceID);
     }
 
     @Override
@@ -173,6 +171,21 @@ public class User extends AppCompatActivity {
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void updateDb(){
+        collectionReference
+                .document(this.deviceID)
+                .update("username", this.userName);
+        collectionReference
+                .document(this.deviceID)
+                .update("name", this.name);
+        collectionReference
+                .document(this.deviceID)
+                .update("email", this.email);
+        collectionReference
+                .document(this.deviceID)
+                .update("phoneNum", this.phoneNum);
     }
 
     public List<String> getScannedQRs() {
