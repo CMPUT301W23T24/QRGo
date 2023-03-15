@@ -100,5 +100,23 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         newUser.setEmail(email);
         newUser.setPhoneNum(phoneNum);
         newUser.updateDb();
+
+        TextView number1;
+        TextView number2;
+        TextView number3;
+        TextView number4;
+        TextView number5;
+
+        number1= findViewById(R.id.inputId);
+        number2= findViewById(R.id.inputUserName);
+        number3= findViewById(R.id.inputNameView);
+        number4= findViewById(R.id.inputEmailView);
+        number5= findViewById(R.id.inputPhoneNum);
+
+        number1.setText(newUser.getDeviceID());
+        number2.setText(newUser.getUserName());
+        number3.setText(newUser.getName());
+        number4.setText(newUser.getEmail());
+        number5.setText(String.valueOf(newUser.getPhoneNum()));
     }
 }
