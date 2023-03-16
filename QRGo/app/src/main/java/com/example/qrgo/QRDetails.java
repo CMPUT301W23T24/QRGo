@@ -107,7 +107,7 @@ public class QRDetails extends AppCompatActivity {
         name = qrContent.createName(hash);
 
         // mock user for testing
-        comments = "mfin uuuuuuuuuuuhhm";
+        //comments = "mfin uuuuuuuuuuuhhm";
 
         QR qr = new QR( name, userId, score, face);
 
@@ -159,7 +159,6 @@ public class QRDetails extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                //TODO activity? Fragment?
                 //Listview fragment probably
                 Intent intent = new Intent(QRDetails.this, ScannedDoop.class);
                 intent.putExtra("hash", hash);
@@ -176,7 +175,6 @@ public class QRDetails extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                //TODO activity? Fragment?
                 Intent intent = new Intent(QRDetails.this, MainDoop.class);
                 intent.putExtra("hash", hash);
                 intent.putExtra("userId", userId);
