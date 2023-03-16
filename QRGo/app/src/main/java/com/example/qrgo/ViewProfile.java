@@ -14,15 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class ViewProfile extends AppCompatActivity implements EditProfileFragment.OnFragmentInteractionListener {
     Button back;
-
     Button forward;
-
-    TextView dId;
-    TextView userName;
-    TextView name;
-    TextView email;
-    TextView phoneNum;
-
     String deviceId;
 
     /**
@@ -37,12 +29,6 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         back= findViewById(R.id.backButton);
         forward= findViewById(R.id.editProfileButton);
 
-        dId= findViewById(R.id.inputId);
-        userName= findViewById(R.id.inputUserName);
-        name= findViewById(R.id.inputNameView);
-        email= findViewById(R.id.inputEmailView);
-        phoneNum= findViewById(R.id.inputPhoneNum);
-
         deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
         User user1= new User(deviceId);
@@ -53,11 +39,7 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
              */
             @Override
             public void onUserLoaded(User user) {
-                dId.setText(user1.getDeviceID());
-                userName.setText(user1.getUserName());
-                name.setText(user1.getName());
-                email.setText(user1.getEmail());
-                phoneNum.setText(String.valueOf(user1.getPhoneNum()));
+                updateTextView(user1);
             }
         });
         forward.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +83,10 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         newUser.setPhoneNum(phoneNum);
         newUser.updateDb();
 
+        updateTextView(newUser);
+    }
+
+    public void updateTextView(User user){
         TextView number1;
         TextView number2;
         TextView number3;
@@ -113,10 +99,11 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         number4= findViewById(R.id.inputEmailView);
         number5= findViewById(R.id.inputPhoneNum);
 
-        number1.setText(newUser.getDeviceID());
-        number2.setText(newUser.getUserName());
-        number3.setText(newUser.getName());
-        number4.setText(newUser.getEmail());
-        number5.setText(String.valueOf(newUser.getPhoneNum()));
+        number1.setText(user.getDeviceID());
+        number2.setText(user.getUserName());
+        number3.setText(user.getName());
+        number4.setText(user.getEmail());
+        number5.setText(String.valueOf(user.getPhoneNum()));
+
     }
 }
