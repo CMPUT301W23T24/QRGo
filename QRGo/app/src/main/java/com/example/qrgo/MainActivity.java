@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button viewProfile;
     Button findFriends;
     Button scannedCodes;
+    Button viewMap;
     String mId;
 
     /**
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         viewProfile = findViewById(R.id.viewProfile);
         findFriends = findViewById(R.id.findFriends);
         scannedCodes = findViewById(R.id.scannedCodes);
-
+        viewMap = findViewById(R.id.viewMapButton);
         scannedCodes.setOnClickListener(new View.OnClickListener() {
             /**
              * open up the users scanned codes
@@ -125,6 +126,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SearchQR.class);
+                startActivity(intent);
+            }
+        });
+        viewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
