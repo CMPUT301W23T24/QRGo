@@ -134,4 +134,12 @@ public class QR {
     public void setScannedAmnt(Integer scannedAmnt) {
         this.scannedAmnt = scannedAmnt;
     }
+
+    /**
+     * Returns the hash value of the qr code
+     * @return hash value of the qr
+     */
+    public String getHash() {
+        return hash;
+    }
 }
