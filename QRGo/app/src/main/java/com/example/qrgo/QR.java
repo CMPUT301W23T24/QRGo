@@ -44,10 +44,11 @@ public class QR {
      * @param id
      * @param face
      */
-    public QR(String hash, String id, String face){
+    public QR(String hash, String id, String face, Integer score){
         this.id = id;
         this.hash = hash;
         this.face = face;
+        this.score = score;
     }
 
 
