@@ -147,6 +147,7 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(QRDetails.this, CameraActivity.class);
                 intent.putExtra("hash", hash);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
