@@ -207,7 +207,7 @@ public class User extends AppCompatActivity {
                         email = (String) doc.getData().get("email");
                         phoneNum = ((Long) doc.getData().get("phoneNum")).intValue();
                         scannedQRs = (List<String>) doc.getData().get("scannedQRs");
-                        totalScore = (Integer) doc.getData().get("totalScore");
+                        totalScore = ((Long) doc.getData().get("totalScore")).intValue();
 
                         Log.d("userId in user", playerId);
                         Log.d("userName in user", getUserName());
@@ -312,20 +312,15 @@ public class User extends AppCompatActivity {
                             int currentScore = (int) document.get("score");
                             updateTotalScore(currentScore);
                         }
-                    } else {
-                        Log.d(TAG, "No such document");
-
+                     else {
+                            Log.d(TAG, "No such document");
+                        }
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
 
-
-            QR qr = new QR(qrString);
-            //iono cos qr a string
-
-            this.totalScore += qr.getScore();
             i+=1;
 
         }

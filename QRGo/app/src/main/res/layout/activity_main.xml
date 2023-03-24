@@ -57,4 +57,18 @@
         android:layout_marginLeft="130dp"
         android:text="Scanned Codes" />
 
+    <Button
+        android:id="@+id/scoreboards_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/scanQRButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="221dp"
+        android:text="Scoarboards" />
+
 </RelativeLayout>
