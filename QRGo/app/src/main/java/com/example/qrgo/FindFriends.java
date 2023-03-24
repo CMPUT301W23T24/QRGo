@@ -1,7 +1,9 @@
 package com.example.qrgo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,9 +29,9 @@ import java.util.ArrayList;
 
 
 /**
- * Find Friends
+ * Allows the user to find their friends and subsequently, view their profiles
  */
-public class FindFriends extends AppCompatActivity {
+public class FindFriends extends AppCompatActivity implements ViewFriendProfileFragment.OnFragmentInteractionListener {
         private Button back;
         private Button search;
         private EditText username;
@@ -38,7 +40,7 @@ public class FindFriends extends AppCompatActivity {
         private FirebaseFirestore db;
 
     /**
-     * onCreate
+     * Creates the view of the search page
      * @param savedInstanceState
      */
     @Override
@@ -54,10 +56,10 @@ public class FindFriends extends AppCompatActivity {
             db = FirebaseFirestore.getInstance();
             CollectionReference cr = db.collection("user");
 
-        /**
-         * Searches for the users  in DB
-         */
-        search.setOnClickListener(new View.OnClickListener() {
+            /**
+            * Searches for the users in the DB
+            */
+            search.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     users= new ArrayList<User>();
@@ -89,16 +91,35 @@ public class FindFriends extends AppCompatActivity {
                     }
                 }
             });
-            back.setOnClickListener(new View.OnClickListener() {
 
-                /**
-                 * Sends the user back
-                 * @param view
-                 */
+            /**
+             * Sends the user back
+             * @param view
+             */
+            back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     finish();
                 }
             });
+
+            /**
+             * Lets the user view their friends' profile details, using a fragment
+             * @param view
+             */
+            userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    int index= i;
+                    User selUser= userAdapter.getItem(i);
+                    new ViewFriendProfileFragment(selUser).show(getSupportFragmentManager(), "View Profile");
+                }
+            });
         }
+    /**
+     * Does not perform any inherent function
+     */
+    @Override
+    public void onOkPressed(){
+    }
 }

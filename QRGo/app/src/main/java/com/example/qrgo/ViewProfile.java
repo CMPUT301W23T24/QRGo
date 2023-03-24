@@ -44,7 +44,7 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         });
         forward.setOnClickListener(new View.OnClickListener() {
             /**
-             * creates the edit text for the username profiles
+             * creates the edit text fragment for the username profiles
              * @param view
              */
             @Override
@@ -85,7 +85,10 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
 
         updateTextView(newUser);
     }
-
+    /**
+     * when called, it updates the textviews on the page
+     * @param user
+     */
     public void updateTextView(User user){
         TextView number1;
         TextView number2;
@@ -104,6 +107,5 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         number3.setText(user.getName());
         number4.setText(user.getEmail());
         number5.setText(String.valueOf(user.getPhoneNum()));
-
     }
 }
