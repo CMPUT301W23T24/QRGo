@@ -312,7 +312,7 @@ public class User extends AppCompatActivity {
                             updateTotalScore(currentScore);
                         }
                     } else {
-                        Log.d(TAG, "No such document"); balls
+                        Log.d(TAG, "No such document");
 
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
@@ -328,7 +328,6 @@ public class User extends AppCompatActivity {
             i+=1;
 
         }
-
         return this.totalScore;
 
     }
