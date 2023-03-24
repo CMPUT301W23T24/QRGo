@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.Button;
 
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Starting page of the App
@@ -55,11 +59,24 @@ public class MainActivity extends AppCompatActivity {
 
         User user= new User(mId);
         user.getValuesFromDb(mId, new User.OnUserLoadedListener() {
+            /**
+             * gets the values from the DB
+             * @param user gets the information of the user
+             */
             @Override
             public void onUserLoaded(User user) {
                 //
             }
         });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toastyboy(user);
+            }
+        }, 1500);
+
 
 
         viewProfile = findViewById(R.id.viewProfile);
@@ -129,6 +146,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void toastyboy(User user){
+        if (user.getUserName().equals("username")){
+            Toast.makeText(getApplicationContext(), "Please edit your profile to set a unique username", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * sets up the options and launches the cameraActivity
      */
