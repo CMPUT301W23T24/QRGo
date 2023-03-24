@@ -308,12 +308,11 @@ public class User extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
                             int currentScore = (int) document.get("score");
                             updateTotalScore(currentScore);
                         }
                     } else {
-                        Log.d(TAG, "No such document");
+                        Log.d(TAG, "No such document"); balls
 
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
