@@ -1,6 +1,7 @@
 package com.example.qrgo;
 
 
+
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
@@ -25,9 +26,9 @@ public class QRScoreBoard {
     //private List
     //private Dictionary<String, Integer> qrDict = new Hashtable<>();
 
-    public List<String> sortQR(){
-            // int i = 0;
-            // int total_users = 0;
+    public List<String> sortQR() {
+        // int i = 0;
+        // int total_users = 0;
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference qrCollectionRef = db.collection("qr");
@@ -57,9 +58,10 @@ public class QRScoreBoard {
                 });
 
 
-
         return qrList;
 
     }
-
 }
+
+
+

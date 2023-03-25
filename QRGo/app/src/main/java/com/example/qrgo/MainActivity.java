@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button viewProfile;
     Button findFriends;
     Button scannedCodes;
+    Button scoreboards;
     String mId;
 
     /**
@@ -125,6 +126,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SearchQR.class);
+                startActivity(intent);
+            }
+        });
+
+        scoreboards = viewProfile.findViewById(R.id.scoreboards_button);
+        scoreboards.setOnClickListener(new View.OnClickListener() {
+            /**
+             * open up the leaderboards/scoreboards
+             * @param view
+             */
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ScoreBoardDoop.class);
+                // intent.putExtra("userId", mId);
                 startActivity(intent);
             }
         });
