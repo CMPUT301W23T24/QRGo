@@ -1,7 +1,19 @@
 package com.example.qrgo;
 
 
-public class QRScoreBoard {
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 import static android.content.ContentValues.TAG;
@@ -28,6 +40,7 @@ public class QRScoreBoard {
     //private List
     //private Dictionary<String, Integer> qrDict = new Hashtable<>();
 
+    final String TAG = "Sample";
     public List<String> sortQR(){
             // int i = 0;
             // int total_users = 0;
