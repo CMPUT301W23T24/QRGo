@@ -23,8 +23,7 @@ import java.util.List;
 
 public class QRScoreBoard {
     //private List <User> userList;
-    //private List
-    //private Dictionary<String, Integer> qrDict = new Hashtable<>();
+    final String TAG = "Sample";
 
     public List<String> sortQR() {
         // int i = 0;
