@@ -32,25 +32,31 @@ public class TotalScoreBoard extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.total_scoreboard);
+        // public List<String> sortTotal()
 
+        users = new ArrayList<User>();
+        totalAdapter = new TotalArrayAdapter( this, users);
+        userList = findViewById(R.id.TotalScoreBoard);
+        userList.setAdapter(totalAdapter);
 
-    }
-
-    public List<String> sortTotal() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference qrCollectionRef = db.collection("user");
+        CollectionReference qrCollectionRef = db.collection("scoreboard_test");
         List<String> totalList = new ArrayList<>();
 
-        qrCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).get()
+        qrCollectionRef.orderBy("totalscore", Query.Direction.DESCENDING).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            String userName = document.getString("userName");
-                            String score = document.getString("totalScore");
-                            int totalScore = Integer.parseInt("totalScore"); // Convert string to integer
-                            String qrString = userName + "*" + totalScore ;
-                            totalList.add(qrString);
+//                            String userName = document.getString("userName");
+//                            String score = document.getString("totalScore");
+//                            int totalScore = Integer.parseInt("totalScore"); // Convert string to integer
+//                            String qrString = userName + "*" + totalScore ;
+//                            totalList.add(qrString);
+                            String deviceID = document.toString();
+                            Log.d("document", deviceID );
+                            users.add(new User(deviceID));
+                            totalAdapter.notifyDataSetChanged();
                         }
                         // Use the sorted QR list as needed
                         // ...
@@ -64,8 +70,12 @@ public class TotalScoreBoard extends AppCompatActivity {
                 });
 
 
-        return totalList;
+            // return totalList;
 
 
-    }
+        }
+
+
+
+
 }

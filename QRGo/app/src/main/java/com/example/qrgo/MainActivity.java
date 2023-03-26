@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        scoreboards = viewProfile.findViewById(R.id.scoreboards_button);
+        scoreboards = findViewById(R.id.scoreboards_button);
         scoreboards.setOnClickListener(new View.OnClickListener() {
             /**
              * open up the leaderboards/scoreboards

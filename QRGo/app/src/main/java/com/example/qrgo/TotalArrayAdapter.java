@@ -13,14 +13,14 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class TotalArrayAdapter extends ArrayAdapter<String> {
+public class TotalArrayAdapter extends ArrayAdapter<User> {
 
     /**
      * Displays the content into the List view
      * @param context
      * @param users
      */
-    public TotalArrayAdapter(Context context, ArrayList<String> users){
+    public TotalArrayAdapter(Context context, ArrayList<User> users){
         super(context, 0, users);
     }
 
@@ -43,9 +43,9 @@ public class TotalArrayAdapter extends ArrayAdapter<String> {
             view = convertView;
         }
 
-        String userId = getItem(position);
-        User user = new User(userId);
-        user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+        User userId = getItem(position);
+        User user = new User(userId.getDeviceID());
+        user.getValuesFromDb(userId.getDeviceID(), new User.OnUserLoadedListener() {
             @Override
             public void onUserLoaded(User user) {
                 TextView loaded_user = view.findViewById(R.id.user_name);
@@ -56,7 +56,7 @@ public class TotalArrayAdapter extends ArrayAdapter<String> {
             }
         });
 
-        Log.d("userId", userId);
+        Log.d("userId", userId.getDeviceID());
         Log.d("userName", user.getUserName());
         Log.d("Total Score", user.getScore().toString());
 
