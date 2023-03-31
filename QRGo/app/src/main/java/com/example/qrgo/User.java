@@ -17,6 +17,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -234,7 +236,7 @@ public class User extends AppCompatActivity {
             this.scannedQRs.add(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayUnion(hash));
-            this.totalScore=getScore();
+           // this.totalScore=getScore();
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
@@ -251,7 +253,7 @@ public class User extends AppCompatActivity {
             this.scannedQRs.remove(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
-            this.totalScore=  getScore();
+           // this.totalScore=  getScore();
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
@@ -291,46 +293,62 @@ public class User extends AppCompatActivity {
     public void updateTotalScore(int i){
         this.totalScore += i;
     }
-    public Integer getScore() {
-        Integer i = 0;
-        Integer qr_len = scannedQRs.size();
-        this.totalScore = 0;
-        Integer currentSum =0;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference cr = db.collection("qr");
+//    public Integer getScore() {
+//        Integer i = 0;
+//        Integer qr_len = scannedQRs.size();
+//        this.totalScore = 0;
+//        Integer currentSum =0;
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        CollectionReference cr = db.collection("qr");
+//        CollectionReference ur = db.collection("user");
+//
+//
+//        if(qr_len == 0){
+//            this.totalScore =0;
+//            return this.totalScore;
+//        }
+//
+//       // while (i < qr_len){
+//            ur.get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d(TAG, " => " + document.get("scannedQRs"));
+//                                    ArrayList<String> scannedQRs = (ArrayList<String>) document.get("scannedQrs");
+//                                    //Log.d(TAG, " <= " + scannedQRs);
+//                                }
+//                            } else {
+//                                Log.d(TAG, "Error getting documents: ", task.getException());
+//                            }
+//                        }
+//                    });
+//                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                            int currentScore = (int) document.get("score");
+//                            updateTotalScore(currentScore);
+//                        }
+//                     else {
+//                            Log.d(TAG, "No such document");
+//                        }
+//                    } else {
+//                        Log.d(TAG, "get failed with ", task.getException());
+//                    }
+//                }
+//            });
 
+           // i+=1;
 
-        if(qr_len == 0){
-            this.totalScore =0;
-            return this.totalScore;
-        }
+       // }
+       // return this.totalScore;
 
-        while (i < qr_len){
-            cr.document(this.scannedQRs.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            int currentScore = (int) document.get("score");
-                            updateTotalScore(currentScore);
-                        }
-                     else {
-                            Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                }
-            });
-
-            i+=1;
-
-        }
-        return this.totalScore;
-
-    }
+    //}
 
 
 
