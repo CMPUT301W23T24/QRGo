@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -23,7 +26,7 @@ import java.util.List;
 public class TotalScoreBoard extends AppCompatActivity {
     private ArrayList<String> dataList;
     private ArrayList<User> users;
-    private TotalArrayAdapter totalAdapter;
+    private ArrayAdapter<User> totalAdapter;
     private ListView userList;
     final String TAG = "Sample";
     FirebaseFirestore db;
@@ -43,25 +46,42 @@ public class TotalScoreBoard extends AppCompatActivity {
         CollectionReference qrCollectionRef = db.collection("scoreboard_test");
         List<String> totalList = new ArrayList<>();
 
-        qrCollectionRef.orderBy("totalscore", Query.Direction.DESCENDING).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        qrCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-//                            String userName = document.getString("userName");
-//                            String score = document.getString("totalScore");
-//                            int totalScore = Integer.parseInt("totalScore"); // Convert string to integer
-//                            String qrString = userName + "*" + totalScore ;
-//                            totalList.add(qrString);
-                            String deviceID = document.toString();
-                            Log.d("document", deviceID );
-                            users.add(new User(deviceID));
-                            totalAdapter.notifyDataSetChanged();
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (DocumentSnapshot snapshot: task.getResult()){
+                                User user= new User(snapshot.getId());
+                                user.getValuesFromDb(snapshot.getId(), new User.OnUserLoadedListener() {
+                                    @Override
+                                    public void onUserLoaded(User user) {
+                                    }
+                                });
+                                totalAdapter.add(user);
+                                totalAdapter.notifyDataSetChanged();
+                            }
                         }
-                        // Use the sorted QR list as needed
-                        // ...
                     }
                 })
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+////                            String userName = document.getString("userName");
+////                            String score = document.getString("totalScore");
+////                            int totalScore = Integer.parseInt("totalScore"); // Convert string to integer
+////                            String qrString = userName + "*" + totalScore ;
+////                            totalList.add(qrString);
+//                            String deviceID = document.toString();
+//                            Log.d("document", deviceID );
+//                            users.add(new User(deviceID));
+//                            totalAdapter.notifyDataSetChanged();
+//                        }
+//                        // Use the sorted QR list as needed
+//                        // ...
+//                    }
+//                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
