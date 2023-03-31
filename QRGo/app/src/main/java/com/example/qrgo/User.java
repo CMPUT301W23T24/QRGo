@@ -251,7 +251,7 @@ public class User extends AppCompatActivity {
             this.scannedQRs.remove(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
-            this.totalScore=getScore();
+            this.totalScore=  getScore();
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
@@ -297,11 +297,15 @@ public class User extends AppCompatActivity {
         this.totalScore = 0;
         Integer currentSum =0;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = db.collection("qr");
+        CollectionReference cr = db.collection("qr");
 
+        if(qr_len == 0){
+            this.totalScore =0;
+            return this.totalScore;
+        }
 
         while (i < qr_len){
-            collectionReference.document(this.scannedQRs.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            cr.document(this.scannedQRs.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
