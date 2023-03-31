@@ -15,6 +15,10 @@ import java.util.ArrayList;
 
 public class TotalArrayAdapter extends ArrayAdapter<User> {
 
+    private ArrayList<User> users;
+
+    private Context context;
+
     /**
      * Displays the content into the List view
      * @param context
@@ -22,6 +26,8 @@ public class TotalArrayAdapter extends ArrayAdapter<User> {
      */
     public TotalArrayAdapter(Context context, ArrayList<User> users){
         super(context, 0, users);
+        this.users = users;
+        this.context = context;
     }
 
     /**
@@ -43,9 +49,9 @@ public class TotalArrayAdapter extends ArrayAdapter<User> {
             view = convertView;
         }
 
-        User userId = getItem(position);
-        User user = new User(userId.getDeviceID());
-        user.getValuesFromDb(userId.getDeviceID(), new User.OnUserLoadedListener() {
+        // User userId = getItem(position);
+        User user2 = users.get(position);
+        user2.getValuesFromDb(user2.getDeviceID(), new User.OnUserLoadedListener() {
             @Override
             public void onUserLoaded(User user) {
                 TextView loaded_user = view.findViewById(R.id.user_name);
@@ -56,9 +62,9 @@ public class TotalArrayAdapter extends ArrayAdapter<User> {
             }
         });
 
-        Log.d("userId", userId.getDeviceID());
-        Log.d("userName", user.getUserName());
-        Log.d("Total Score", user.getScore().toString());
+        Log.d("userId", user2.getDeviceID());
+        Log.d("userName", user2.getUserName());
+        Log.d("Total Score", user2.getScore().toString());
 
         return view;
     }

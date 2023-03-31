@@ -299,6 +299,7 @@ public class User extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference cr = db.collection("qr");
 
+
         if(qr_len == 0){
             this.totalScore =0;
             return this.totalScore;
