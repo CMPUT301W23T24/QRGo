@@ -244,13 +244,13 @@ public class User extends AppCompatActivity {
      * @param playerId ID of the plater/phonId
      * @param hash hash of the QR
      */
-    public void addQR(String playerId, String hash) {
+    public void addQR(String playerId, String hash, Integer score) {
         CollectionReference collectionReference = connectToDB();
         if (!scannedQRs.contains(hash)) {
             this.scannedQRs.add(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayUnion(hash));
-           // this.totalScore=getScore();
+            updateTotalScore(score);
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
@@ -261,13 +261,13 @@ public class User extends AppCompatActivity {
      * @param playerId ID of the player
      * @param hash hash content of the user
      */
-    public void deleteQR(String playerId, String hash) {
+    public void deleteQR(String playerId, String hash, Integer score) {
         CollectionReference collectionReference = connectToDB();
         if (scannedQRs != null && scannedQRs.contains(hash)) {
             this.scannedQRs.remove(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
-           // this.totalScore=  getScore();
+            updateTotalScore(-score);
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }

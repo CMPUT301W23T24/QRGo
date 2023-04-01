@@ -119,8 +119,7 @@ public class QRDetails extends AppCompatActivity {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        user.addQR(userId, hash);
-
+        user.addQR(userId, hash, score);
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
@@ -195,7 +194,7 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO remove the QR from DB
                 qrContent.removeFromDB(hash, qr);
-                user.deleteQR(userId, hash);
+                user.deleteQR(userId, hash, score);
 //                Intent intent = new Intent(QRDetails.this, MainActivity.class);
 //
 //                startActivity(intent);
