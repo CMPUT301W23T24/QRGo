@@ -34,7 +34,7 @@
         android:backgroundTint="@color/blue"
         android:text="Scan QR Code"
         app:layout_constraintEnd_toStartOf="@+id/scannedCodes"
-        app:layout_constraintHorizontal_bias="0.626"
+        app:layout_constraintHorizontal_bias="0.292"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewProfile" />
 
@@ -62,6 +62,7 @@
         android:backgroundTint="@color/blue"
         android:text="Search QR Codes"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toEndOf="@+id/findFriends"
         app:layout_constraintTop_toBottomOf="@+id/scannedCodes" />
 
@@ -88,10 +89,15 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
 
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="134dp"
-        android:layout_marginBottom="221dp"
-        android:text="Scoarboards" />
+        android:layout_marginStart="36dp"
+        android:backgroundTint="@color/blue"
+        android:text="Scoreboards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/viewMapButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findFriends"
+        app:layout_constraintVertical_bias="0.163" />
 
     <Button
         android:id="@+id/viewMapButton"
@@ -102,8 +108,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
 
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/blue"
         android:text="View Map"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goToSearchB" />
+        app:layout_constraintTop_toBottomOf="@+id/goToSearchB"
+        app:layout_constraintVertical_bias="0.163" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

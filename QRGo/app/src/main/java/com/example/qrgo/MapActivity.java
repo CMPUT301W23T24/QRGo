@@ -147,6 +147,8 @@ public class MapActivity extends AppCompatActivity {
                             startPoint = new GeoPoint(latitude, longitude);
                             mapController.setCenter(startPoint);
                             placeMarker(getApplicationContext(), startPoint);
+                            range = 3.0;
+                            placeQR(range);
                         }
 
                     });
