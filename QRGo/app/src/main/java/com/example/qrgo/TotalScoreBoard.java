@@ -61,24 +61,7 @@ public class TotalScoreBoard extends AppCompatActivity {
                         }
                     }
                 })
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-////                            String userName = document.getString("userName");
-////                            String score = document.getString("totalScore");
-////                            int totalScore = Integer.parseInt("totalScore"); // Convert string to integer
-////                            String qrString = userName + "*" + totalScore ;
-////                            totalList.add(qrString);
-//                            String deviceID = document.toString();
-//                            Log.d("document", deviceID );
-//                            users.add(new User(deviceID));
-//                            totalAdapter.notifyDataSetChanged();
-//                        }
-//                        // Use the sorted QR list as needed
-//                        // ...
-//                    }
-//                })
+
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -86,11 +69,7 @@ public class TotalScoreBoard extends AppCompatActivity {
                     }
                 });
 
-
-            // return totalList;
-
-
-        }
+    }
 
 
 
