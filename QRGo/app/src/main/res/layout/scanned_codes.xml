@@ -6,9 +6,138 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/HighestOrderB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:backgroundTint="@color/blue"
+            android:text="Order by Highest" />
+
+        <Button
+            android:id="@+id/LowestOrderB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:backgroundTint="@color/blue"
+            android:text="Order by Lowest" />
+
+    </RelativeLayout>
 
     <ListView
+        android:id="@+id/ScannedQRList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ScannedQRList"/>
+        android:layout_height="531dp">
+
+    </ListView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <TextView
+            android:id="@+id/hScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="88dp"
+            android:layout_toStartOf="@+id/HighestVal"
+            android:text="Highest QR Score"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/lScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hScore"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-3dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="98dp"
+            android:layout_toStartOf="@+id/LowestVal"
+            android:text="Lowest QR Score"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/HighestVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="-1dp"
+            android:hint="Highest Val"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/LowestVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/HighestVal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="-1dp"
+            android:hint="Lowest Val"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tQRS"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="103dp"
+            android:layout_marginEnd="181dp"
+            android:layout_marginBottom="28dp"
+            android:layout_toStartOf="@+id/totalVal"
+            android:text="Total Score"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/totalVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/TotalScanned"
+            android:layout_below="@+id/LowestVal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="22dp"
+            android:hint="Total Val"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tQRS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="2dp"
+            android:text="Total QRs Scanned"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/TotalScanned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="3dp"
+            android:hint="Total Scanned"
+            android:textSize="20dp" />
+
+
+    </RelativeLayout>
 </LinearLayout>
