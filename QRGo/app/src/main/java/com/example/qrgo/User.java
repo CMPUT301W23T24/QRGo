@@ -281,5 +281,8 @@ public class User extends AppCompatActivity {
     public List<String> getScannedQRs() {
         return this.scannedQRs;
     }
+    public void addScannedQRs(String qr) {
+        this.scannedQRs.add(qr);
+    }
 
 }
