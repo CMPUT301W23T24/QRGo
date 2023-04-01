@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,15 +54,17 @@ public class ScannedCodesActivity extends AppCompatActivity {
 
     Button sortAsc;
     Button sortDesc;
+
     /**
      * creates the page for the QR scanned by the user
+     *
      * @param savedInstanceState
      */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scanned_codes);
-        userId =  getIntent().getStringExtra("userId");
+        userId = getIntent().getStringExtra("userId");
 
 
         qrList = findViewById(R.id.ScannedQRList);
@@ -137,10 +140,10 @@ public class ScannedCodesActivity extends AppCompatActivity {
 
 
                                         Integer val = Integer.parseInt(doc.get("score").toString());
-                                        if (val > highestScore){
+                                        if (val > highestScore) {
                                             highestScore = val;
                                         }
-                                        if (val < lowestScore){
+                                        if (val < lowestScore) {
                                             lowestScore = val;
                                         }
                                         totalScore += val;
@@ -239,6 +242,16 @@ public class ScannedCodesActivity extends AppCompatActivity {
             }
         });
 
+        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                QR qr = qrs.get(i);
+                Intent intent = new Intent(getApplicationContext(), QRDetailsMain.class);
+                intent.putExtra("hash", qr.getHash());
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
 
 
     }

@@ -1,8 +1,5 @@
 package com.example.qrgo;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,12 +17,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 import java.util.List;
 
@@ -41,6 +37,8 @@ public class User extends AppCompatActivity {
     private String email;
     private Integer phoneNum;
     private List<String> scannedQRs;
+
+    private Integer totalScore;
     OnUserLoadedListener listener;
 
 
@@ -63,6 +61,21 @@ public class User extends AppCompatActivity {
         this.email = "";
         this.phoneNum = 0;
         this.scannedQRs = new ArrayList<>();
+        this.totalScore = 0;
+    }
+
+    public User(String deviceID, String username, Integer totalScore){
+        this.deviceID = deviceID;
+        this.userName = username;
+        this.totalScore = totalScore;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
     }
 
     /**
@@ -172,6 +185,8 @@ public class User extends AppCompatActivity {
         playerData.put("email", this.email);
         playerData.put("phoneNum", this.phoneNum);
         playerData.put("scannedQRs", this.scannedQRs);
+        playerData.put("totalScore", this.totalScore);
+
         collectionReference.document(deviceID)
                 .set(playerData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -187,11 +202,11 @@ public class User extends AppCompatActivity {
                     }
                 });
     }
-        /**
-         * Takes in a parameter called playerId and uses it to get the data of that user from the database
-         * @param playerId
-         * @param listener taken from the Interface
-         */
+    /**
+     * Takes in a parameter called playerId and uses it to get the data of that user from the database
+     * @param playerId
+     * @param listener taken from the Interface
+     */
     public void getValuesFromDb(String playerId, OnUserLoadedListener listener) {
         this.listener = listener;
 
@@ -208,7 +223,8 @@ public class User extends AppCompatActivity {
                         email = (String) doc.getData().get("email");
                         phoneNum = ((Long) doc.getData().get("phoneNum")).intValue();
                         scannedQRs = (List<String>) doc.getData().get("scannedQRs");
-                        ;
+                        totalScore = ((Long) doc.getData().get("totalScore")).intValue();
+
                         Log.d("userId in user", playerId);
                         Log.d("userName in user", getUserName());
                         listener.onUserLoaded(User.this); // Invoke the callback function with the loaded user
@@ -228,12 +244,13 @@ public class User extends AppCompatActivity {
      * @param playerId ID of the plater/phonId
      * @param hash hash of the QR
      */
-    public void addQR(String playerId, String hash) {
+    public void addQR(String playerId, String hash, Integer score) {
         CollectionReference collectionReference = connectToDB();
         if (!scannedQRs.contains(hash)) {
             this.scannedQRs.add(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayUnion(hash));
+            updateTotalScore(score);
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
@@ -244,15 +261,17 @@ public class User extends AppCompatActivity {
      * @param playerId ID of the player
      * @param hash hash content of the user
      */
-    public void deleteQR(String playerId, String hash) {
+    public void deleteQR(String playerId, String hash, Integer score) {
         CollectionReference collectionReference = connectToDB();
         if (scannedQRs != null && scannedQRs.contains(hash)) {
             this.scannedQRs.remove(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
+            updateTotalScore(-score);
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     /**
@@ -272,6 +291,9 @@ public class User extends AppCompatActivity {
         collectionReference
                 .document(this.deviceID)
                 .update("phoneNum", this.phoneNum);
+        collectionReference
+                .document(this.deviceID)
+                .update("totalScore", this.totalScore);
     }
 
     /**
@@ -284,5 +306,67 @@ public class User extends AppCompatActivity {
     public void addScannedQRs(String qr) {
         this.scannedQRs.add(qr);
     }
+
+    public void updateTotalScore(int i){
+        this.totalScore += i;
+    }
+//    public Integer getScore() {
+//        Integer i = 0;
+//        Integer qr_len = scannedQRs.size();
+//        this.totalScore = 0;
+//        Integer currentSum =0;
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        CollectionReference cr = db.collection("qr");
+//        CollectionReference ur = db.collection("user");
+//
+//
+//        if(qr_len == 0){
+//            this.totalScore =0;
+//            return this.totalScore;
+//        }
+//
+//       // while (i < qr_len){
+//            ur.get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d(TAG, " => " + document.get("scannedQRs"));
+//                                    ArrayList<String> scannedQRs = (ArrayList<String>) document.get("scannedQrs");
+//                                    //Log.d(TAG, " <= " + scannedQRs);
+//                                }
+//                            } else {
+//                                Log.d(TAG, "Error getting documents: ", task.getException());
+//                            }
+//                        }
+//                    });
+//                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                            int currentScore = (int) document.get("score");
+//                            updateTotalScore(currentScore);
+//                        }
+//                     else {
+//                            Log.d(TAG, "No such document");
+//                        }
+//                    } else {
+//                        Log.d(TAG, "get failed with ", task.getException());
+//                    }
+//                }
+//            });
+
+           // i+=1;
+
+       // }
+       // return this.totalScore;
+
+    //}
+
+
 
 }
