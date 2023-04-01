@@ -41,7 +41,9 @@ import org.w3c.dom.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The class for when the user wants to see the maps
+ */
 public class MapActivity extends AppCompatActivity {
     double latitude;
     double longitude;
@@ -99,8 +101,8 @@ public class MapActivity extends AppCompatActivity {
                     range = Double.parseDouble(rangeStr);
                 }
                 map.getOverlays().clear();
-                placeMarker(context, startPoint);
                 placeQR(range);
+                placeMarker(context, startPoint, true);
             }
         });
 
@@ -118,18 +120,24 @@ public class MapActivity extends AppCompatActivity {
     }
 
     /**
-     * prepares
+     * helps with overlays
      */
     public void onPause(){
         super.onPause();
 
-        map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+        map.onPause();  //needed for compass, my location overlays
     }
 
+    /**
+     * ask user permission
+     */
     private void askPermission() {
         ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
     }
 
+    /**
+     * getLocation of user
+     */
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Handle permission not granted
@@ -146,15 +154,25 @@ public class MapActivity extends AppCompatActivity {
                             longitude = location.getLongitude();
                             startPoint = new GeoPoint(latitude, longitude);
                             mapController.setCenter(startPoint);
-                            placeMarker(getApplicationContext(), startPoint);
                             range = 3.0;
                             placeQR(range);
+                            placeMarker(getApplicationContext(), startPoint, true);
                         }
 
                     });
         }
     }
 
+    /**
+     * Deals with whether or not the user wants their location shared or otherwise
+     * @param requestCode The request code passed in {requestPermissions(
+     * android.app.Activity, String[], int)}
+     * @param permissions The requested permissions. Never null.
+     * @param grantRequest The grant results for the corresponding permissions
+     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantRequest) {
         if (requestCode == LOCATION_PERMISSION_CODE) {
             if (grantRequest.length > 0 && grantRequest[0] == PackageManager.PERMISSION_GRANTED) {
@@ -166,17 +184,32 @@ public class MapActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantRequest);
     }
 
-    public void placeMarker(Context context, GeoPoint point){
+    /**
+     * places a marker on the map
+     * @param context
+     * @param point
+     */
+    public void placeMarker(Context context, GeoPoint point, boolean user){
 
         Marker marker = new Marker(map);
         marker.setPosition(point);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        marker.setIcon(context.getResources().getDrawable(org.osmdroid.library.R.drawable.ic_menu_mylocation));
+        if(user){
+            Log.d("USERLOC", "i");
+            marker.setIcon(context.getResources().getDrawable(org.osmdroid.library.R.drawable.ic_menu_mylocation));
+        } else {
+            marker.setIcon(context.getResources().getDrawable(org.osmdroid.library.R.drawable.ic_menu_compass));
+        }
+
         marker.setInfoWindow(null);
         map.getOverlays().add(marker);
         map.invalidate();
     }
 
+    /**
+     * place the QR on the map
+     * @param range
+     */
     public void placeQR(double range){
         CollectionReference qrs = db.collection("qr");
 
@@ -196,7 +229,7 @@ public class MapActivity extends AppCompatActivity {
                             GeoPoint geoPoint = new GeoPoint(lati, longi);
                             double distance = startPoint.distanceToAsDouble(geoPoint)/1000;
                             if (distance < range) {
-                                placeMarker(getApplicationContext(), geoPoint);
+                                placeMarker(getApplicationContext(), geoPoint, false);
                             }
                         }
 
