@@ -31,7 +31,7 @@ public class QRListTest {
     @Test
     void testAddException(){
         QRList qrL = mockQRList();
-        QR qr = new QR("a", "b", "c");
+        QR qr = new QR("a", "b", "c",1);
         qrL.add(qr);
         assertThrows( IllegalArgumentException.class, () -> {
             qrL.add(qr); });

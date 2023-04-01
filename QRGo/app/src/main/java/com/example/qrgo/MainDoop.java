@@ -83,41 +83,41 @@ public class MainDoop extends AppCompatActivity implements AddCommentFragment.Ad
         commentAdapter = new CommentArrayAdapter(this,dataList);
         commentList.setAdapter(commentAdapter);
 
-        //TODO initialize the comment field first
-        db = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = db.collection("qr");
-        collectionReference.document(hash)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @SuppressLint("NewApi")
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if(document.exists()){
+        if(hash != null) {
+            db = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = db.collection("qr");
+            collectionReference.document(hash)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @SuppressLint("NewApi")
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
 //                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 //                                Log.d(TAG, "DATA TYPE " + document.get("comments").getClass());
 //                                System.out.println("DATA TYPE " + document.get("comments").getClass());
-                                ArrayList<HashMap<String, String>> comm = (ArrayList<HashMap<String, String>>) document.get("comments");
+                                    ArrayList<HashMap<String, String>> comm = (ArrayList<HashMap<String, String>>) document.get("comments");
 
-                                if (comm != null) {
-                                    for (int i = 0; i < comm.size(); i++) {
-                                        Map<String, String> val = comm.get(i);
-                                        val.forEach((k, v) -> {
-                                            dataList.add(new Comment(k, v));
-                                            commentAdapter.notifyDataSetChanged();
-                                        });
+                                    if (comm != null) {
+                                        for (int i = 0; i < comm.size(); i++) {
+                                            Map<String, String> val = comm.get(i);
+                                            val.forEach((k, v) -> {
+                                                dataList.add(new Comment(k, v));
+                                                commentAdapter.notifyDataSetChanged();
+                                            });
+                                        }
                                     }
+                                } else {
+                                    Log.d(TAG, "No such document");
                                 }
                             } else {
-                                Log.d(TAG, "No such document");
+                                Log.d(TAG, "get failed with ", task.getException());
                             }
-                        } else {
-                            Log.d(TAG, "get failed with ", task.getException());
                         }
-                    }
-                });
-
+                    });
+        }
 
 
         Button add_button = findViewById(R.id.add_button_comment);

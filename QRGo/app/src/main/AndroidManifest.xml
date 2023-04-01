@@ -6,11 +6,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.QRGo"
@@ -24,6 +27,7 @@
         <activity android:name=".QRDetails"></activity>
         <activity android:name=".CameraActivity"></activity>
         <activity android:name=".FindFriends"></activity>
+        <activity android:name=".MapActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -42,6 +46,7 @@
         
         <activity android:name=".ViewProfile"></activity>
         <activity android:name=".ScannedCodesActivity"></activity>
+        <activity android:name=".QRDetailsMain"></activity>
 
         <provider
             android:authorities="com.example.camerapermission.fileProvider"
