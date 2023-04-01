@@ -2,12 +2,24 @@ package com.example.qrgo;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 /**
  * Views the profile of the user who has the phone
@@ -16,6 +28,7 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
     Button back;
     Button forward;
     String deviceId;
+    String TAG="test ";
 
     /**
      * Creates the view of the userProfile
@@ -77,13 +90,24 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
      */
     @Override
     public void onOkkPressed(User newUser, String userName, String name, String email, Integer phoneNum) {
-        newUser.setUserName(userName);
-        newUser.setName(name);
-        newUser.setEmail(email);
-        newUser.setPhoneNum(phoneNum);
-        newUser.updateDb();
+        if (uniqueUsername(newUser, userName) == true) {
+            newUser.setUserName(userName);
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setPhoneNum(phoneNum);
+            newUser.updateDb();
 
-        updateTextView(newUser);
+            updateTextView(newUser);
+        }
+        else{
+            newUser.setUserName(userName);
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setPhoneNum(phoneNum);
+            newUser.updateDb();
+            Toast.makeText(getApplicationContext(), "Your username wasn't unique, please try again!", Toast.LENGTH_SHORT).show();
+            new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
+        }
     }
     /**
      * when called, it updates the textviews on the page
@@ -107,5 +131,36 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         number3.setText(user.getName());
         number4.setText(user.getEmail());
         number5.setText(String.valueOf(user.getPhoneNum()));
+    }
+
+    public boolean uniqueUsername(User user1, String userName) {
+        String deviceID= user1.getDeviceID();
+        FirebaseFirestore db;
+        ArrayList<String> usernames = new ArrayList<String>();
+        db = FirebaseFirestore.getInstance();
+        CollectionReference collectionReference = db.collection("user");
+        collectionReference.whereEqualTo("username", true)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                //stops working after this, says a resource call failed to close
+                                if ( deviceID !=(snapshot.getId())) {
+                                    String str = snapshot.getString("username");
+                                    usernames.add(str);
+                                }
+                            }
+                        }
+                    }
+                });
+        for (String i : usernames) {
+            Log.d(TAG,"i");
+            if (i.equals(userName)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
