@@ -41,7 +41,7 @@ import java.util.ArrayList;
 /**
  * Creates the Details needed to bring the QR class into a more profile based scan
  */
-public class QRDetails extends AppCompatActivity {
+public class QRDetailsMain extends AppCompatActivity {
     private TextView QRFaceTV;
     private TextView nameTV;
     private TextView scoreTV;
@@ -59,7 +59,6 @@ public class QRDetails extends AppCompatActivity {
     private String name;
     private String userId;
     private String comments;
-    QR qr;
     private User user;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -76,12 +75,17 @@ public class QRDetails extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.qr_details);
+        setContentView(R.layout.qr_details_main);
 
         String content = getIntent().getStringExtra("qrContent");
         userId = getIntent().getStringExtra("userId");
         user = new User(userId);
+        user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+            @Override
+            public void onUserLoaded(User user) {
 
+            }
+        });
 
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
@@ -95,37 +99,23 @@ public class QRDetails extends AppCompatActivity {
 
 
         qrContent = new QRReader();
+        hash = getIntent().getStringExtra("hash");
 
 
-        if (content != null && userId != null) {
-            hash = qrContent.createHash(content);
-            score = qrContent.calcScore(hash);
-            face = qrContent.createFace(hash);
-            name = qrContent.createName(hash);
+        score = qrContent.calcScore(hash);
+        face = qrContent.createFace(hash);
+        name = qrContent.createName(hash);
 
-            // mock user for testing
-            //comments = "mfin uuuuuuuuuuuhhm";
 
-            qr = new QR(name, userId, score, face);
+        QR qr = new QR( name, userId, score, face);
 
-            QRFaceTV.setText(face);
-            nameTV.setText(name);
-            scoreTV.setText(score.toString());
-            qrContent.addToDB(hash, qr);
+        QRFaceTV.setText(face);
+        nameTV.setText(name);
+        scoreTV.setText(score.toString());
+        qrContent.addToDB(hash, qr);
 
-            user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
-                @Override
-                public void onUserLoaded(User user) {
-
-                }
-            });
-
-            //user.addQR(userId, hash);
-        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        user.addQR(userId, hash, score);
 
 
         locationB.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +141,7 @@ public class QRDetails extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QRDetails.this, CameraActivity.class);
+                Intent intent = new Intent(QRDetailsMain.this, CameraActivity.class);
                 intent.putExtra("hash", hash);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -167,7 +157,7 @@ public class QRDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Listview fragment probably
-                Intent intent = new Intent(QRDetails.this, ScannedDoop.class);
+                Intent intent = new Intent(QRDetailsMain.this, ScannedDoop.class);
                 intent.putExtra("hash", hash);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
@@ -182,7 +172,7 @@ public class QRDetails extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QRDetails.this, MainDoop.class);
+                Intent intent = new Intent(QRDetailsMain.this, MainDoop.class);
                 intent.putExtra("hash", hash);
                 intent.putExtra("userId", userId);
                 intent.putExtra("username", user.getUserName());
@@ -200,12 +190,12 @@ public class QRDetails extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO remove the QR from DB
                 qrContent.removeFromDB(hash, qr);
-                user.deleteQR(userId, hash, score);
+                user.deleteQR(userId, hash, qr.getScore());
 //                Intent intent = new Intent(QRDetails.this, MainActivity.class);
 //
 //                startActivity(intent);
 //                finish(); // need to ask ayaan if this is needed?
-                Toast.makeText(QRDetails.this, "Deleted this QR from user", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QRDetailsMain.this, "Deleted this QR from user", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -233,7 +223,7 @@ public class QRDetails extends AppCompatActivity {
                                 // DB Stuff
                                 qrContent.addLocationToDB(hash, userId, latitude, longitude);
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(QRDetails.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(QRDetailsMain.this);
                                 builder.setTitle("Result");
                                 builder.setMessage("Latitude: " + latitude + "\nLongitude: " + longitude);
                                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -256,7 +246,7 @@ public class QRDetails extends AppCompatActivity {
      * asks the location of the user
      */
     private void askPermission() {
-        ActivityCompat.requestPermissions(QRDetails.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(QRDetailsMain.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
     }
 
     /**
@@ -275,7 +265,7 @@ public class QRDetails extends AppCompatActivity {
             if (grantRequest.length > 0 && grantRequest[0] == PackageManager.PERMISSION_GRANTED) {
                 getLocation();
             } else {
-                Toast.makeText(QRDetails.this, "Location permission required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QRDetailsMain.this, "Location permission required", Toast.LENGTH_SHORT).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantRequest);
