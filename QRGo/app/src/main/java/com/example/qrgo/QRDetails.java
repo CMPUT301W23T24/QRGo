@@ -59,6 +59,7 @@ public class QRDetails extends AppCompatActivity {
     private String name;
     private String userId;
     private String comments;
+
     QR qr;
     private User user;
 
@@ -112,7 +113,6 @@ public class QRDetails extends AppCompatActivity {
             nameTV.setText(name);
             scoreTV.setText(score.toString());
             qrContent.addToDB(hash, qr);
-
             user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
                 @Override
                 public void onUserLoaded(User user) {
@@ -126,7 +126,6 @@ public class QRDetails extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         user.addQR(userId, hash, score);
-
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**

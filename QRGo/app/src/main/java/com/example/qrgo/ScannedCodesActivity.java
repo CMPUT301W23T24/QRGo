@@ -94,7 +94,13 @@ public class ScannedCodesActivity extends AppCompatActivity {
 
 
             DocumentReference userRef = userCollectionReference.document(userId);
-
+            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot doc = task.getResult();
+                    totalQRScore.setText(doc.get("totalScore").toString());
+                }
+            });
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 /**
                  * gets the scanned codes of the specific user
@@ -126,13 +132,12 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                             if (val < lowestScore) {
                                                 lowestScore = val;
                                             }
-                                            totalScore += val;
+
                                             totalScanned++;
 
                                             highScore.setText(highestScore.toString());
                                             lowScore.setText(lowestScore.toString());
                                             totalQRamount.setText(totalScanned.toString());
-                                            totalQRScore.setText(totalScore.toString());
                                         } else {
                                             Log.d(TAG, "Failed with: ", task.getException());
                                         }
@@ -210,6 +215,7 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                             });
 
                                     // Removes the QR from the Scanned Codes Activity
+                                    //user.deleteQR(userId, qrs.get(pos).getHash(), qrs.get(pos).getScore());
                                     qrs.remove(pos);
                                     qrAdapter.notifyDataSetChanged();
 
