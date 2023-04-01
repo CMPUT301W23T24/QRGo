@@ -56,7 +56,10 @@ public class MapActivity extends AppCompatActivity {
     private final static int LOCATION_PERMISSION_CODE = 100;
     private FusedLocationProviderClient fusedLocationClient;
 
-
+    /**
+     * Creates the map activity
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,10 @@ public class MapActivity extends AppCompatActivity {
         IMapController mapController = map.getController();
         mapController.setZoom(9.5);
         rangeB.setOnClickListener(new View.OnClickListener() {
+            /**
+             * onClick set the range for all Qr's in the area
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 rangeStr = rangeET.getText().toString();
@@ -102,17 +109,20 @@ public class MapActivity extends AppCompatActivity {
         
     }
 
+    /**
+     * onResume helps resume the map at the current point
+     */
     public void onResume(){
         super.onResume();
-           map.onResume(); //needed for compass, my location overlays, v6.0.0 and up
+           map.onResume();
     }
 
+    /**
+     * prepares
+     */
     public void onPause(){
         super.onPause();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
+
         map.onPause();  //needed for compass, my location overlays, v6.0.0 and up
     }
 
