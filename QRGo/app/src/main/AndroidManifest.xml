@@ -43,6 +43,7 @@
         
         <activity android:name=".ViewProfile"></activity>
         <activity android:name=".ScannedCodesActivity"></activity>
+        <activity android:name=".QRDetailsMain"></activity>
 
         <provider
             android:authorities="com.example.camerapermission.fileProvider"

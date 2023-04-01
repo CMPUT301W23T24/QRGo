@@ -135,4 +135,8 @@ public class QR {
     public void setScannedAmnt(Integer scannedAmnt) {
         this.scannedAmnt = scannedAmnt;
     }
+
+    public String getHash() {
+        return hash;
+    }
 }
