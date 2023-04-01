@@ -51,20 +51,13 @@ public class TotalArrayAdapter extends ArrayAdapter<User> {
 
         // User userId = getItem(position);
         User user2 = users.get(position);
-        user2.getValuesFromDb(user2.getDeviceID(), new User.OnUserLoadedListener() {
-            @Override
-            public void onUserLoaded(User user) {
-                TextView loaded_user = view.findViewById(R.id.user_name);
-                loaded_user.setText(user.getUserName());
 
-                TextView total_score = view.findViewById(R.id.total_score);
-                total_score.setText(user.getScore().toString());
-            }
-        });
+        TextView loaded_user = view.findViewById(R.id.user_name);
+        loaded_user.setText(user2.getUserName());
 
-        Log.d("userId", user2.getDeviceID());
-        Log.d("userName", user2.getUserName());
-        Log.d("Total Score", user2.getScore().toString());
+        TextView total_score = view.findViewById(R.id.total_score);
+        total_score.setText(user2.getTotalScore().toString());
+
 
         return view;
     }

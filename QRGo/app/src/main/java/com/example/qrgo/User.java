@@ -64,6 +64,20 @@ public class User extends AppCompatActivity {
         this.totalScore = 0;
     }
 
+    public User(String deviceID, String username, Integer totalScore){
+        this.deviceID = deviceID;
+        this.userName = username;
+        this.totalScore = totalScore;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
     /**
      * Creates a saved instance state
      * @param savedInstanceState

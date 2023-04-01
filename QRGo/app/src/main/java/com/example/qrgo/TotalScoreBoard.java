@@ -43,7 +43,7 @@ public class TotalScoreBoard extends AppCompatActivity {
         userList.setAdapter(totalAdapter);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference qrCollectionRef = db.collection("scoreboard_test");
+        CollectionReference qrCollectionRef = db.collection("user");
         List<String> totalList = new ArrayList<>();
 
         qrCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).get()
@@ -52,12 +52,9 @@ public class TotalScoreBoard extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             for (DocumentSnapshot snapshot: task.getResult()){
-                                User user= new User(snapshot.getId());
-                                user.getValuesFromDb(snapshot.getId(), new User.OnUserLoadedListener() {
-                                    @Override
-                                    public void onUserLoaded(User user) {
-                                    }
-                                });
+                                User user= new User(snapshot.getId(), snapshot.get("username").toString(), Integer.parseInt(snapshot.get("totalScore").toString()));
+
+                                // Log.d("YO", user.getUserName() + " => " + user.getTotalScore());
                                 totalAdapter.add(user);
                                 totalAdapter.notifyDataSetChanged();
                             }
