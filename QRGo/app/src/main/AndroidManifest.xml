@@ -16,7 +16,7 @@
         android:theme="@style/Theme.QRGo"
         tools:targetApi="31">
         <activity android:name=".TotalScoreBoard"></activity>
-        <activity android:name="QRScoreBoard"></activity>
+        <activity android:name=".QRScoreBoard"></activity>
         <activity android:name=".ScoreBoardDoop"></activity>
         <activity android:name=".MainDoop"></activity>
         <activity android:name=".ScannedDoop"></activity>
