@@ -190,7 +190,7 @@ public class QRDetailsMain extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO remove the QR from DB
                 qrContent.removeFromDB(hash, qr);
-                user.deleteQR(userId, hash);
+                user.deleteQR(userId, hash, qr.getScore());
 //                Intent intent = new Intent(QRDetails.this, MainActivity.class);
 //
 //                startActivity(intent);

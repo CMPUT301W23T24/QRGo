@@ -140,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ScoreBoardDoop.class);
-                // intent.putExtra("userId", mId);
+                intent.putExtra("userId", mId);
+                startActivity(intent);
             }});
         
         

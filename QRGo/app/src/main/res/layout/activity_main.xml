@@ -93,5 +93,17 @@
         android:layout_marginBottom="221dp"
         android:text="Scoarboards" />
 
+    <Button
+        android:id="@+id/viewMapButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/scanQRButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
+        android:text="View Map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goToSearchB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
