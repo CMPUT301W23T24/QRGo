@@ -47,8 +47,7 @@ public class ScannedCodesActivity extends AppCompatActivity {
     TextView totalQRScore;
     TextView totalQRamount;
 
-    Button sortAsc;
-    Button sortDesc;
+
     /**
      * creates the page for the QR scanned by the user
      * @param savedInstanceState
@@ -71,8 +70,6 @@ public class ScannedCodesActivity extends AppCompatActivity {
         totalQRScore = findViewById(R.id.totalVal);
         totalQRamount = findViewById(R.id.TotalScanned);
 
-        sortAsc = findViewById(R.id.HighestOrderB);
-        sortDesc = findViewById(R.id.LowestOrderB);
 
         totalScore = 0;
         totalScanned = 0;
@@ -85,83 +82,66 @@ public class ScannedCodesActivity extends AppCompatActivity {
         CollectionReference userCollectionReference = db.collection("user");
         CollectionReference qrCollectionReference = db.collection("qr");
 
-        DocumentReference userRef = userCollectionReference.document(userId);
 
-        sortAsc.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Sorts the ListView in an Ascending Order
-             * @param view
-             */
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        sortDesc.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Sorts the ListView in descending order
-             * @param view
-             */
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            /**
-             * gets the scanned codes of the specific user
-             * @param task provides the result from the DB
-             */
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    scannedCodes = (List<String>) doc.getData().get("scannedQRs");
-
-                    if (scannedCodes != null) {
-                        for (String hash : scannedCodes) {
-                            DocumentReference ref = qrCollectionReference.document(hash);
-                            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot doc = task.getResult();
-                                        QR qr = new QR(hash, doc.get("id").toString(), doc.get("face").toString(), Integer.parseInt(doc.get("score").toString()));
-                                        qrAdapter.add(qr);
+        if (userId != null) {
 
 
-                                        Integer val = Integer.parseInt(doc.get("score").toString());
-                                        if (val > highestScore){
-                                            highestScore = val;
+            DocumentReference userRef = userCollectionReference.document(userId);
+
+            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                /**
+                 * gets the scanned codes of the specific user
+                 *
+                 * @param task provides the result from the DB
+                 */
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        scannedCodes = (List<String>) doc.getData().get("scannedQRs");
+
+                        if (scannedCodes != null) {
+                            for (String hash : scannedCodes) {
+                                DocumentReference ref = qrCollectionReference.document(hash);
+                                ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot doc = task.getResult();
+                                            QR qr = new QR(hash, doc.get("id").toString(), doc.get("face").toString(), Integer.parseInt(doc.get("score").toString()));
+                                            qrAdapter.add(qr);
+
+
+                                            Integer val = Integer.parseInt(doc.get("score").toString());
+                                            if (val > highestScore) {
+                                                highestScore = val;
+                                            }
+                                            if (val < lowestScore) {
+                                                lowestScore = val;
+                                            }
+                                            totalScore += val;
+                                            totalScanned++;
+
+                                            highScore.setText(highestScore.toString());
+                                            lowScore.setText(lowestScore.toString());
+                                            totalQRamount.setText(totalScanned.toString());
+                                            totalQRScore.setText(totalScore.toString());
+                                        } else {
+                                            Log.d(TAG, "Failed with: ", task.getException());
                                         }
-                                        if (val < lowestScore){
-                                            lowestScore = val;
-                                        }
-                                        totalScore += val;
-                                        totalScanned++;
-
-                                        highScore.setText(highestScore.toString());
-                                        lowScore.setText(lowestScore.toString());
-                                        totalQRamount.setText(totalScanned.toString());
-                                        totalQRScore.setText(totalScore.toString());
-                                    } else {
-                                        Log.d(TAG, "Failed with: ", task.getException());
                                     }
-                                }
-                            });
-                            qrAdapter.notifyDataSetChanged();
+                                });
+                                qrAdapter.notifyDataSetChanged();
+                            }
+
                         }
 
+                    } else {
+                        Log.d(TAG, "Failed with: ", task.getException());
                     }
-
-                } else {
-                    Log.d(TAG, "Failed with: ", task.getException());
                 }
-            }
-        });
-
+            });
+        }
 
 
     }

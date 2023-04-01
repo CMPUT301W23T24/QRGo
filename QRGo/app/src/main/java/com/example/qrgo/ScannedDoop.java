@@ -48,34 +48,36 @@ public class ScannedDoop extends AppCompatActivity {
         // To read from a firestore database
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("qr");
-        collectionReference.document(hash)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    /**
-                     * deals with who scanned the query
-                     * @param task provides the result from the query
-                     */
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Log.d(TAG, document.get("scannedBy").toString());
-                                ArrayList<String> scannedUsers = (ArrayList<String>) document.get("scannedBy");
-                                for(int i = 0; i < scannedUsers.size(); i++){
-                                    scannedAdapter.add(scannedUsers.get(i));
-                                    //dataList.add(scannedUsers.get(i));
-                                    scannedAdapter.notifyDataSetChanged();
+        if (hash != null) {
+            collectionReference.document(hash)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        /**
+                         * deals with who scanned the query
+                         *
+                         * @param task provides the result from the query
+                         */
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                    Log.d(TAG, document.get("scannedBy").toString());
+                                    ArrayList<String> scannedUsers = (ArrayList<String>) document.get("scannedBy");
+                                    for (int i = 0; i < scannedUsers.size(); i++) {
+                                        scannedAdapter.add(scannedUsers.get(i));
+                                        //dataList.add(scannedUsers.get(i));
+                                        scannedAdapter.notifyDataSetChanged();
+                                    }
+                                } else {
+                                    Log.d(TAG, "No such document");
                                 }
                             } else {
-                                Log.d(TAG, "No such document");
+                                Log.d(TAG, "get failed with ", task.getException());
                             }
-                        } else {
-                            Log.d(TAG, "get failed with ", task.getException());
                         }
-                    }
-                });
-
+                    });
+        }
 
     }
 
