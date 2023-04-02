@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Views the profile of the user who has the phone
@@ -90,23 +91,21 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
      */
     @Override
     public void onOkkPressed(User newUser, String userName, String name, String email, Integer phoneNum) {
-        if (uniqueUsername(newUser, userName) == true) {
-            newUser.setUserName(userName);
-            newUser.setName(name);
-            newUser.setEmail(email);
-            newUser.setPhoneNum(phoneNum);
-            newUser.updateDb();
+        newUser.setUserName(userName);
+        newUser.setName(name);
+        newUser.setEmail(email);
+        newUser.setPhoneNum(phoneNum);
 
-            updateTextView(newUser);
-        }
-        else{
-            newUser.setUserName(userName);
-            newUser.setName(name);
-            newUser.setEmail(email);
-            newUser.setPhoneNum(phoneNum);
+        Boolean result= newUser.checkUniqueness(newUser.getDeviceID());
+
+        if (!result){
             newUser.updateDb();
             Toast.makeText(getApplicationContext(), "Your username wasn't unique, please try again!", Toast.LENGTH_SHORT).show();
             new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
+        }
+        else{
+            newUser.updateDb();
+            updateTextView(newUser);
         }
     }
     /**
@@ -133,34 +132,4 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         number5.setText(String.valueOf(user.getPhoneNum()));
     }
 
-    public boolean uniqueUsername(User user1, String userName) {
-        String deviceID= user1.getDeviceID();
-        FirebaseFirestore db;
-        ArrayList<String> usernames = new ArrayList<String>();
-        db = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = db.collection("user");
-        collectionReference.whereEqualTo("username", true)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot snapshot : task.getResult()) {
-                                //stops working after this, says a resource call failed to close
-                                if ( deviceID !=(snapshot.getId())) {
-                                    String str = snapshot.getString("username");
-                                    usernames.add(str);
-                                }
-                            }
-                        }
-                    }
-                });
-        for (String i : usernames) {
-            Log.d(TAG,"i");
-            if (i.equals(userName)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

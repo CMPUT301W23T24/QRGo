@@ -1,8 +1,5 @@
 package com.example.qrgo;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -20,14 +17,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class is responsible for the information of the user
@@ -280,6 +276,21 @@ public class User extends AppCompatActivity {
      */
     public List<String> getScannedQRs() {
         return this.scannedQRs;
+    }
+
+    public Boolean checkUniqueness(String playerId){
+        AtomicReference<Boolean> output = new AtomicReference<>(true);
+        CollectionReference cr = connectToDB();
+        Query query= cr.whereEqualTo("username", this.userName);
+        query.get().addOnSuccessListener(querySnapshot ->{
+            if (querySnapshot.size()>0) {
+                output.set(false);
+            }
+            else{
+                output.set(true);
+                }
+        });
+        return output.get();
     }
 
 }
