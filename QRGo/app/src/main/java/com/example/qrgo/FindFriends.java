@@ -108,18 +108,12 @@ public class FindFriends extends AppCompatActivity implements ViewFriendProfileF
              * Lets the user view their friends' profile details, using a fragment
              * @param view
              */
-            /*userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    int index= i;
-                    User selUser= userAdapter.getItem(i);
-                    new ViewFriendProfileFragment(selUser).show(getSupportFragmentManager(), "View Profile");*/
             userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getApplicationContext(),ViewOtherProfile.class);
-                    intent.putExtra("deviceId",userAdapter.getItem(i).getDeviceID());
-                    startActivity(intent);
+                    int index = i;
+                    User selUser = userAdapter.getItem(i);
+                    new ViewFriendProfileFragment(selUser).show(getSupportFragmentManager(), "View Profile");
                 }
             });
         }
