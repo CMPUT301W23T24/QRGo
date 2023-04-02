@@ -2,9 +2,11 @@ package com.example.qrgo;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -93,6 +97,26 @@ public class SearchQR extends AppCompatActivity {
                             });
 
                 }
+            }
+        });
+
+        qrList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                QR qr = qrs.get(i);
+                Intent intent = new Intent(getApplicationContext(), QRDetailsMain.class);
+                intent.putExtra("hash", qr.getHash());
+                cr.document(qr.getHash()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot doc = task.getResult();
+                        ArrayList<Object> users = (ArrayList<Object>) doc.get("scannedBy");
+                        intent.putExtra("userId",users.get(0).toString());
+                        startActivity(intent);
+                    }
+                });
+
+
             }
         });
 

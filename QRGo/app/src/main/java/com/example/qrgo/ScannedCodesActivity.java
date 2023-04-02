@@ -215,7 +215,6 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                             });
 
                                     // Removes the QR from the Scanned Codes Activity
-                                    //user.deleteQR(userId, qrs.get(pos).getHash(), qrs.get(pos).getScore());
                                     qrs.remove(pos);
                                     qrAdapter.notifyDataSetChanged();
 

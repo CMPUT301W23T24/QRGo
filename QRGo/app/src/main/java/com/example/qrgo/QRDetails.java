@@ -81,7 +81,6 @@ public class QRDetails extends AppCompatActivity {
 
         String content = getIntent().getStringExtra("qrContent");
         userId = getIntent().getStringExtra("userId");
-        user = new User(userId);
 
 
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
@@ -99,6 +98,8 @@ public class QRDetails extends AppCompatActivity {
 
 
         if (content != null && userId != null) {
+            user = new User(userId);
+
             hash = qrContent.createHash(content);
             score = qrContent.calcScore(hash);
             face = qrContent.createFace(hash);
@@ -113,6 +114,9 @@ public class QRDetails extends AppCompatActivity {
             nameTV.setText(name);
             scoreTV.setText(score.toString());
             qrContent.addToDB(hash, qr);
+
+
+
             user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
                 @Override
                 public void onUserLoaded(User user) {
@@ -121,11 +125,11 @@ public class QRDetails extends AppCompatActivity {
             });
 
             //user.addQR(userId, hash);
+            user.addQR(userId, hash, score);
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        user.addQR(userId, hash, score);
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
