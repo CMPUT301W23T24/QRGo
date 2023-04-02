@@ -147,7 +147,11 @@ public class MainActivity extends AppCompatActivity {
         
         
             viewMap.setOnClickListener(new View.OnClickListener() {
-            @Override
+                /**
+                 * view the map activity
+                 * @param view
+                 */
+                @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);

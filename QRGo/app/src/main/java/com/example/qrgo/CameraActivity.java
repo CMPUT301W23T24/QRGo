@@ -76,6 +76,11 @@ public class CameraActivity extends AppCompatActivity {
     private DocumentReference qrRef;
     private Bitmap bitmap;
 
+
+    /**
+     * Creates the activity for the camera
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,11 @@ public class CameraActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * creates the Url file
+     * @return
+     */
     private Uri createUri() {
         File imageFile = new File(getApplicationContext().getFilesDir(), "camera_photo.jpg");
         return FileProvider.getUriForFile(
@@ -111,6 +121,9 @@ public class CameraActivity extends AppCompatActivity {
                 "com.example.camerapermission.fileProvider", imageFile);
     }
 
+    /**
+     * register the launcher to take a picture
+     */
     private void registerPictureLauncher() {
         takePictureLauncher = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
@@ -129,11 +142,15 @@ public class CameraActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Saves the image to the database
+     */
     public void saveToDb() {
 
         BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         String base64String = convertBitmapToString(bitmap);
+
 
         Map<String, String> photoMap = new HashMap<>();
         photoMap.put(userId, base64String);
@@ -161,6 +178,11 @@ public class CameraActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * converts the bitmap image into a string
+     * @param bitmap
+     * @return bitmap as a string
+     */
     public String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 1, outputStream);
@@ -168,11 +190,19 @@ public class CameraActivity extends AppCompatActivity {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
+    /**
+     * converts a string image to a bitmap
+     * @param base64String
+     * @return bitmap
+     */
     public Bitmap convertStringToBitmap(String base64String) {
         byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, new BitmapFactory.Options());
     }
 
+    /**
+     * verifies if an image already exists within the database
+     */
     private void checkImageExist() {
         qrRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

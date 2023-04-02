@@ -105,7 +105,15 @@ public class FindFriends extends AppCompatActivity {
                 }
             });
 
+
             userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                /**
+                 * click a user and view their profile
+                 * @param adapterView
+                 * @param view
+                 * @param i
+                 * @param l
+                 */
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(getApplicationContext(),ViewOtherProfile.class);
