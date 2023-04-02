@@ -88,11 +88,13 @@ public class QRDetailsMain extends AppCompatActivity {
         scannersB = (Button) findViewById(R.id.ScannersButton);
         commentsB = (Button) findViewById(R.id.CommentsButton);
 
-        String content = getIntent().getStringExtra("qrContent");
-        userId = getIntent().getStringExtra("userId");
+        //String content = getIntent().getStringExtra("qrContent");
+        //userId = getIntent().getStringExtra("userId");
 
         userId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (userId != null && content != null) {
+        Log.d("userId", userId);
+
+        if (userId != null) {
             user = new User(userId);
 
             user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
