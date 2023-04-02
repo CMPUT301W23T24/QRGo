@@ -62,25 +62,11 @@
             app:layout_constraintTop_toBottomOf="@+id/TVName" />
 
         <Button
-            android:id="@+id/CommentsButton"
-            android:layout_width="298dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/blue"
-            android:text="Comments"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.477"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ScannersButton"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
             android:id="@+id/LocationButton"
             android:layout_width="134dp"
             android:layout_height="46dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="@color/blue"
             android:text="Location"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,33 +80,34 @@
             android:text="Photo"
             app:layout_constraintBottom_toBottomOf="@+id/LocationButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.351"
+            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toEndOf="@+id/LocationButton" />
 
         <Button
             android:id="@+id/ScannersButton"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/blue"
             android:text="People who have scanned this"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.469"
+            app:layout_constraintHorizontal_bias="0.486"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LocationButton" />
 
         <Button
-            android:id="@+id/DeleteButton"
+            android:id="@+id/CommentsButton"
             android:layout_width="298dp"
-            android:layout_height="46dp"
-            android:backgroundTint="@color/red"
-            android:text="Delete"
+            android:layout_height="43dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/blue"
+            android:text="Comments"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.477"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CommentsButton"
-            app:layout_constraintVertical_bias="0.115" />
+            app:layout_constraintTop_toBottomOf="@+id/ScannersButton"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

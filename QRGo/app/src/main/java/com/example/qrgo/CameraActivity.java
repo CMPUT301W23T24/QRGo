@@ -1,5 +1,7 @@
 package com.example.qrgo;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,14 +34,25 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.core.View;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is responsible for the camera functionality
@@ -53,10 +67,14 @@ public class CameraActivity extends AppCompatActivity {
     private final static int WRITE_CODE = 100;
     OutputStream outputStream;
     private String hash;
+    private String userId;
     private String imageName;
     private File directory;
     private File imagePath;
 
+    private FirebaseFirestore db;
+    private DocumentReference qrRef;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,19 +84,13 @@ public class CameraActivity extends AppCompatActivity {
         finishButton = findViewById(R.id.finish_btn);
 
         hash = getIntent().getStringExtra("hash");
+        userId = getIntent().getStringExtra("userId");
+        db = FirebaseFirestore.getInstance();
+        qrRef = db.collection("qr").document(hash);
 
+        checkImageExist();
 
         image = findViewById(R.id.image);
-
-        imageName = hash + ".jpg";
-
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/QRGo/app_data/imageDir
-        directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        imagePath = new File(directory, imageName);
-        Log.d("directory", directory.toString());
-        Log.d("image path", imagePath.toString());
 
         imageUri = createUri();
         registerPictureLauncher();
@@ -88,25 +100,12 @@ public class CameraActivity extends AppCompatActivity {
         });
 
         finishButton.setOnClickListener(view -> {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                askPermission();
-            } else {
-                saveFile();
-            }
-
-
+            saveToDb();
         });
-
-        if (imagePath.exists()) {
-            loadImageFromStorage();
-        }
     }
 
     private Uri createUri() {
         File imageFile = new File(getApplicationContext().getFilesDir(), "camera_photo.jpg");
-        Log.d("hello", imageFile.toString());
         return FileProvider.getUriForFile(
                 getApplicationContext(),
                 "com.example.camerapermission.fileProvider", imageFile);
@@ -130,57 +129,78 @@ public class CameraActivity extends AppCompatActivity {
         );
     }
 
-    private void saveFile() {
+    public void saveToDb() {
+
         BitmapDrawable drawable = (BitmapDrawable) image.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
+        String base64String = convertBitmapToString(bitmap);
 
-        try {
-            outputStream = new FileOutputStream(imagePath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            Toast.makeText(CameraActivity.this, "Successfully saved", Toast.LENGTH_SHORT).show();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        Map<String, String> photoMap = new HashMap<>();
+        photoMap.put(userId, base64String);
+        Log.d("hash", hash);
+        Log.d("base64string: ", photoMap.toString());
 
-        try {
-            outputStream.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            outputStream.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        finish();
-    }
-
-    private void loadImageFromStorage()
-    {
-        try {
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(imagePath));
-            image.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private void askPermission() {
-        ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_CODE);
-    }
-
-
-
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantRequest) {
-        if (requestCode == WRITE_CODE) {
-            if (grantRequest.length > 0 && grantRequest[0] == PackageManager.PERMISSION_GRANTED) {
-                saveFile();
-            } else {
-                Toast.makeText(CameraActivity.this, "Write permission required", Toast.LENGTH_SHORT).show();
+        qrRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()) {
+                        Log.d(TAG, "exists!");
+                        qrRef.update("photos", FieldValue.arrayUnion(photoMap));
+                    } else {
+                        Log.d(TAG, "DNE");
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
             }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantRequest);
+        });
+
+        finish();
+
+    }
+
+    public String convertBitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 1, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public Bitmap convertStringToBitmap(String base64String) {
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, new BitmapFactory.Options());
+    }
+
+    private void checkImageExist() {
+        qrRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()) {
+                        ArrayList<HashMap<String, String>> photosList = (ArrayList<HashMap<String, String>>) doc.get("photos");
+                        if (photosList != null) {
+                            for (HashMap<String, String> photoMap : photosList) {
+                                if (photoMap.containsKey(userId)) {
+                                    // User has a photo with base64string
+                                    String base64String = photoMap.get(userId);
+                                    // Do something with the base64string here
+                                    Log.d("retrieved string", base64String);
+                                    bitmap = convertStringToBitmap(base64String);
+                                    image.setImageBitmap(bitmap);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "DNE");
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
     }
 }

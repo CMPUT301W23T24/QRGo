@@ -12,7 +12,7 @@ public class QRTest {
 
     @Test
     void GetSetQRSearch() {
-        QR mockQR = new QR("", "", "");
+        QR mockQR = new QR("", "", "", 0);
         // Test the id getter and setter
         assertEquals("", mockQR.getId());
         assertEquals("", mockQR.getFace());

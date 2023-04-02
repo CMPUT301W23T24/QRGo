@@ -49,9 +49,11 @@ public class QRListAdapter extends ArrayAdapter<QR> {
 
         TextView qrFace = view.findViewById(R.id.qrFaceLV);
         TextView qrName = view.findViewById(R.id.qrNameLV);
+        TextView qrScore = view.findViewById(R.id.qrScoreLV);
 
         qrFace.setText(qr.getFace());
         qrName.setText(qr.getId());
+        qrScore.setText(qr.getScore().toString());
 
 
         return view;
