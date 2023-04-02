@@ -70,6 +70,8 @@ public class User extends AppCompatActivity {
         this.totalScore = totalScore;
     }
 
+
+
     public Integer getTotalScore() {
         return totalScore;
     }

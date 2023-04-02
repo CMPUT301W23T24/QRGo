@@ -66,7 +66,6 @@ public class ScannedCodesActivity extends AppCompatActivity {
         setContentView(R.layout.scanned_codes);
         userId = getIntent().getStringExtra("userId");
 
-
         qrList = findViewById(R.id.ScannedQRList);
 
         qrs = new ArrayList<QR>();
@@ -191,7 +190,10 @@ public class ScannedCodesActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // 1. Remove the QR from the User scanned QR list (Done)
                                 // 2. Remove the QR from the scanned codes (Done)
-                                // 3. Remove the the user from the QR's scanned by list
+                                // 3. Remove the the user from the QR's scanned by list (Done)
+
+                                // Update total score
+                                userRef.update("totalScore", FieldValue.increment(-qrs.get(pos).getScore()));
 
                                 // Removes the QR from the user's list of scanned QRs
                                 userRef.update("scannedQRs", FieldValue.arrayRemove(qrs.get(pos).getHash()))
@@ -209,6 +211,7 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                                 Log.e(TAG, "Error removing element from array.", e);
                                             }
                                         });
+
                                 // Removes the user from the QR's list of users scanned
                                 qrRef.update("scannedBy", FieldValue.arrayRemove(userId))
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -227,6 +230,8 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                         });
 
                                 // Removes the QR from the Scanned Codes Activity
+                                // Update the score
+
                                 qrs.remove(pos);
                                 qrAdapter.notifyDataSetChanged();
 
