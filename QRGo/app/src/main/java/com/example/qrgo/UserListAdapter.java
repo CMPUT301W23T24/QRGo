@@ -32,22 +32,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
         this.users = users;
         this.context = context;
     }
-    /*@NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        if (view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.search_user_listview,  parent, false);
-        }
-        User user2 = users.get(position);
-        user2.getValuesFromDb(user2.getDeviceID(), new User.OnUserLoadedListener() {
-            @Override
-            public void onUserLoaded(User user) {
-                TextView userName = view.findViewById(R.id.friendUser);
-                userName.setText(user2.getUserName());
-            }
-        });
-        return view;*/
 
     /**
      * gets the listview
@@ -67,7 +51,6 @@ public class UserListAdapter extends ArrayAdapter<User> {
         } else {
             view = convertView;
         }
-
         User user2 = users.get(position);
         user2.getValuesFromDb(user2.getDeviceID(), new User.OnUserLoadedListener() {
             @Override
