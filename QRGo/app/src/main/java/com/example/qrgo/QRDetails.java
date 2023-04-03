@@ -120,7 +120,7 @@ public class QRDetails extends AppCompatActivity {
             user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
                 @Override
                 public void onUserLoaded(User user) {
-
+                    user.addQR(userId, hash, score, name);
                 }
             });
 
@@ -129,11 +129,6 @@ public class QRDetails extends AppCompatActivity {
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-        user.addQR(userId, hash, score, name);
-
-
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
              * @author Faiyad
