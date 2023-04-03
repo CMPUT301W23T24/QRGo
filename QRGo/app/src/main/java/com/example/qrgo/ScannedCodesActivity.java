@@ -87,12 +87,12 @@ public class ScannedCodesActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         CollectionReference userCollectionReference = db.collection("user");
         CollectionReference qrCollectionReference = db.collection("qr");
-
+        DocumentReference userRef = userCollectionReference.document(userId);
 
         if (userId != null) {
 
 
-            DocumentReference userRef = userCollectionReference.document(userId);
+
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -151,8 +151,8 @@ public class ScannedCodesActivity extends AppCompatActivity {
                         Log.d(TAG, "Failed with: ", task.getException());
                     }
                 }
-            }
-        });
+            });
+
         qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             // Implementing the removal of the QR code from the user QR list
             // Possibly implement throwing exceptions when it fails
