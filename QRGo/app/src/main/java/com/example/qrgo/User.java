@@ -382,6 +382,10 @@ public class User extends AppCompatActivity {
                 .update("maxQRScore", this.maxQRScore);
         collectionReference.document(this.deviceID)
                 .update("maxQRScore", this.maxQRScore);
+        collectionReference.document(this.deviceID)
+                .update("oldMaxQR", this.oldMaxQRName);
+        collectionReference.document(this.deviceID)
+                .update("oldMaxQRName", this.oldMaxQRName);
     }
 
     /**
