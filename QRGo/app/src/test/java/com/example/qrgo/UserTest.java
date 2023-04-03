@@ -1,25 +1,11 @@
 package com.example.qrgo;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 public class UserTest {
 
-    private HashMap<String, Object> testUserData;
     public MockDBUser MockUser() {
         // Set up the mock user data
         MockDBUser testUser = new MockDBUser("testDeviceID");
