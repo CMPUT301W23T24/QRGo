@@ -70,7 +70,7 @@ public class SearchQR extends AppCompatActivity {
                 qrAdapter = new QRListAdapter(SearchQR.this, qrs);
                 qrList.setAdapter(qrAdapter);
 
-                final String name = searchQRET.getText().toString();
+                final String name = searchQRET.getText().toString().toLowerCase();
                 if (name.length() > 0){
                     cr.whereGreaterThanOrEqualTo("id", name)
                             .whereLessThanOrEqualTo("id",name + '\uf8ff' )

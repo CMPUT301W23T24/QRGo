@@ -71,7 +71,7 @@ public class FindFriends extends AppCompatActivity implements ViewFriendProfileF
                     userAdapter= new UserListAdapter(FindFriends.this, users);
                     userList.setAdapter(userAdapter);
 
-                    final String name = username.getText().toString();
+                    final String name = username.getText().toString().toLowerCase();
                     if(name.length() > 0){
                         cr.whereGreaterThanOrEqualTo("username", name)
                                 .whereLessThanOrEqualTo("username", name + '\uf8ff')
