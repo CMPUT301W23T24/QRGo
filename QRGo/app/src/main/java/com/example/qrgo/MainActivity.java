@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.Button;
 
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Starting page of the App
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button viewProfile;
     Button findFriends;
     Button scannedCodes;
+    Button scoreboards;
     Button viewMap;
     String mId;
 
@@ -56,11 +61,24 @@ public class MainActivity extends AppCompatActivity {
 
         User user= new User(mId);
         user.getValuesFromDb(mId, new User.OnUserLoadedListener() {
+            /**
+             * gets the values from the DB
+             * @param user gets the information of the user
+             */
             @Override
             public void onUserLoaded(User user) {
                 //
             }
         });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toastyboy(user);
+            }
+        }, 1500);
+
 
 
         viewProfile = findViewById(R.id.viewProfile);
@@ -129,14 +147,41 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        viewMap.setOnClickListener(new View.OnClickListener() {
+
+        scoreboards = findViewById(R.id.scoreboards_button);
+        scoreboards.setOnClickListener(new View.OnClickListener() {
+            /**
+             * open up the leaderboards/scoreboards
+             * @param view
+             */
             @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ScoreBoardDoop.class);
+                intent.putExtra("userId", mId);
+                startActivity(intent);
+            }});
+        
+        
+        
+            viewMap.setOnClickListener(new View.OnClickListener() {
+                /**
+                 * view the map activity
+                 * @param view
+                 */
+                @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
     }
+
+    public void toastyboy(User user){
+        if (user.getUserName().equals("username")){
+            Toast.makeText(getApplicationContext(), "Please edit your profile to set a unique username", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * sets up the options and launches the cameraActivity
      */

@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRGo"
         tools:targetApi="31">
+        <activity android:name=".TotalScoreBoard"></activity>
+        <activity android:name=".QRScoreBoard"></activity>
+        <activity android:name=".ScoreBoardDoop"></activity>
         <activity android:name=".MainDoop"></activity>
         <activity android:name=".ScannedDoop"></activity>
         <activity android:name=".SearchQR"></activity>
@@ -25,6 +28,7 @@
         <activity android:name=".CameraActivity"></activity>
         <activity android:name=".FindFriends"></activity>
         <activity android:name=".MapActivity"></activity>
+        <activity android:name=".ViewOtherProfile"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -43,6 +47,7 @@
         
         <activity android:name=".ViewProfile"></activity>
         <activity android:name=".ScannedCodesActivity"></activity>
+        <activity android:name=".QRDetailsMain"></activity>
 
         <provider
             android:authorities="com.example.camerapermission.fileProvider"

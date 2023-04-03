@@ -1,81 +1,109 @@
 package com.example.qrgo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.jupiter.api.Test;
 
-
-
-
+import java.util.ArrayList;
 public class UserTest {
-    private NoDBUser MockUser() {
-        NoDBUser user = new NoDBUser("123");
-        user.setName("test_name");
-        user.setUserName("user_test_name");
-        user.setEmail("123@test.com");
-        user.setPhoneNum(123);
-        return user;
+
+    public MockDBUser MockUser() {
+        // Set up the mock user data
+        MockDBUser testUser = new MockDBUser("testDeviceID");
+
+        return testUser;
     }
 
-//    @Test
-//    void getDeviceID() {
-//        NoDBUser testUser = new NoDBUser("123");
-//        assertEquals("123", testUser.getDeviceID());
-//    }
 
+    @Test
+    void getDeviceID() {
+        MockDBUser testUser = MockUser();
+        String id = testUser.getDeviceID();
+        assertEquals(id, "testDeviceID");
+    }
     @Test
     void getUserName() {
-        NoDBUser testUser = MockUser();
-        assertEquals("user_test_name", testUser.getUserName());
-        }
-//        assertEquals("test_name", testUser.getDeviceID());
-//    }
-
-
-
-
-
+        MockDBUser testUser = MockUser();
+        assertEquals("", testUser.getUserName());
+    }
     @Test
     void setUserName() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         testUser.setUserName("test2");
         assertEquals("test2", testUser.getUserName());
     }
     @Test
     void getName() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         String name = testUser.getName();
-        assertEquals("test_name", name);
+        assertEquals("", name);
+
     }
     @Test
     void SetName() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         testUser.setName("name2");
         assertEquals("name2", testUser.getName());
     }
     @Test
     void getEmail() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         String email = testUser.getEmail();
-        assertEquals("123@test.com", email);
+        assertEquals("", email);
     }
     @Test
     void setEmail() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         testUser.setEmail("test2@email.com");
         assertEquals("test2@email.com", testUser.getEmail());
     }
 
     @Test
     void getPhoneNum() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         int phoneNum = testUser.getPhoneNum();
-        assertEquals(123, phoneNum);
+        assertEquals(0, phoneNum);
     }
     @Test
     void setPhoneNum() {
-        NoDBUser testUser = MockUser();
+        MockDBUser testUser = MockUser();
         testUser.setPhoneNum(111);
         assertEquals(111, (int) testUser.getPhoneNum());
+    }
+    @Test
+
+    void getScannedQRs() {
+        MockDBUser testUser = MockUser();
+        ArrayList<String> qrs = (ArrayList<String>) testUser.getScannedQRs();
+        ArrayList<String> testqrs = new ArrayList<String>();
+        assertEquals(qrs, testqrs);
+    }
+    @Test
+    void addScannedQRs() {
+        MockDBUser testUser = MockUser();
+        String addedqr = "TestQR";
+        testUser.addScannedQRs(addedqr);
+        ArrayList<String> qrs = (ArrayList<String>) testUser.getScannedQRs();
+        assertEquals(qrs.size(), 1);
+    }
+    @Test
+    void getTotalScore() {
+        MockDBUser testUser = MockUser();
+        int score = testUser.getTotalScore();
+        assertEquals(score, 0);
+    }
+    @Test
+    void setTotalScore() {
+        MockDBUser testUser = MockUser();
+        testUser.setTotalScore(5);
+        int score = testUser.getTotalScore();
+        assertEquals(score, 5);
+    }
+    @Test
+    void updateTotalScore() {
+        MockDBUser testUser = MockUser();
+        testUser.updateTotalScore(1);
+        int score = testUser.getTotalScore();
+        assertEquals(score, 1);
     }
 
 }

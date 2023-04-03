@@ -34,12 +34,12 @@ import java.util.regex.Pattern;
 public class QRReader {
     private Dictionary<String, Integer> dict = new Hashtable<>();
     private String[][] nameChoices = {
-            {"The ", "A "},
-            {"Greatly ", "Mundanely "},
-            {"Unique ", "Average "},
-            {"Joy", "Strange"},
-            {"Pig ", "Sir "},
-            {"Bildalf","Gando"}
+            {"the ", "a "},
+            {"greatly ", "mundanely "},
+            {"unique ", "average "},
+            {"joy", "strange"},
+            {"pig ", "sir "},
+            {"bildalf","gando"}
     };
     private String[][] imageChoice = {
             {"\n| ~   ~ |",   "\n| ==  == |" },
@@ -234,6 +234,7 @@ public class QRReader {
                     DocumentSnapshot doc = task.getResult();
                     if (doc.exists()){
                         Log.d(TAG, "exists!");
+                        String test = "test";
 
                         ref.update("scannedAmnt", FieldValue.increment(1));
                         ref.update("scannedBy", FieldValue.arrayUnion(qr.getScannedBy()));
@@ -242,7 +243,7 @@ public class QRReader {
                     } else {
                         Log.d(TAG, "DNE");
                         db.collection("qr").document(hash).set(qr);
-
+                        db.collection("qr").document(hash).update("scannedBy", FieldValue.arrayUnion(qr.getScannedBy()));
                     }
                 } else {
                     Log.d(TAG, "Failed with: ", task.getException());

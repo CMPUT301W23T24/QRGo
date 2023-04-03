@@ -6,29 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
 
-        <Button
-            android:id="@+id/HighestOrderB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:backgroundTint="@color/blue"
-            android:text="Order by Highest" />
-
-        <Button
-            android:id="@+id/LowestOrderB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:backgroundTint="@color/blue"
-            android:text="Order by Lowest" />
-
-    </RelativeLayout>
 
     <ListView
         android:id="@+id/ScannedQRList"
@@ -123,7 +101,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="20dp"
             android:text="Total QRs Scanned"
             android:textSize="20dp" />
 
@@ -133,8 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_marginBottom="18dp"
             android:hint="Total Scanned"
             android:textSize="20dp" />
 

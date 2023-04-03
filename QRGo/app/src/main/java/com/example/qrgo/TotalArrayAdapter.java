@@ -13,32 +13,29 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-/**
- * Creates the textview for the list view of user
- */
-public class UserListAdapter extends ArrayAdapter<User> {
+public class TotalArrayAdapter extends ArrayAdapter<User> {
 
     private ArrayList<User> users;
 
     private Context context;
 
     /**
-     * Sets up the context and users for the list view
+     * Displays the content into the List view
      * @param context
      * @param users
      */
-    public UserListAdapter(Context context, ArrayList<User> users){
-        super(context,0,users);
+    public TotalArrayAdapter(Context context, ArrayList<User> users){
+        super(context, 0, users);
         this.users = users;
         this.context = context;
     }
 
     /**
-     * gets the listview
+     *  gets the view of the branch
      * @param position
      * @param convertView
      * @param parent
-     * @return returns the view of the ListView
+     * @return the view of the current page
      */
     @NonNull
     @Override
@@ -46,19 +43,29 @@ public class UserListAdapter extends ArrayAdapter<User> {
             parent) {
         View view;
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.search_user_listview,
+            view = LayoutInflater.from(getContext()).inflate(R.layout.total_score_content,
                     parent, false);
         } else {
             view = convertView;
         }
+
+        // User userId = getItem(position);
         User user2 = users.get(position);
-        user2.getValuesFromDb(user2.getDeviceID(), new User.OnUserLoadedListener() {
-            @Override
-            public void onUserLoaded(User user) {
-                TextView scanned_user = view.findViewById(R.id.friendUser);
-                scanned_user.setText(user.getUserName());
-            }
-        });
+
+        // position can be used print out rank => position + 1
+
+        TextView loaded_user = view.findViewById(R.id.user_name);
+        loaded_user.setText(user2.getUserName());
+
+        TextView rank_user = view.findViewById(R.id.total_rank);
+        rank_user.setText(String.valueOf(position + 1) + ".");
+
+        TextView total_score = view.findViewById(R.id.total_score);
+        total_score.setText(user2.getTotalScore().toString());
+
+        Log.d("position:", user2.getUserName() + " => " + String.valueOf(position));
+
+
         return view;
     }
 }
