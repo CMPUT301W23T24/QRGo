@@ -1,7 +1,10 @@
 package com.example.qrgo;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +92,7 @@ public class FindFriends extends AppCompatActivity {
                     }
                 }
             });
+
             back.setOnClickListener(new View.OnClickListener() {
 
                 /**
@@ -98,6 +102,15 @@ public class FindFriends extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     finish();
+                }
+            });
+
+            userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(getApplicationContext(),ViewOtherProfile.class);
+                    intent.putExtra("deviceId",userAdapter.getItem(i).getDeviceID());
+                    startActivity(intent);
                 }
             });
         }

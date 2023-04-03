@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -49,7 +50,6 @@ public class QRDetailsMain extends AppCompatActivity {
     private Button photoB;
     private Button scannersB;
     private Button commentsB;
-    private Button deleteB;
     private Button showPhotoBtn;
 
     private QRReader qrContent;
@@ -77,15 +77,7 @@ public class QRDetailsMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_details_main);
 
-        String content = getIntent().getStringExtra("qrContent");
-        userId = getIntent().getStringExtra("userId");
-        user = new User(userId);
-        user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
-            @Override
-            public void onUserLoaded(User user) {
 
-            }
-        });
 
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
@@ -95,29 +87,45 @@ public class QRDetailsMain extends AppCompatActivity {
         photoB = (Button) findViewById(R.id.PhotoButton);
         scannersB = (Button) findViewById(R.id.ScannersButton);
         commentsB = (Button) findViewById(R.id.CommentsButton);
-        deleteB = (Button) findViewById(R.id.DeleteButton);
+
+        //String content = getIntent().getStringExtra("qrContent");
+        //userId = getIntent().getStringExtra("userId");
+
+        userId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        Log.d("userId", userId);
+
+        if (userId != null) {
+            user = new User(userId);
+
+            user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+                @Override
+                public void onUserLoaded(User user) {
+
+                }
+            });
 
 
-        qrContent = new QRReader();
-        hash = getIntent().getStringExtra("hash");
+            qrContent = new QRReader();
+            hash = getIntent().getStringExtra("hash");
 
 
-        score = qrContent.calcScore(hash);
-        face = qrContent.createFace(hash);
-        name = qrContent.createName(hash);
+            score = qrContent.calcScore(hash);
+            face = qrContent.createFace(hash);
+            name = qrContent.createName(hash);
+
+            QRFaceTV.setText(face);
+            nameTV.setText(name);
+            scoreTV.setText(score.toString());
+
+            QR qr = new QR(name, userId, score, face);
 
 
-        QR qr = new QR( name, userId, score, face);
-
-        QRFaceTV.setText(face);
-        nameTV.setText(name);
-        scoreTV.setText(score.toString());
-        qrContent.addToDB(hash, qr);
+            //qrContent.addToDB(hash, qr);
 
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
+        }
         locationB.setOnClickListener(new View.OnClickListener() {
             /**
              * @author Faiyad
@@ -180,24 +188,7 @@ public class QRDetailsMain extends AppCompatActivity {
             }
         });
 
-        deleteB.setOnClickListener(new View.OnClickListener() {
-            /**
-             * @author Ayaan
-             * Upon clicking a the button provide the location of where the user is
-             * @param view
-             */
-            @Override
-            public void onClick(View view) {
-                //TODO remove the QR from DB
-                qrContent.removeFromDB(hash, qr);
-                user.deleteQR(userId, hash, qr.getScore());
-//                Intent intent = new Intent(QRDetails.this, MainActivity.class);
-//
-//                startActivity(intent);
-//                finish(); // need to ask ayaan if this is needed?
-                Toast.makeText(QRDetailsMain.this, "Deleted this QR from user", Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
     }
 
