@@ -2,6 +2,7 @@ package com.example.qrgo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,6 +40,7 @@ public class FindFriends extends AppCompatActivity implements ViewFriendProfileF
         private ArrayList<User> users;
         private ArrayAdapter<User> userAdapter;
         private FirebaseFirestore db;
+        private String mId;
 
     /**
      * Creates the view of the search page
@@ -48,6 +50,8 @@ public class FindFriends extends AppCompatActivity implements ViewFriendProfileF
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.find_friends);
+
+            mId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
 
             ListView userList = (ListView) findViewById(R.id.qrSearchList);
             back= findViewById(R.id.backBtn);
@@ -84,6 +88,9 @@ public class FindFriends extends AppCompatActivity implements ViewFriendProfileF
                                                     }
                                                 });
                                                 userAdapter.add(user);
+                                                if(mId.equals(String.valueOf(user.getDeviceID()))){
+                                                    userAdapter.remove(user);
+                                                }
                                                 userAdapter.notifyDataSetChanged();
                                             }
                                         }

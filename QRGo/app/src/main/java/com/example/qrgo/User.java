@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -314,23 +315,4 @@ public class User extends AppCompatActivity {
         CollectionReference collectionReference = connectToDB();
         collectionReference.document(this.deviceID).update("totalScore", FieldValue.increment(i));
     }
-
-
-
-
-    public Boolean checkUniqueness(String playerId){
-        AtomicReference<Boolean> output = new AtomicReference<>(true);
-        CollectionReference cr = connectToDB();
-        Query query= cr.whereEqualTo("username", this.userName);
-        query.get().addOnSuccessListener(querySnapshot ->{
-            if (querySnapshot.size()>0) {
-                output.set(false);
-            }
-            else{
-                output.set(true);
-                }
-        });
-        return output.get();
-    }
-
 }

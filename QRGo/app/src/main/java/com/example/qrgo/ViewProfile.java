@@ -1,6 +1,7 @@
 package com.example.qrgo;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -96,18 +98,140 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
         newUser.setEmail(email);
         newUser.setPhoneNum(phoneNum);
 
-        Boolean result= newUser.checkUniqueness(newUser.getDeviceID());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference cr = db.collection("user");
 
-        if (!result){
-            newUser.updateDb();
-            Toast.makeText(getApplicationContext(), "Your username wasn't unique, please try again!", Toast.LENGTH_SHORT).show();
-            new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
+        ArrayList<String> usernames = new ArrayList<String>();
+        final Boolean[] result = {false};
+        if (userName.length() > 0) {
+            cr.whereEqualTo("username", userName)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    if (snapshot.getId().equals(String.valueOf(newUser.getDeviceID()))) {
+                                        Log.d(TAG, "yes");
+                                    } else {
+                                        Log.d(TAG, String.valueOf(snapshot.getString("username")));
+                                        Log.d(TAG, String.valueOf(snapshot.getId()));
+                                        Log.d(TAG, String.valueOf(newUser.getDeviceID()));
+                                        usernames.add(snapshot.getString("username"));
+                                    }
+                                }
+
+                                if (usernames.size() > 0) {
+                                    Log.d(TAG, "1");
+                                    result[0] = false;
+                                } else {
+                                    Log.d(TAG, String.valueOf(usernames.size()));
+                                    Log.d(TAG, "2");
+                                    result[0] = true;
+                                }
+                            }
+                        }
+                    });
         }
         else{
             newUser.updateDb();
-            updateTextView(newUser);
+            Toast.makeText(getApplicationContext(), "Username required!", Toast.LENGTH_SHORT).show();
+            new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
         }
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "works");
+                if (result[0].equals(false)) {
+                    newUser.updateDb();
+                    updateTextView(newUser);
+                    Toast.makeText(getApplicationContext(), "Your username wasn't unique/ incorrect, please try again!", Toast.LENGTH_SHORT).show();
+                    new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
+                } else {
+                    newUser.updateDb();
+                    updateTextView(newUser);
+                }
+            }
+        }, 2000);
     }
+    /**
+     * Once pressed, prompts the user to either enter a correct username or ignore it depending on the uniqueness
+     * @param newUser
+     * @param userName
+     * @param name
+     * @param email
+     * @param phoneNum
+     */
+    @Override
+    public void onCancelPressed(User newUser, String userName, String name, String email, Integer phoneNum) {
+        newUser.setUserName(userName);
+        newUser.setName(name);
+        newUser.setEmail(email);
+        newUser.setPhoneNum(phoneNum);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference cr = db.collection("user");
+
+        ArrayList<String> usernames = new ArrayList<String>();
+        final Boolean[] result = {false};
+        if (userName.length() > 0) {
+            cr.whereEqualTo("username", userName)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    if (snapshot.getId().equals(String.valueOf(newUser.getDeviceID()))) {
+                                        Log.d(TAG, "yes");
+                                    } else {
+                                        Log.d(TAG, String.valueOf(snapshot.getString("username")));
+                                        Log.d(TAG, String.valueOf(snapshot.getId()));
+                                        Log.d(TAG, String.valueOf(newUser.getDeviceID()));
+                                        usernames.add(snapshot.getString("username"));
+                                    }
+                                }
+
+                                if (usernames.size() > 0) {
+                                    Log.d(TAG, "1");
+                                    result[0] = false;
+                                } else {
+                                    Log.d(TAG, String.valueOf(usernames.size()));
+                                    Log.d(TAG, "2");
+                                    result[0] = true;
+                                }
+                            }
+                        }
+                    });
+        }
+        else{
+            newUser.updateDb();
+            Toast.makeText(getApplicationContext(), "Username required!", Toast.LENGTH_SHORT).show();
+            result[0]=true;
+            new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
+        }
+
+        Handler handler= new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (result[0].equals(false)) {
+                    newUser.updateDb();
+                    updateTextView(newUser);
+                    Toast.makeText(getApplicationContext(), "Please provide a unique username!", Toast.LENGTH_SHORT).show();
+                    new EditProfileFragment(newUser).show(getSupportFragmentManager(), "Edit Profile");
+                } else {
+                    newUser.updateDb();
+                    updateTextView(newUser);
+                }
+            }
+        },2000);
+
+
+    }
+
     /**
      * when called, it updates the textviews on the page
      * @param user
