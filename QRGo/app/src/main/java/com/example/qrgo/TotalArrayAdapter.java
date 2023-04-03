@@ -52,11 +52,18 @@ public class TotalArrayAdapter extends ArrayAdapter<User> {
         // User userId = getItem(position);
         User user2 = users.get(position);
 
+        // position can be used print out rank => position + 1
+
         TextView loaded_user = view.findViewById(R.id.user_name);
         loaded_user.setText(user2.getUserName());
 
+        TextView rank_user = view.findViewById(R.id.total_rank);
+        rank_user.setText(String.valueOf(position + 1) + ".");
+
         TextView total_score = view.findViewById(R.id.total_score);
         total_score.setText(user2.getTotalScore().toString());
+
+        Log.d("position:", user2.getUserName() + " => " + String.valueOf(position));
 
 
         return view;

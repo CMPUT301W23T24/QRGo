@@ -17,8 +17,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +36,10 @@ public class User extends AppCompatActivity {
     private Integer phoneNum;
     private List<String> scannedQRs;
     private Integer totalScore;
+    private Integer maxQRScore;
+    private Integer oldMaxQR;
+    private String maxQRName;
+    private String oldMaxQRName;
     OnUserLoadedListener listener;
 
 
@@ -61,6 +63,10 @@ public class User extends AppCompatActivity {
         this.phoneNum = 0;
         this.scannedQRs = new ArrayList<>();
         this.totalScore = 0;
+        this.maxQRScore = 0;
+        this.oldMaxQR = 0;
+        this.maxQRName = "";
+        this.oldMaxQRName = "";
     }
 
     public User(String deviceID, String username, Integer totalScore){
@@ -69,7 +75,28 @@ public class User extends AppCompatActivity {
         this.totalScore = totalScore;
     }
 
+    public User(String deviceID, String username, String maxQRName, Integer maxQRScore){
+        this.deviceID = deviceID;
+        this.userName = username;
+        this.maxQRScore = maxQRScore;
+        this.maxQRName = maxQRName;
+    }
 
+    public String getMaxQRName() {
+        return maxQRName;
+    }
+
+    public void setMaxQRName(String maxQRName) {
+        this.maxQRName = maxQRName;
+    }
+
+    public Integer getMaxQRScore() {
+        return maxQRScore;
+    }
+
+    public void setMaxQRScore(Integer maxQRScore) {
+        this.maxQRScore = maxQRScore;
+    }
 
     public Integer getTotalScore() {
         return totalScore;
@@ -186,6 +213,10 @@ public class User extends AppCompatActivity {
         playerData.put("phoneNum", this.phoneNum);
         playerData.put("scannedQRs", this.scannedQRs);
         playerData.put("totalScore", this.totalScore);
+        playerData.put("maxQRScore", this.maxQRScore);
+        playerData.put("oldMaxQR", this.oldMaxQR);
+        playerData.put("maxQRName", this.maxQRName);
+        playerData.put("oldMaxQRName", this.oldMaxQRName);
 
         collectionReference.document(deviceID)
                 .set(playerData)
@@ -224,6 +255,8 @@ public class User extends AppCompatActivity {
                         phoneNum = ((Long) doc.getData().get("phoneNum")).intValue();
                         scannedQRs = (List<String>) doc.getData().get("scannedQRs");
                         totalScore = ((Long) doc.getData().get("totalScore")).intValue();
+                        //maxQRScore = ((Long) doc.getData().get("maxQRScore")).intValue();
+                        maxQRName = (String) doc.getData().get("maxQRName");
 
                         Log.d("userId in user", playerId);
                         Log.d("userName in user", getUserName());
@@ -244,17 +277,39 @@ public class User extends AppCompatActivity {
      * @param playerId ID of the plater/phonId
      * @param hash hash of the QR
      */
-    public void addQR(String playerId, String hash, Integer score) {
-        CollectionReference collectionReference = connectToDB();
-        if (!scannedQRs.contains(hash)) {
-            this.scannedQRs.add(hash);
-            DocumentReference ref = collectionReference.document(playerId);
-            ref.update("scannedQRs", FieldValue.arrayUnion(hash));
-            updateTotalScore(score);
-        } else {
-            Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
-        }
+    public void addQR(String playerId, String hash, Integer score, String qr_name) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference qrRef = db.collection("qr").document(hash);
+        CollectionReference collectionReference = connectToDB(); // assuming this is defined elsewhere
+
+        qrRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        int scannedAmnt = document.getLong("scannedAmnt").intValue();
+                        if (!scannedQRs.contains(hash)) {
+                            scannedQRs.add(hash);
+                            DocumentReference ref = collectionReference.document(playerId);
+                            ref.update("scannedQRs", FieldValue.arrayUnion(hash));
+                            updateTotalScore(score);
+                            if (scannedAmnt == 1 && maxQRScore < score) {
+                                oldMaxQR = maxQRScore;
+                                setMaxQRScore(score);
+                                setMaxQRName(qr_name);
+                            }
+                        } else {
+                            Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
+
 
     /**
      * deletes the QR from the User DB
@@ -268,6 +323,10 @@ public class User extends AppCompatActivity {
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
             updateTotalScore(-score);
+            if(this.maxQRScore == score){
+                setMaxQRName(this.oldMaxQRName);
+                setMaxQRScore(this.oldMaxQR);
+            }
         } else {
             Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }

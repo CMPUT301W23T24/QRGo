@@ -125,10 +125,13 @@ public class QRDetails extends AppCompatActivity {
             });
 
             //user.addQR(userId, hash);
-            user.addQR(userId, hash, score);
+            //user.addQR(userId, hash, score);
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        user.addQR(userId, hash, score, name);
 
 
         locationB.setOnClickListener(new View.OnClickListener() {
