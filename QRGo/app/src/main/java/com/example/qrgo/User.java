@@ -269,7 +269,7 @@ public class User extends AppCompatActivity {
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
             updateTotalScore(-score);
         } else {
-            Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -309,6 +309,8 @@ public class User extends AppCompatActivity {
 
     public void updateTotalScore(int i){
         this.totalScore += i;
+        Log.d("DEBUGSCORE", String.valueOf(i));
+
         CollectionReference collectionReference = connectToDB();
         collectionReference.document(this.deviceID).update("totalScore", FieldValue.increment(i));
     }

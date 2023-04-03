@@ -28,6 +28,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -91,68 +92,17 @@ public class ScannedCodesActivity extends AppCompatActivity {
 
 
         if (userId != null) {
+            user = new User(userId);
+            user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+                @Override
+                public void onUserLoaded(User user) {
+                }
+            });
 
 
             DocumentReference userRef = userCollectionReference.document(userId);
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot doc = task.getResult();
-                    totalQRScore.setText(doc.get("totalScore").toString());
-                }
-            });
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                /**
-                 * gets the scanned codes of the specific user
-                 *
-                 * @param task provides the result from the DB
-                 */
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
-                        scannedCodes = (List<String>) doc.getData().get("scannedQRs");
+            updateScore(userRef);
 
-                        if (scannedCodes != null) {
-                            for (String hash : scannedCodes) {
-                                DocumentReference ref = qrCollectionReference.document(hash);
-                                ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            DocumentSnapshot doc = task.getResult();
-                                            QR qr = new QR(hash, doc.get("id").toString(), doc.get("face").toString(), Integer.parseInt(doc.get("score").toString()));
-                                            qrAdapter.add(qr);
-
-
-                                            Integer val = Integer.parseInt(doc.get("score").toString());
-                                            if (val > highestScore) {
-                                                highestScore = val;
-                                            }
-                                            if (val < lowestScore) {
-                                                lowestScore = val;
-                                            }
-
-                                            totalScanned++;
-
-                                            highScore.setText(highestScore.toString());
-                                            lowScore.setText(lowestScore.toString());
-                                            totalQRamount.setText(totalScanned.toString());
-                                        } else {
-                                            Log.d(TAG, "Failed with: ", task.getException());
-                                        }
-                                    }
-                                });
-                                qrAdapter.notifyDataSetChanged();
-                            }
-
-                        }
-
-                    } else {
-                        Log.d(TAG, "Failed with: ", task.getException());
-                    }
-                }
-            });
 
 
             qrList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -180,23 +130,24 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                     // 1. Remove the QR from the User scanned QR list (Done)
                                     // 2. Remove the QR from the scanned codes (Done)
                                     // 3. Remove the the user from the QR's scanned by list
-
+                                    user.deleteQR(userId, qrs.get(pos).getHash(), qrs.get(pos).getScore());
+                                    Log.d("DEBUG", qrs.get(pos).getScore().toString());
                                     // Removes the QR from the user's list of scanned QRs
-                                    userRef.update("scannedQRs", FieldValue.arrayRemove(qrs.get(pos).getHash()))
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    // Successfully removed element from the array
-                                                    Log.d(TAG, "Element removed from array.");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    // Failed to remove element from the array
-                                                    Log.e(TAG, "Error removing element from array.", e);
-                                                }
-                                            });
+//                                    userRef.update("scannedQRs", FieldValue.arrayRemove(qrs.get(pos).getHash()))
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    // Successfully removed element from the array
+//                                                    Log.d(TAG, "Element removed from array.");
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    // Failed to remove element from the array
+//                                                    Log.e(TAG, "Error removing element from array.", e);
+//                                                }
+//                                            });
                                     // Removes the user from the QR's list of users scanned
                                     qrRef.update("scannedBy", FieldValue.arrayRemove(userId))
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -217,6 +168,8 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                     // Removes the QR from the Scanned Codes Activity
                                     qrs.remove(pos);
                                     qrAdapter.notifyDataSetChanged();
+                                    updateScore(userRef);
+
 
                                 }
                             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -242,5 +195,80 @@ public class ScannedCodesActivity extends AppCompatActivity {
             });
 
         }
+    }
+    public void updateScore(DocumentReference userRef){
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot doc = task.getResult();
+
+                totalQRScore.setText(doc.get("totalScore").toString());
+                if (totalScanned != 0)
+                    totalScanned--;
+                totalQRamount.setText(totalScanned.toString());
+            }
+        });
+
+        populate(userRef);
+    }
+
+    public void populate(DocumentReference userRef){
+        totalScanned = 0;
+
+        qrAdapter.clear();
+        qrs.clear();
+        CollectionReference qrCollectionReference = db.collection("qr");
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            /**
+             * gets the scanned codes of the specific user
+             *
+             * @param task provides the result from the DB
+             */
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    scannedCodes = (List<String>) doc.getData().get("scannedQRs");
+
+                    if (scannedCodes != null) {
+                        for (String hash : scannedCodes) {
+                            DocumentReference ref = qrCollectionReference.document(hash);
+                            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot doc = task.getResult();
+                                        QR qr = new QR(hash, doc.get("id").toString(), doc.get("face").toString(), Integer.parseInt(doc.get("score").toString()));
+                                        qrAdapter.add(qr);
+
+
+                                        Integer val = Integer.parseInt(doc.get("score").toString());
+                                        if (val > highestScore) {
+                                            highestScore = val;
+                                        }
+                                        if (val < lowestScore) {
+                                            lowestScore = val;
+                                        }
+
+                                        totalScanned++;
+
+                                        highScore.setText(highestScore.toString());
+                                        lowScore.setText(lowestScore.toString());
+                                        totalQRamount.setText(totalScanned.toString());
+                                    } else {
+                                        Log.d(TAG, "Failed with: ", task.getException());
+                                    }
+                                }
+                            });
+                            qrAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
     }
 }

@@ -101,7 +101,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="20dp"
             android:text="Total QRs Scanned"
             android:textSize="20dp" />
 
@@ -111,8 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_marginBottom="18dp"
             android:hint="Total Scanned"
             android:textSize="20dp" />
 
