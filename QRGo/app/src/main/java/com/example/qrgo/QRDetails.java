@@ -59,6 +59,8 @@ public class QRDetails extends AppCompatActivity {
     private String name;
     private String userId;
     private String comments;
+
+    QR qr;
     private User user;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -79,13 +81,7 @@ public class QRDetails extends AppCompatActivity {
 
         String content = getIntent().getStringExtra("qrContent");
         userId = getIntent().getStringExtra("userId");
-        user = new User(userId);
-        user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
-            @Override
-            public void onUserLoaded(User user) {
 
-            }
-        });
 
         QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
@@ -99,27 +95,41 @@ public class QRDetails extends AppCompatActivity {
 
 
         qrContent = new QRReader();
-        hash = qrContent.createHash(content);
 
 
-        score = qrContent.calcScore(hash);
-        face = qrContent.createFace(hash);
-        name = qrContent.createName(hash);
+        if (content != null && userId != null) {
+            user = new User(userId);
 
-        // mock user for testing
-        //comments = "mfin uuuuuuuuuuuhhm";
+            hash = qrContent.createHash(content);
+            score = qrContent.calcScore(hash);
+            face = qrContent.createFace(hash);
+            name = qrContent.createName(hash);
 
-        QR qr = new QR( name, userId, score, face);
+            // mock user for testing
+            //comments = "mfin uuuuuuuuuuuhhm";
 
-        QRFaceTV.setText(face);
-        nameTV.setText(name);
-        scoreTV.setText(score.toString());
-        qrContent.addToDB(hash, qr);
+            qr = new QR(name, userId, score, face);
 
+            QRFaceTV.setText(face);
+            nameTV.setText(name);
+            scoreTV.setText(score.toString());
+            qrContent.addToDB(hash, qr);
+
+
+
+            user.getValuesFromDb(userId, new User.OnUserLoadedListener() {
+                @Override
+                public void onUserLoaded(User user) {
+
+                }
+            });
+
+            //user.addQR(userId, hash);
+            user.addQR(userId, hash, score);
+        }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        user.addQR(userId, hash, score);
 
         locationB.setOnClickListener(new View.OnClickListener() {
             /**

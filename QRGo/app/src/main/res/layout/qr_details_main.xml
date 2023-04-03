@@ -109,19 +109,6 @@
             app:layout_constraintTop_toBottomOf="@+id/ScannersButton"
             app:layout_constraintVertical_bias="0.0" />
 
-        <Button
-            android:id="@+id/DeleteButton"
-            android:layout_width="298dp"
-            android:layout_height="46dp"
-            android:backgroundTint="@color/red"
-            android:text="Delete"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CommentsButton"
-            app:layout_constraintVertical_bias="0.105" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

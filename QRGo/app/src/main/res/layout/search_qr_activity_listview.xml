@@ -19,16 +19,17 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="NAME NAME NAME NAMENAME NAME"
         android:id="@+id/qrNameLV"
+        android:layout_width="280dp"
+        android:layout_height="58dp"
+        android:hint="NAME NAME NAME NAMENAME NAME"
         android:textSize="15dp" />
+
     <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
         android:id="@+id/qrScoreLV"
-        android:textSize="15dp"
-        android:hint="VAL VAL"/>
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:hint="VAL VAL"
+        android:textSize="15dp" />
 
 </LinearLayout>

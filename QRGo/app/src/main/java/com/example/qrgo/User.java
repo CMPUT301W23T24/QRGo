@@ -309,63 +309,10 @@ public class User extends AppCompatActivity {
 
     public void updateTotalScore(int i){
         this.totalScore += i;
+        CollectionReference collectionReference = connectToDB();
+        collectionReference.document(this.deviceID).update("totalScore", FieldValue.increment(i));
     }
-//    public Integer getScore() {
-//        Integer i = 0;
-//        Integer qr_len = scannedQRs.size();
-//        this.totalScore = 0;
-//        Integer currentSum =0;
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        CollectionReference cr = db.collection("qr");
-//        CollectionReference ur = db.collection("user");
-//
-//
-//        if(qr_len == 0){
-//            this.totalScore =0;
-//            return this.totalScore;
-//        }
-//
-//       // while (i < qr_len){
-//            ur.get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                for (QueryDocumentSnapshot document : task.getResult()) {
-//                                    Log.d(TAG, " => " + document.get("scannedQRs"));
-//                                    ArrayList<String> scannedQRs = (ArrayList<String>) document.get("scannedQrs");
-//                                    //Log.d(TAG, " <= " + scannedQRs);
-//                                }
-//                            } else {
-//                                Log.d(TAG, "Error getting documents: ", task.getException());
-//                            }
-//                        }
-//                    });
-//                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                            int currentScore = (int) document.get("score");
-//                            updateTotalScore(currentScore);
-//                        }
-//                     else {
-//                            Log.d(TAG, "No such document");
-//                        }
-//                    } else {
-//                        Log.d(TAG, "get failed with ", task.getException());
-//                    }
-//                }
-//            });
 
-           // i+=1;
-
-       // }
-       // return this.totalScore;
-
-    //}
 
 
 
