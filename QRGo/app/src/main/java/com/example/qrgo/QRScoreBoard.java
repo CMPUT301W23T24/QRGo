@@ -1,10 +1,14 @@
 package com.example.qrgo;
 
+import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -16,8 +20,12 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,45 +40,52 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 
-public class QRScoreBoard {
-    //private List <User> userList;
+public class QRScoreBoard extends AppCompatActivity {
+    private ArrayList<String> dataList;
+    private ArrayList<User> users;
+    private ArrayAdapter<User> qrScoreAdapter;
+    private ListView userList;
     final String TAG = "Sample";
-    public List<String> sortQR(){
-            // int i = 0;
-            // int total_users = 0;
+    FirebaseFirestore db;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.highest_qr_scoreboard);
+
+        users = new ArrayList<User>();
+        qrScoreAdapter = new QRScoreArrayAdapter( this, users);
+        userList = findViewById(R.id.HighestQRScoreBoard);
+        userList.setAdapter(qrScoreAdapter);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference qrCollectionRef = db.collection("qr");
-        List<String> qrList = new ArrayList<>();
+        CollectionReference qrCollectionRef = db.collection("user");
+        List<String> qrScoreList = new ArrayList<>();
 
-        qrCollectionRef.orderBy("score", Query.Direction.DESCENDING).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        qrCollectionRef.orderBy("maxQRScore", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            String scannedBy = document.getString("scannedBy");
-                            String id = document.getString("id");
-                            String scoreString = document.getString("score");
-                            int score = Integer.parseInt(scoreString); // Convert string to integer
-                            String qrString = scannedBy + "*" + id + "*" + scoreString;
-                            qrList.add(qrString);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (DocumentSnapshot snapshot: task.getResult()){
+                                User user= new User(snapshot.getId(), snapshot.get("username").toString(), snapshot.get("maxQRName").toString(), Integer.parseInt(snapshot.get("maxQRScore").toString()));
+                                // Log.d("YO", user.getUserName() + " => " + user.getTotalScore());
+                                qrScoreAdapter.add(user);
+                                qrScoreAdapter.notifyDataSetChanged();
+                            }
                         }
-                        // Use the sorted QR list as needed
-                        // ...
                     }
                 })
+
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Error getting QR: ", e);
+                        Log.e(TAG, "Error getting max QR Score: ", e);
                     }
                 });
 
-
-        return qrList;
-
     }
+
 
 }
 
