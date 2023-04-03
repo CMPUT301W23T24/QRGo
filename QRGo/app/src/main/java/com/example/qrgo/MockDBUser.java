@@ -40,14 +40,14 @@ public class MockDBUser {
      * @return  returns the user's saved username
      */
     public String getUserName() {
-        return userName;
+        return userName.toLowerCase();
     }
     /**
      * Recieves an input for the requested user name and sets the device id's usename to the given parameter
      * @param userName
      */
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = userName.toLowerCase();
     }
     /**
      *

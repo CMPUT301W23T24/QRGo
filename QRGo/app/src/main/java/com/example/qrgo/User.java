@@ -63,7 +63,7 @@ public class User extends AppCompatActivity {
      */
     public User(String deviceID) {
         this.deviceID = deviceID;
-        this.userName = "username";
+        this.userName = "username".toLowerCase();
         this.name = "name";
         this.email = "";
         this.phoneNum = 0;
@@ -77,13 +77,13 @@ public class User extends AppCompatActivity {
 
     public User(String deviceID, String username, Integer totalScore) {
         this.deviceID = deviceID;
-        this.userName = username;
+        this.userName = username.toLowerCase();
         this.totalScore = totalScore;
     }
 
     public User(String deviceID, String username, String maxQRName, Integer maxQRScore) {
         this.deviceID = deviceID;
-        this.userName = username;
+        this.userName = username.toLowerCase();
         this.maxQRScore = maxQRScore;
         this.maxQRName = maxQRName;
     }
@@ -137,7 +137,7 @@ public class User extends AppCompatActivity {
      * @return Returns the user's saved username
      */
     public String getUserName() {
-        return userName;
+        return userName.toLowerCase();
     }
 
     /**
@@ -215,7 +215,7 @@ public class User extends AppCompatActivity {
         CollectionReference collectionReference = connectToDB();
         HashMap<String, Object> playerData = new HashMap<>();
         playerData.put("name", this.name);
-        playerData.put("username", this.userName);
+        playerData.put("username", this.userName.toLowerCase());
         playerData.put("email", this.email);
         playerData.put("phoneNum", this.phoneNum);
         playerData.put("scannedQRs", this.scannedQRs);
@@ -259,6 +259,7 @@ public class User extends AppCompatActivity {
                     DocumentSnapshot doc = task.getResult();
                     if (doc.exists()) {
                         userName = (String) doc.get("username");
+                        userName = userName.toLowerCase();
                         name = (String) doc.getData().get("name");
                         email = (String) doc.getData().get("email");
                         phoneNum = ((Long) doc.getData().get("phoneNum")).intValue();
@@ -350,7 +351,7 @@ public class User extends AppCompatActivity {
         CollectionReference collectionReference = connectToDB();
         collectionReference
                 .document(this.deviceID)
-                .update("username", this.userName);
+                .update("username", this.userName.toLowerCase());
         collectionReference
                 .document(this.deviceID)
                 .update("name", this.name);

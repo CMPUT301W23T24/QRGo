@@ -93,7 +93,7 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
      */
     @Override
     public void onOkkPressed(User newUser, String userName, String name, String email, Integer phoneNum) {
-        newUser.setUserName(userName);
+        newUser.setUserName(userName.toLowerCase());
         newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPhoneNum(phoneNum);
@@ -166,7 +166,7 @@ public class ViewProfile extends AppCompatActivity implements EditProfileFragmen
      */
     @Override
     public void onCancelPressed(User newUser, String userName, String name, String email, Integer phoneNum) {
-        newUser.setUserName(userName);
+        newUser.setUserName(userName.toLowerCase());
         newUser.setName(name);
         newUser.setEmail(email);
         newUser.setPhoneNum(phoneNum);

@@ -47,7 +47,7 @@ public class QRReaderTest{
     void CreateName() {
         MockDBQRReader qrReader = MockReader();
         String name = qrReader.createName("9dbb7fffd2fa9f2cfe1845d24fcae466dd8a6030a2c7dcb2e46bbdc1e8d51e67");
-        assertEquals(name, "A Mundanely Average StrangeSir Gando");
+        assertEquals(name, "a mundanely average strangeSir gando");
 
     }
 }

@@ -34,12 +34,12 @@ import java.util.regex.Pattern;
 public class QRReader {
     private Dictionary<String, Integer> dict = new Hashtable<>();
     private String[][] nameChoices = {
-            {"The ", "A "},
-            {"Greatly ", "Mundanely "},
-            {"Unique ", "Average "},
-            {"Joy", "Strange"},
-            {"Pig ", "Sir "},
-            {"Bildalf","Gando"}
+            {"the ", "a "},
+            {"greatly ", "mundanely "},
+            {"unique ", "average "},
+            {"joy", "strange"},
+            {"pig ", "sir "},
+            {"bildalf","gando"}
     };
     private String[][] imageChoice = {
             {"\n| ~   ~ |",   "\n| ==  == |" },
