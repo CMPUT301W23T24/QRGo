@@ -188,9 +188,9 @@ public class ScannedCodesActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // 1. Remove the QR from the User scanned QR list (Done)
-                                // 2. Remove the QR from the scanned codes (Done)
-                                // 3. Remove the the user from the QR's scanned by list (Done)
+                                // 1. Remove the QR from the User scanned QR list
+                                // 2. Remove the QR from the scanned codes
+                                // 3. Remove the the user from the QR's scanned by list
 
                                 // Update total score
                                 userRef.update("totalScore", FieldValue.increment(-qrs.get(pos).getScore()));
