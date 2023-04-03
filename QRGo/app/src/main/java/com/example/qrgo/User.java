@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,9 +43,9 @@ public class User extends AppCompatActivity {
     private List<String> scannedQRs;
     private Integer totalScore;
     private Integer maxQRScore;
-    private ArrayList<Integer> oldMaxQR;
+    private List<Integer> oldMaxQR;
     private String maxQRName;
-    private ArrayList<String> oldMaxQRName;
+    private List<String> oldMaxQRName;
     //private Integer oldCounter;
     OnUserLoadedListener listener;
 
@@ -71,9 +72,9 @@ public class User extends AppCompatActivity {
         this.scannedQRs = new ArrayList<>();
         this.totalScore = 0;
         this.maxQRScore = 0;
-        this.oldMaxQR = new ArrayList<>();
+        this.oldMaxQR = new ArrayList<Integer>();
         this.maxQRName = "";
-        this.oldMaxQRName = new ArrayList<>();
+        this.oldMaxQRName = new ArrayList<String>();
         //this.oldCounter = 0;
     }
 
@@ -102,8 +103,8 @@ public class User extends AppCompatActivity {
         return maxQRScore;
     }
 
-    public void setMaxQRScore(Integer maxQRScore) {
-        this.maxQRScore = maxQRScore;
+    public void setMaxQRScore(Long maxQRScore) {
+        this.maxQRScore = maxQRScore.intValue();
     }
 
     public Integer getTotalScore() {
@@ -270,8 +271,8 @@ public class User extends AppCompatActivity {
                         totalScore = ((Long) doc.getData().get("totalScore")).intValue();
                         maxQRScore = ((Long) doc.getData().get("maxQRScore")).intValue();
                         maxQRName = (String) doc.getData().get("maxQRName");
-                        oldMaxQR = (ArrayList<Integer>) doc.getData().get("oldMaxQR");
-                        oldMaxQRName = (ArrayList<String>) doc.getData().get("oldMaxQR");
+                        oldMaxQR = (List<Integer>) doc.getData().get("oldMaxQR");
+                        oldMaxQRName = (List<String>) doc.getData().get("oldMaxQRName");
                         //oldCounter = ((Long) doc.getData().get("oldCounter")).intValue();
 
 
@@ -301,30 +302,51 @@ public class User extends AppCompatActivity {
         DocumentReference qrRef = db.collection("qr").document(hash);
         DocumentReference userRef = db.collection("user").document(playerId);
 
-        qrRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        int scannedAmnt = document.getLong("scannedAmnt").intValue();
-                        if (!scannedQRs.contains(hash)) {
-                            updateTotalScore(score);
-                        }
-                        userRef.update("scannedQRs", FieldValue.arrayUnion(hash));
+        if (!scannedQRs.contains(hash)) {
+            updateTotalScore(score);
+            userRef.update("scannedQRs", FieldValue.arrayUnion(hash));
+            if (maxQRScore < score) {
+                oldMaxQR.add(this.maxQRScore);
+                Log.d(TAG, String.valueOf(this.oldMaxQRName));
+                //addOldMaxQRName(this.maxQRName);
+                oldMaxQRName.add(this.maxQRName);
+                //userRef.update("oldMaxQRName", FieldValue.arrayUnion((this.maxQRName)));
+                Log.d(TAG, String.valueOf(this.oldMaxQRName));
+                setMaxQRScore(score.longValue());
+                setMaxQRName(qr_name);
 
-                        if (maxQRScore < score) {
-                            oldMaxQR.add(maxQRScore);
-                            oldMaxQRName.add(maxQRName);
-                            setMaxQRScore(score);
-                            setMaxQRName(qr_name);
-
-                        }
-                        updateDb();
-                    }
-                }
             }
-        });
+        }
+        updateDb();
+
+//        qrRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        //int scannedAmnt = document.getLong("scannedAmnt").intValue();
+//                        if (!scannedQRs.contains(hash)) {
+//                            updateTotalScore(score);
+//                        }
+//                        userRef.update("scannedQRs", FieldValue.arrayUnion(hash));
+//
+//                        if (maxQRScore < score) {
+//                            oldMaxQR.add(maxQRScore);
+//                            oldMaxQRName.add(maxQRName);
+//
+//
+//                            Log.d(TAG, String.valueOf(oldMaxQRName));
+//                            setMaxQRScore(score);
+//                            setMaxQRName(qr_name);
+//                            Log.d(TAG, String.valueOf(oldMaxQRName));
+//
+//                        }
+//                        updateDb();
+//                    }
+//                }
+//            }
+//        });
     }
 
 
@@ -338,16 +360,20 @@ public class User extends AppCompatActivity {
     public void deleteQR(String playerId, String hash, Integer score) {
         CollectionReference collectionReference = connectToDB();
         if (scannedQRs != null && scannedQRs.contains(hash)) {
+            updateTotalScore(-1*score);
             this.scannedQRs.remove(hash);
             DocumentReference ref = collectionReference.document(playerId);
             ref.update("scannedQRs", FieldValue.arrayRemove(hash));
-            updateTotalScore(-score);
-            if (this.maxQRScore == score) {
+            //this.totalScore -= score;
+            if (Objects.equals(this.maxQRScore, score)) {
                 setMaxQRName(this.oldMaxQRName.get(this.oldMaxQRName.size() - 1));
-                setMaxQRScore(this.oldMaxQR.get(this.oldMaxQR.size() - 1));
-                this.oldMaxQRName.remove(this.oldMaxQRName.size() - 1);
-                this.oldMaxQR.remove(this.oldMaxQR.size() - 1);
+                setMaxQRScore(Long.valueOf(this.oldMaxQR.get(this.oldMaxQR.size() - 1)));
+                this.oldMaxQRName.remove(this.oldMaxQRName.get(this.oldMaxQRName.size() - 1));
+                this.oldMaxQR.remove(this.oldMaxQR.get(this.oldMaxQR.size() - 1));
+                //updateDb();
             }
+
+            updateDb();
         } else {
             //Toast.makeText(User.this, "QR code already scanned", Toast.LENGTH_SHORT).show();
         }
@@ -380,14 +406,17 @@ public class User extends AppCompatActivity {
         collectionReference
                 .document(this.deviceID)
                 .update("maxQRScore", this.maxQRScore);
-        collectionReference.document(this.deviceID)
-                .update("maxQRScore", this.maxQRScore);
-        collectionReference.document(this.deviceID)
-                .update("oldMaxQR", this.oldMaxQRName);
-        collectionReference.document(this.deviceID)
+        collectionReference
+                .document(this.deviceID)
+                .update("oldMaxQR", this.oldMaxQR);
+        collectionReference
+                .document(this.deviceID)
                 .update("oldMaxQRName", this.oldMaxQRName);
     }
 
+    public void addOldMaxQRName(String name) {
+        this.oldMaxQRName.add(name);
+    }
     /**
      * the scanned QRs of the user
      */
