@@ -53,6 +53,9 @@ public class QRScoreArrayAdapter extends ArrayAdapter<User> {
         TextView loaded_user = view.findViewById(R.id.user_name);
         loaded_user.setText(user2.getUserName());
 
+        TextView rank_user = view.findViewById(R.id.qr_rank);
+        rank_user.setText(String.valueOf(position + 1) + ".");
+
         TextView qrName = view.findViewById(R.id.qr_name);
         qrName.setText(user2.getMaxQRName());
 
