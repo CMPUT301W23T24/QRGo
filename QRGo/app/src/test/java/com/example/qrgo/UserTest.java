@@ -1,21 +1,12 @@
 package com.example.qrgo;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import static org.mockito.ArgumentMatchers.any;
-
-import android.os.Build;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -26,95 +17,106 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-@RunWith(RobolectricTestRunner.class)
 public class UserTest {
-    FirebaseFirestore db;
+
     private HashMap<String, Object> testUserData;
-    private User testUser;
-
-    @Before
-    public void setUp() {
+    public MockDBUser MockUser() {
         // Set up the mock user data
-        testUser = new User("testDeviceID");
-        testUser.setUserName("test-username");
-        testUser.setName("name");
-        testUser.setEmail("test-email");
-        testUser.setPhoneNum(123456789);
-        List<String> scannedQRs = new ArrayList<>();
-        testUser.setTotalScore(100);
+        MockDBUser testUser = new MockDBUser("testDeviceID");
 
-        testUserData = new HashMap<>();
-        testUserData.put("name", testUser.getName());
-        testUserData.put("username", testUser.getUserName());
-        testUserData.put("email", testUser.getEmail());
-        testUserData.put("phoneNum", testUser.getPhoneNum());
-        testUserData.put("scannedQRs", testUser.getScannedQRs());
-        testUserData.put("totalScore", testUser.getTotalScore());
-        db = FirebaseFirestore.getInstance();
+        return testUser;
     }
 
-//    @Test
-//    public void getUserName() {
-//        assertEquals("test-username", testUser.getUserName());
-//    }
-//    @Test
-//    void setUserName() {
-//        testUser.setUserName("test2");
-//        assertEquals("test2", testUser.getUserName());
-//    }
-//    @Test
-//    void getName() {
-//        String name = testUser.getName();
-//        assertEquals("name", name);
-//
-//    }
-//    @Test
-//    void SetName() {
-//        testUser.setName("name2");
-//        assertEquals("name2", testUser.getName());
-//    }
-//    @Test
-//    void getEmail() {
-//        String email = testUser.getEmail();
-//        assertEquals("test-email", email);
-//    }
-//    @Test
-//    void setEmail() {
-//        testUser.setEmail("test2@email.com");
-//        assertEquals("test2@email.com", testUser.getEmail());
-//    }
-//
-//    @Test
-//    void getPhoneNum() {
-//        int phoneNum = testUser.getPhoneNum();
-//        assertEquals(123456789, phoneNum);
-//    }
-//    @Test
-//    void setPhoneNum() {
-//        testUser.setPhoneNum(111);
-//        assertEquals(111, (int) testUser.getPhoneNum());
-//    }
+
     @Test
-    public void saveUserTest() {
-
-//        // Mock the saveUser() method
-//        doNothing().when(testUser).saveUser();
-        // Call the saveUser() method
-        testUser.saveUser();
-
-        // Retrieve the saved data from the database
-        DocumentReference savedDocRef = db.collection("user").document(testUser.getDeviceID());
-        savedDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                // Check if the saved data matches the expected data
-                assertEquals(testUserData.get("name"), documentSnapshot.get("name"));
-                assertEquals(testUserData.get("username"), documentSnapshot.get("username"));
-                assertEquals(testUserData.get("email"), documentSnapshot.get("email"));
-                assertEquals(testUserData.get("phoneNum"), documentSnapshot.get("phoneNum"));
-                assertEquals(testUserData.get("scannedQRs"), documentSnapshot.get("scannedQRs"));
-                assertEquals(testUserData.get("totalScore"), documentSnapshot.get("totalScore"));
-            }
-        });
+    void getDeviceID() {
+        MockDBUser testUser = MockUser();
+        String id = testUser.getDeviceID();
+        assertEquals(id, "testDeviceID");
     }
+    @Test
+    void getUserName() {
+        MockDBUser testUser = MockUser();
+        assertEquals("", testUser.getUserName());
+    }
+    @Test
+    void setUserName() {
+        MockDBUser testUser = MockUser();
+        testUser.setUserName("test2");
+        assertEquals("test2", testUser.getUserName());
+    }
+    @Test
+    void getName() {
+        MockDBUser testUser = MockUser();
+        String name = testUser.getName();
+        assertEquals("", name);
+
+    }
+    @Test
+    void SetName() {
+        MockDBUser testUser = MockUser();
+        testUser.setName("name2");
+        assertEquals("name2", testUser.getName());
+    }
+    @Test
+    void getEmail() {
+        MockDBUser testUser = MockUser();
+        String email = testUser.getEmail();
+        assertEquals("", email);
+    }
+    @Test
+    void setEmail() {
+        MockDBUser testUser = MockUser();
+        testUser.setEmail("test2@email.com");
+        assertEquals("test2@email.com", testUser.getEmail());
+    }
+
+    @Test
+    void getPhoneNum() {
+        MockDBUser testUser = MockUser();
+        int phoneNum = testUser.getPhoneNum();
+        assertEquals(0, phoneNum);
+    }
+    @Test
+    void setPhoneNum() {
+        MockDBUser testUser = MockUser();
+        testUser.setPhoneNum(111);
+        assertEquals(111, (int) testUser.getPhoneNum());
+    }
+    @Test
+    void getScannedQRs() {
+        MockDBUser testUser = MockUser();
+        ArrayList<String> qrs = (ArrayList<String>) testUser.getScannedQRs();
+        ArrayList<String> testqrs = new ArrayList<String>();
+        assertEquals(qrs, testqrs);
+    }
+    @Test
+    void addScannedQRs() {
+        MockDBUser testUser = MockUser();
+        String addedqr = "TestQR";
+        testUser.addScannedQRs(addedqr);
+        ArrayList<String> qrs = (ArrayList<String>) testUser.getScannedQRs();
+        assertEquals(qrs.size(), 1);
+    }
+    @Test
+    void getTotalScore() {
+        MockDBUser testUser = MockUser();
+        int score = testUser.getTotalScore();
+        assertEquals(score, 0);
+    }
+    @Test
+    void setTotalScore() {
+        MockDBUser testUser = MockUser();
+        testUser.setTotalScore(5);
+        int score = testUser.getTotalScore();
+        assertEquals(score, 5);
+    }
+    @Test
+    void updateTotalScore() {
+        MockDBUser testUser = MockUser();
+        testUser.updateTotalScore(1);
+        int score = testUser.getTotalScore();
+        assertEquals(score, 1);
+    }
+
 }

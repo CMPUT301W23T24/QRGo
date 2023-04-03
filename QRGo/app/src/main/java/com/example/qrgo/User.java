@@ -37,7 +37,6 @@ public class User extends AppCompatActivity {
     private String email;
     private Integer phoneNum;
     private List<String> scannedQRs;
-
     private Integer totalScore;
     OnUserLoadedListener listener;
 
@@ -173,7 +172,6 @@ public class User extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("user");
         return collectionReference;
-
     }
 
     /**
