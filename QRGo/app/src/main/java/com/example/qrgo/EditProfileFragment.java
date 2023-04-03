@@ -23,6 +23,11 @@ public class EditProfileFragment extends DialogFragment {
     private EditText phoneNum;
     private User user;
 
+    private String defaultUsername;
+    private String defaultName;
+    private String defaultEmail;
+    private Integer defaultPhoneNum;
+
     /**
      * Creates the constructor of the fragment
      * @param user
@@ -37,6 +42,8 @@ public class EditProfileFragment extends DialogFragment {
 
     public interface OnFragmentInteractionListener{
         void onOkkPressed(User newUser,String userName, String name, String email, Integer phoneNum);
+
+        void onCancelPressed(User user, String UserName, String Name, String Email, Integer phoneNum);
     }
 
     /**
@@ -75,11 +82,23 @@ public class EditProfileFragment extends DialogFragment {
         name.setText(user.getName());
         email.setText(user.getEmail());
         phoneNum.setText(String.valueOf(user.getPhoneNum()));
+
+        defaultUsername= user.getUserName();
+        defaultName= user.getName();
+        defaultEmail= user.getEmail();
+        defaultPhoneNum= user.getPhoneNum();
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
                 .setTitle("Edit profile")
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        listener.onCancelPressed(user, defaultUsername, defaultName, defaultEmail, defaultPhoneNum);
+                    }
+                })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

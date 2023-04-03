@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,12 +35,12 @@ import java.util.regex.Pattern;
 public class QRReader {
     private Dictionary<String, Integer> dict = new Hashtable<>();
     private String[][] nameChoices = {
-            {"The ", "A "},
-            {"Greatly ", "Mundanely "},
-            {"Unique ", "Average "},
-            {"Joy", "Strange"},
-            {"Pig ", "Sir "},
-            {"Bildalf","Gando"}
+            {"the ", "a "},
+            {"greatly ", "mundanely "},
+            {"unique ", "average "},
+            {"joy", "strange"},
+            {"pig ", "sir "},
+            {"bildalf","gando"}
     };
     private String[][] imageChoice = {
             {"\n| ~   ~ |",   "\n| ==  == |" },
@@ -86,20 +87,10 @@ public class QRReader {
         });
 
         return qrExists;
-        //check if it exists
-        //if (qrExists){} else {}
-        //TODO if it does exist, get the right QR and update the num counted
-        //TODO add it to the user DB and the QRDB
-
-
-
     }
 
     /**
-     * creates a hash for the QR
-     * @param content
-     * @return string which is a hash
-     */
+
     //https://www.geeksforgeeks.org/sha-256-hash-in-java/
 
     /**
@@ -128,11 +119,7 @@ public class QRReader {
         return "";
     }
 
-    /**
-     * calculates the score of the hash
-     * @param hash
-     * @return Integer of the score
-     */
+
     //https://www.geeksforgeeks.org/matcher-group-method-in-java-with-examples/?ref=rp
     /**
      * This method calculates the score for each QR code
@@ -296,11 +283,12 @@ public class QRReader {
     public void addLocationToDB (String hash, String user, double latitude, double longitude) {
         db = FirebaseFirestore.getInstance();
         DocumentReference ref = db.collection("qr").document(hash);
+        GeoPoint point = new GeoPoint(latitude, longitude);
         List<Double> location = Arrays.asList(latitude, longitude);
         Map<String, List<Double>> locations = new HashMap<>();
         locations.put(user, location);
         Log.d("Locations", locations.toString());
-        ref.update("location", FieldValue.arrayUnion(locations));
+        ref.update("locations", FieldValue.arrayUnion(point));
     }
 }
 
