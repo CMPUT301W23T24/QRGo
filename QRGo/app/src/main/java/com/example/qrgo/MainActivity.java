@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 
-
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db;
     Button scanQRButton;
     Button searchQR;
-    Button viewProfile;
+    ImageButton viewProfile;
     Button findFriends;
     Button scannedCodes;
     Button scoreboards;

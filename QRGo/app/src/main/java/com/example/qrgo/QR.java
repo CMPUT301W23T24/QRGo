@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class QR {
     private String id;
     private String hash;
+
     private String scannedBy;
     private Integer score;
     private String face;

@@ -7,113 +7,134 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        tools:layout_editor_absoluteX="-32dp"
+        tools:layout_editor_absoluteY="149dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/viewProfile"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="49dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="172dp"
-        android:backgroundTint="@color/blue"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/person"
         android:gravity="center"
         android:text="View Profile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="View Profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewProfile"
+        android:background="@color/white"/>
+
     <Button
         android:id="@+id/scanQRButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="@color/blue"
         android:text="Scan QR Code"
         app:layout_constraintEnd_toStartOf="@+id/scannedCodes"
-        app:layout_constraintHorizontal_bias="0.292"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewProfile" />
 
     <Button
         android:id="@+id/findFriends"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scanQRButton"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="@color/blue"
         android:text="Search Friends"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanQRButton" />
+        app:layout_constraintTop_toBottomOf="@+id/scannedCodes" />
 
     <Button
         android:id="@+id/goToSearchB"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scannedCodes"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="30dp"
         android:layout_toStartOf="@+id/findFriends"
         android:backgroundTint="@color/blue"
         android:text="Search QR Codes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toEndOf="@+id/findFriends"
-        app:layout_constraintTop_toBottomOf="@+id/scannedCodes" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findFriends" />
 
     <Button
         android:id="@+id/scannedCodes"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="30dp"
         android:layout_toStartOf="@+id/scanQRButton"
         android:backgroundTint="@color/blue"
         android:text="Scanned Codes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewProfile" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanQRButton" />
 
     <Button
         android:id="@+id/scoreboards_button"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_below="@id/scanQRButton"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
 
-        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:backgroundTint="@color/blue"
         android:text="Scoreboards"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/viewMapButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/findFriends"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintTop_toBottomOf="@+id/goToSearchB"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/viewMapButton"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_below="@id/scanQRButton"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
 
-        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="56dp"
         android:backgroundTint="@color/blue"
         android:text="View Map"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goToSearchB"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scoreboards_button"
+        app:layout_constraintVertical_bias="0.234" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
