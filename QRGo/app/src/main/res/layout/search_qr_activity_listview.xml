@@ -7,29 +7,37 @@
     android:padding="10dip"
     android:orientation="horizontal"
     >
-
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="face"
-        android:id="@+id/qrFaceLV"
-        android:textAlignment="center"
-        android:textSize="15dp"
+        android:orientation="vertical">
 
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="_______\n| ~   ~ |\n|0    0|\n|   ||   |\n|   LL   |\n|====|\n| ,      , |\n|   ```   |\n|    ||    |\n-----------"
+            android:id="@+id/qrFaceLV"
+            android:textAlignment="center"
+            android:textSize="15dp"
+            />
+        <TextView
+            android:id="@+id/qrNameLV"
+            android:layout_width="280dp"
+            android:layout_height="58dp"
+            android:hint="NAME NAME NAME NAMENAME NAME"
+            android:textSize="15dp" />
+        <TextView
+            android:id="@+id/qrScoreLV"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:hint="VAL VAL"
+            android:textSize="15dp" />
 
-    <TextView
-        android:id="@+id/qrNameLV"
-        android:layout_width="280dp"
-        android:layout_height="58dp"
-        android:hint="NAME NAME NAME NAMENAME NAME"
-        android:textSize="15dp" />
 
-    <TextView
-        android:id="@+id/qrScoreLV"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:hint="VAL VAL"
-        android:textSize="15dp" />
+    </LinearLayout>
+
+
+
+
 
 </LinearLayout>
