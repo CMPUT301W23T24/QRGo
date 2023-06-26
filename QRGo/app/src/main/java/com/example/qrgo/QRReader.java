@@ -16,16 +16,23 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -169,21 +176,65 @@ public class QRReader {
      * @return
      * Returns the face of the QR
      */
-    public String createFace(String hash){
-        face = "_______";
-        Character bit;
-        String evenChars = "02468ace";
-        for (int i = 0; i < 6; i++){
-            bit = hash.charAt(i);
-            if (evenChars.contains(bit.toString()) ){
-                face += imageChoice[i][0];
-            } else {
-                face += imageChoice[i][1];
-            }
-        }
-        face += "-----------";
-        return face;
+//    public String createFace(String hash){
+////        face = "_______";
+////        Character bit;
+////        String evenChars = "02468ace";
+////        for (int i = 0; i < 6; i++){
+////            bit = hash.charAt(i);
+////            if (evenChars.contains(bit.toString()) ){
+////                face += imageChoice[i][0];
+////            } else {
+////                face += imageChoice[i][1];
+////            }
+////        }
+////        face += "-----------";
+////        return face;
+//    }
+
+
+//    public String createFace(String hash) throws IOException {
+//        String imageUrl = String.format("https://robohash.org/%s.JPG?set=set3", hash);
+//        RobohashApiClient apiClient = new RobohashApiClient();
+//        apiClient.requestImageAsync(imageUrl, new RobohashApiClient.OnCompleteListener() {
+//            public void onComplete(String imageAsString, Exception e) {
+//                if (e != null) {
+//                    e.printStackTrace();
+//                    // Handle the failure case
+//                } else {
+//                    System.out.println("Received image as string in QRReader: " + imageAsString);
+////                    return imageAsString;
+//                    // Access the imageAsString and perform further processing or update UI, etc.
+//                }
+//            }
+//        });
+//
+//    }
+
+    public CompletableFuture<String> createFace(String hash) throws IOException {
+        String imageUrl = String.format("https://robohash.org/%s.PNG?set=set3", hash);
+        RobohashApiClient apiClient = new RobohashApiClient();
+        return apiClient.requestImageAsync(imageUrl);
     }
+
+    public static void main(String[] args) {
+        QRReader qrReader = new QRReader();
+        try {
+            CompletableFuture<String> resultFuture = qrReader.createFace("your-hash");
+            resultFuture.thenAccept(imageAsString -> {
+                System.out.println("Received image as string: " + imageAsString);
+                // Handle the result as needed
+            }).exceptionally(e -> {
+                e.printStackTrace();
+                // Handle the exception if it occurs
+                return null;
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception if it occurs
+        }
+    }
+
 
     /**
      * This method creates the name for the QR

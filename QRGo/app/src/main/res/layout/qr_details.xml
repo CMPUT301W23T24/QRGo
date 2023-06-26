@@ -39,7 +39,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="-138dp" />
 
-            <TextView
+<!--            <TextView-->
+<!--                android:id="@+id/TVQRFace"-->
+<!--                android:layout_width="301dp"-->
+<!--                android:layout_height="269dp"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginStart="50dp"-->
+<!--                android:layout_marginTop="144dp"-->
+<!--                android:layout_marginEnd="60dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="_______\n| ~   ~ |\n|0    0|\n|   ||   |\n|   LL   |\n|====|\n| ,      , |\n|   ```   |\n|    ||    |\n-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textColor="@color/cardview_dark_background"-->
+<!--                android:textSize="23dp" />-->
+
+            <ImageView
                 android:id="@+id/TVQRFace"
                 android:layout_width="301dp"
                 android:layout_height="269dp"

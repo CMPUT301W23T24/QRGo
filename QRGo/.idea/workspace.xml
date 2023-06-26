@@ -10,10 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="115c2bf4-47a7-4dbb-87f5-44719eafe967" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-03-10_11_45_a_m___Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-03-10_11_45_a_m___Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/RobohashApiClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/FindFriends.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/FindFriends.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/SearchQR.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/SearchQR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/CameraActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/CameraActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRDetailsMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRDetailsMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/QRReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/ScannedCodesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qrgo/ScannedCodesActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/qr_details.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/qr_details.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/scanned_codes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/scanned_codes.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +34,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>

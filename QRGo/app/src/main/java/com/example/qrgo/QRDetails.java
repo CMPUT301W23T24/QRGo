@@ -3,6 +3,8 @@ package com.example.qrgo;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 
 import static android.content.ContentValues.TAG;
@@ -11,9 +13,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,14 +39,16 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 
 /**
  * Creates the Details needed to bring the QR class into a more profile based scan
  */
 public class QRDetails extends AppCompatActivity {
-    private TextView QRFaceTV;
+    private ImageView QRFaceTV;
     private TextView nameTV;
     private TextView scoreTV;
     private Button locationB;
@@ -83,7 +89,7 @@ public class QRDetails extends AppCompatActivity {
         userId = getIntent().getStringExtra("userId");
 
 
-        QRFaceTV = (TextView) findViewById(R.id.TVQRFace);
+        QRFaceTV = (ImageView) findViewById(R.id.TVQRFace);
         nameTV = (TextView) findViewById(R.id.TVName);
         scoreTV = (TextView) findViewById(R.id.TVScore);
 
@@ -102,7 +108,23 @@ public class QRDetails extends AppCompatActivity {
 
             hash = qrContent.createHash(content);
             score = qrContent.calcScore(hash);
-            face = qrContent.createFace(hash);
+            try {
+//                face = qrContent.createFace(hash);
+                CompletableFuture<String> faceFuture = qrContent.createFace(hash);
+                faceFuture.thenAccept(face -> {
+                    System.out.println("Face: " + face);
+                    Bitmap bitmapFace = convertStringToBitmap(face);
+                    QRFaceTV.setImageBitmap(bitmapFace);
+                }).exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
+
+            } catch (IOException e) {
+                Log.d("image failed", "hash)");
+            }
+
+
             name = qrContent.createName(hash);
 
             // mock user for testing
@@ -110,7 +132,6 @@ public class QRDetails extends AppCompatActivity {
 
             qr = new QR(name, userId, score, face);
 
-            QRFaceTV.setText(face);
             nameTV.setText(name);
             scoreTV.setText(score.toString());
             qrContent.addToDB(hash, qr);
@@ -210,6 +231,11 @@ public class QRDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    public Bitmap convertStringToBitmap(String base64String) {
+        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, new BitmapFactory.Options());
     }
 
     /**

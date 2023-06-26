@@ -185,7 +185,7 @@ public class CameraActivity extends AppCompatActivity {
      */
     public String convertBitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 1, outputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         byte[] byteArray = outputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

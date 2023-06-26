@@ -268,7 +268,8 @@ public class ScannedCodesActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot doc = task.getResult();
-                                        QR qr = new QR(hash, doc.get("id").toString(), doc.get("face").toString(), Integer.parseInt(doc.get("score").toString()));
+                                        QR qr = new QR(hash, doc.get("id").toString(), " ".toString(), Integer.parseInt(doc.get("score").toString()));
+//                                        QR qr = new QR(hash, doc.get("id").toString(), doc.get("face").toString(), Integer.parseInt(doc.get("score").toString()));
                                         qrAdapter.add(qr);
 
 
